@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -20,17 +20,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using QuantConnect.Research;
+using QuantConnect.Logging;
 
 namespace QuantConnect.Tests.Research
 {
     [TestFixture]
     public class QuantBookHistoryTests
     {
+        private ILogHandler _logHandler;
         dynamic _module;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
+            // Store initial handler
+            _logHandler = Log.LogHandler;
+
             SymbolCache.Clear();
             MarketHoursDatabase.Reset();
 
@@ -38,6 +43,13 @@ namespace QuantConnect.Tests.Research
             {
                 _module = Py.Import("Test_QuantBookHistory");
             }
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            // Reset to initial handler
+            Log.LogHandler = _logHandler;
         }
 
         [Test]
@@ -120,7 +132,7 @@ namespace QuantConnect.Tests.Research
                 //2014-05-08 00:00:00        NaN        173.423752
                 //2014-05-08 20:00:00   1.384265               NaN
                 //2014-05-09 00:00:00        NaN        173.229931
-                Console.WriteLine(periodHistory);
+                Log.Trace(periodHistory.ToString());
 
                 var count = (periodHistory.shape[0] as PyObject).AsManagedObject(typeof(int));
                 Assert.AreEqual(10, count);
@@ -145,7 +157,7 @@ namespace QuantConnect.Tests.Research
 
                 // Get the one day of data, ending on start date
                 var startEndHistory = securityTestHistory.test_daterange_overload(startDate);
-                Console.WriteLine(startEndHistory.ToString());
+                Log.Trace(startEndHistory.ToString());
                 var firstIndex = (DateTime)(startEndHistory.index.values[0][4] as PyObject).AsManagedObject(typeof(DateTime));
                 Assert.GreaterOrEqual(startDate.AddDays(-1).Date, firstIndex.Date);
             }
@@ -161,7 +173,7 @@ namespace QuantConnect.Tests.Research
                 var securityTestHistory = _module.OptionHistoryTest(new DateTime(2014, 6, 7), SecurityType.Option, symbol);
 
                 var startEndHistory = securityTestHistory.test_daterange_overload(currentDate, new DateTime(2014, 6, 6, 10, 0, 0));
-                Console.WriteLine(startEndHistory.ToString());
+                Log.Trace(startEndHistory.ToString());
                 Assert.IsFalse((bool)startEndHistory.empty);
             }
         }
@@ -177,10 +189,44 @@ namespace QuantConnect.Tests.Research
 
                 // Get the one day of data, ending on start date
                 var startEndHistory = securityTestHistory.test_daterange_overload(startDate);
-                Console.WriteLine(startEndHistory.ToString());
+                Log.Trace(startEndHistory.ToString());
                 var firstIndex = (DateTime)(startEndHistory.index.values[0][4] as PyObject).AsManagedObject(typeof(DateTime));
                 Assert.GreaterOrEqual(startDate.AddDays(-1).Date, firstIndex.Date);
             }
+        }
+
+        [Test]
+        public void OptionIndexWeekly()
+        {
+            var qb = new QuantBook();
+            var spxw = qb.AddIndexOption(Symbols.SPX, "SPXW");
+            spxw.SetFilter(u => u.Strikes(0, 1)
+                 // single week ahead since there are many SPXW contracts and we want to preserve performance
+                 .Expiration(0, 7)
+                 .IncludeWeeklys());
+
+            var startTime = new DateTime(2021, 1, 4);
+
+            var historyByOptionSymbol = qb.GetOptionHistory(spxw.Symbol, startTime);
+            var historyByUnderlyingSymbol = qb.GetOptionHistory(Symbols.SPX, "SPXW", startTime);
+
+            List<DateTime> expiry;
+            List<DateTime> byUnderlyingExpiry;
+
+            historyByOptionSymbol.GetExpiryDates().TryConvert(out expiry);
+            historyByUnderlyingSymbol.GetExpiryDates().TryConvert(out byUnderlyingExpiry);
+
+            List<decimal> strikes;
+            List<decimal> byUnderlyingStrikes;
+
+            historyByOptionSymbol.GetStrikes().TryConvert(out strikes);
+            historyByUnderlyingSymbol.GetStrikes().TryConvert(out byUnderlyingStrikes);
+
+            Assert.IsTrue(expiry.Count > 0);
+            Assert.IsTrue(expiry.SequenceEqual(byUnderlyingExpiry));
+
+            Assert.IsTrue(strikes.Count > 0);
+            Assert.IsTrue(strikes.SequenceEqual(byUnderlyingStrikes));
         }
 
         [Test]
@@ -225,10 +271,10 @@ namespace QuantConnect.Tests.Research
                 // Get the one day of data, ending on start date
                 var startEndHistory = securityTestHistory.test_daterange_overload(startDate, startDate.AddDays(-1), maxFilter);
 
-                Console.WriteLine(startEndHistory.index.levels[1].size.ToString());
+                Log.Trace(startEndHistory.index.levels[1].size.ToString());
                 Assert.AreEqual(numberOfFutureContracts, (int)startEndHistory.index.levels[1].size);
 
-                Console.WriteLine(startEndHistory.ToString());
+                Log.Trace(startEndHistory.ToString());
                 var firstIndex = (DateTime)(startEndHistory.index.values[0][2] as PyObject).AsManagedObject(typeof(DateTime));
                 Assert.GreaterOrEqual(startDate.AddDays(-1).Date, firstIndex.Date);
             }
@@ -246,10 +292,10 @@ namespace QuantConnect.Tests.Research
 
                 var startEndHistory = securityTestHistory.test_daterange_overload(currentDate, new DateTime(2013, 10, 11, 10, 0, 0), maxFilter);
 
-                Console.WriteLine(startEndHistory.index.levels[1].size.ToString());
+                Log.Trace(startEndHistory.index.levels[1].size.ToString());
                 Assert.AreEqual(numberOfFutureContracts, (int)startEndHistory.index.levels[1].size);
 
-                Console.WriteLine(startEndHistory.ToString());
+                Log.Trace(startEndHistory.ToString());
                 Assert.IsFalse((bool)startEndHistory.empty);
             }
         }
@@ -265,10 +311,190 @@ namespace QuantConnect.Tests.Research
 
                 // Get the one day of data, ending on start date
                 var startEndHistory = securityTestHistory.test_daterange_overload(startDate);
-                Console.WriteLine(startEndHistory.ToString());
+                Log.Trace(startEndHistory.ToString());
                 var firstIndex = (DateTime)(startEndHistory.index.values[0][2] as PyObject).AsManagedObject(typeof(DateTime));
                 Assert.GreaterOrEqual(startDate.AddDays(-1).Date, firstIndex.Date);
             }
+        }
+
+        [Test]
+        public void FuturesOptionsWithFutureContract()
+        {
+            using (Py.GIL())
+            {
+                var qb = new QuantBook();
+                var expiry = new DateTime(2020, 3, 20);
+                var future = Symbol.CreateFuture(Futures.Indices.SP500EMini, Market.CME, expiry);
+                var start = new DateTime(2020, 1, 5);
+                var end = new DateTime(2020, 1, 6);
+                var history = qb.GetOptionHistory(future, start, end, Resolution.Minute, extendedMarketHours: true);
+                dynamic df = history.GetAllData();
+
+                Assert.IsNotNull(df);
+                Assert.IsFalse((bool)df.empty.AsManagedObject(typeof(bool)));
+                Assert.Greater((int)df.__len__().AsManagedObject(typeof(int)), 360);
+                Assert.AreEqual(5, (int)df.index.levels.__len__().AsManagedObject(typeof(int)));
+                Assert.IsTrue((bool)df.index.levels[0].__contains__(expiry.ToStringInvariant("yyyy-MM-dd")).AsManagedObject(typeof(bool)));
+            }
+        }
+
+        [Test]
+        public void FuturesOptionsWithFutureOptionContract()
+        {
+            using (Py.GIL())
+            {
+                var qb = new QuantBook();
+                var expiry = new DateTime(2020, 3, 20);
+                var future = Symbol.CreateFuture(Futures.Indices.SP500EMini, Market.CME, expiry);
+                var futureOption = Symbol.CreateOption(
+                    future,
+                    future.ID.Market,
+                    OptionStyle.American,
+                    OptionRight.Call,
+                    3300m,
+                    expiry);
+
+                var start = new DateTime(2020, 1, 5);
+                var end = new DateTime(2020, 1, 6);
+                var history = qb.GetOptionHistory(futureOption, start, end, Resolution.Minute, extendedMarketHours: true);
+                dynamic df = history.GetAllData();
+
+                Assert.IsNotNull(df);
+                Assert.IsFalse((bool)df.empty.AsManagedObject(typeof(bool)));
+                Assert.AreEqual(360, (int)df.__len__().AsManagedObject(typeof(int)));
+                Assert.AreEqual(5, (int)df.index.levels.__len__().AsManagedObject(typeof(int)));
+                Assert.IsTrue((bool)df.index.levels[0].__contains__(expiry.ToStringInvariant("yyyy-MM-dd")).AsManagedObject(typeof(bool)));
+            }
+        }
+
+        [Test]
+        public void CanoicalFutureCrashesGetOptionHistory()
+        {
+            var qb = new QuantBook();
+            var future = Symbol.Create(Futures.Indices.SP500EMini, SecurityType.Future, Market.CME);
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                qb.GetOptionHistory(future, default(DateTime), DateTime.MaxValue, Resolution.Minute);
+            });
+        }
+
+        [TestCase(true, true, 1920)]
+        [TestCase(true, false, 780)]
+        [TestCase(false, true, 898)]
+        [TestCase(false, false, 390)]
+        public void OptionHistorySpecifyingFillForwardAndExtendedMarket(bool fillForward, bool extendedMarket, int expectedCount)
+        {
+            using (Py.GIL())
+            {
+                var qb = new QuantBook();
+                var start = new DateTime(2013, 10, 11);
+                var end = new DateTime(2013, 10, 15);
+
+                var spy = qb.AddEquity("SPY");
+                dynamic history = qb.GetOptionHistory(spy.Symbol, start, end, Resolution.Minute, fillForward, extendedMarket).GetAllData();
+                var historyCount = (history.shape[0] as PyObject).As<int>();
+
+                Assert.AreEqual(expectedCount, historyCount);
+            }
+        }
+
+        [TestCase(true, true, 8640)]
+        [TestCase(true, false, 2700)]
+        [TestCase(false, true, 6899)]
+        [TestCase(false, false, 2249)]
+        public void FutureHistorySpecifyingFillForwardAndExtendedMarket(bool fillForward, bool extendedMarket, int expectedCount)
+        {
+            using (Py.GIL())
+            {
+                var qb = new QuantBook();
+                var start = new DateTime(2013, 10, 6);
+                var end = new DateTime(2013, 10, 15);
+
+                var future = Symbol.CreateFuture(Futures.Indices.SP500EMini, Market.CME, new DateTime(2013, 12, 20));
+                dynamic history = qb.GetFutureHistory(future, start, end, Resolution.Minute, fillForward, extendedMarket).GetAllData();
+                var historyCount = (history.shape[0] as PyObject).As<int>();
+
+                Assert.AreEqual(expectedCount, historyCount);
+            }
+        }
+
+        [TestCase(Language.CSharp)]
+        [TestCase(Language.Python)]
+        public void OptionHistoryObjectIsIterable(Language language)
+        {
+            var qb = new QuantBook();
+            var start = new DateTime(2013, 10, 11);
+            var end = new DateTime(2013, 10, 15);
+
+            var spy = qb.AddEquity("SPY");
+            var history = qb.GetOptionHistory(spy.Symbol, start, end, Resolution.Minute);
+
+            Assert.DoesNotThrow(() =>
+            {
+                if (language == Language.CSharp)
+                {
+                    Assert.AreEqual(780, history.Count());
+                }
+                else
+                {
+                    using (Py.GIL())
+                    {
+                        var testModule = PyModule.FromString("testModule",
+                        @"
+def getOptionHistory(qb, symbol, start, end, resolution):
+    return qb.GetOptionHistory(symbol, start, end, resolution)
+
+def getHistoryCount(history):
+    return len(list(history))
+        ");
+
+                        dynamic getOptionHistory = testModule.GetAttr("getOptionHistory");
+                        dynamic getHistoryCount = testModule.GetAttr("getHistoryCount");
+                        var pyHistory = getOptionHistory(qb, spy.Symbol, start, end, Resolution.Minute);
+                        Assert.AreEqual(780, getHistoryCount(pyHistory).AsManagedObject(typeof(int)));
+                    }
+                }
+            });
+        }
+
+        [TestCase(Language.CSharp)]
+        [TestCase(Language.Python)]
+        public void FutureHistoryObjectIsIterable(Language language)
+        {
+            var qb = new QuantBook();
+            var start = new DateTime(2013, 10, 6);
+            var end = new DateTime(2013, 10, 15);
+
+            var futureSymbol = Symbol.CreateFuture(Futures.Indices.SP500EMini, Market.CME, new DateTime(2013, 12, 20));
+            var history = qb.GetFutureHistory(futureSymbol, start, end, Resolution.Minute);
+
+            Assert.DoesNotThrow(() =>
+            {
+                if (language == Language.CSharp)
+                {
+                    Assert.AreEqual(2700, history.Count());
+                }
+                else
+                {
+                    using (Py.GIL())
+                    {
+                        var testModule = PyModule.FromString("testModule",
+                        @"
+def getFutureHistory(qb, symbol, start, end, resolution):
+    return qb.GetFutureHistory(symbol, start, end, resolution)
+
+def getHistoryCount(history):
+    return len(list(history))
+        ");
+
+                        dynamic getFutureHistory = testModule.GetAttr("getFutureHistory");
+                        dynamic getHistoryCount = testModule.GetAttr("getHistoryCount");
+                        var pyHistory = getFutureHistory(qb, futureSymbol, start, end, Resolution.Minute);
+                        Assert.AreEqual(2700, getHistoryCount(pyHistory).AsManagedObject(typeof(int)));
+                    }
+                }
+            });
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -15,12 +15,12 @@
 
 using System;
 using System.Collections.Generic;
+using QuantConnect.Benchmarks;
 using QuantConnect.Orders;
 using QuantConnect.Orders.Fees;
 using QuantConnect.Orders.Slippage;
 using QuantConnect.Securities;
 using QuantConnect.Util;
-using static QuantConnect.StringExtensions;
 
 namespace QuantConnect.Brokerages
 {
@@ -40,6 +40,13 @@ namespace QuantConnect.Brokerages
             {SecurityType.Forex, Market.FXCM},
             {SecurityType.Cfd, Market.FXCM}
         }.ToReadOnlyDictionary();
+
+        private readonly HashSet<OrderType> _supportedOrderTypes = new()
+        {
+            OrderType.Limit,
+            OrderType.Market,
+            OrderType.StopMarket
+        };
 
         /// <summary>
         /// Gets a map of the default markets to be used for each security type
@@ -75,18 +82,16 @@ namespace QuantConnect.Brokerages
             if (security.Type != SecurityType.Forex && security.Type != SecurityType.Cfd)
             {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
-                    Invariant($"The {nameof(FxcmBrokerageModel)} does not support {security.Type} security type.")
-                );
+                    Messages.DefaultBrokerageModel.UnsupportedSecurityType(this, security));
 
                 return false;
             }
 
             // validate order type
-            if (order.Type != OrderType.Limit && order.Type != OrderType.Market && order.Type != OrderType.StopMarket)
+            if (!_supportedOrderTypes.Contains(order.Type))
             {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
-                    Invariant($"The {nameof(FxcmBrokerageModel)} does not support {order.Type} order type.")
-                );
+                    Messages.DefaultBrokerageModel.UnsupportedOrderType(this, order, _supportedOrderTypes));
 
                 return false;
             }
@@ -95,8 +100,7 @@ namespace QuantConnect.Brokerages
             if (order.Quantity % security.SymbolProperties.LotSize != 0)
             {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
-                    Invariant($"The order quantity must be a multiple of LotSize: [{security.SymbolProperties.LotSize}].")
-                );
+                    Messages.FxcmBrokerageModel.InvalidOrderQuantityForLotSize(security));
 
                 return false;
             }
@@ -118,8 +122,7 @@ namespace QuantConnect.Brokerages
             if (order.TimeInForce != TimeInForce.GoodTilCanceled)
             {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
-                    Invariant($"The {nameof(FxcmBrokerageModel)} does not support {order.TimeInForce.GetType().Name} time in force.")
-                );
+                    Messages.DefaultBrokerageModel.UnsupportedTimeInForce(this, order));
 
                 return false;
             }
@@ -143,8 +146,7 @@ namespace QuantConnect.Brokerages
             if (request.Quantity != null && request.Quantity % security.SymbolProperties.LotSize != 0)
             {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
-                    Invariant($"The order quantity must be a multiple of LotSize: [{security.SymbolProperties.LotSize}].")
-                );
+                    Messages.FxcmBrokerageModel.InvalidOrderQuantityForLotSize(security));
 
                 return false;
             }
@@ -158,6 +160,17 @@ namespace QuantConnect.Brokerages
             var limitPrice = request.LimitPrice ?? security.Price;
 
             return IsValidOrderPrices(security, order.Type, direction, stopPrice, limitPrice, ref message);
+        }
+
+        /// <summary>
+        /// Get the benchmark for this model
+        /// </summary>
+        /// <param name="securities">SecurityService to create the security with if needed</param>
+        /// <returns>The benchmark for this brokerage</returns>
+        public override IBenchmark GetBenchmark(SecurityManager securities)
+        {
+            var symbol = Symbol.Create("EURUSD", SecurityType.Forex, Market.FXCM);
+            return SecurityBenchmark.CreateInstance(securities, symbol);
         }
 
         /// <summary>
@@ -206,8 +219,7 @@ namespace QuantConnect.Brokerages
             if (invalidPrice)
             {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
-                    "Limit Buy orders and Stop Sell orders must be below market, Limit Sell orders and Stop Buy orders must be above market."
-                );
+                    Messages.FxcmBrokerageModel.InvalidOrderPrice);
 
                 return false;
             }
@@ -233,8 +245,7 @@ namespace QuantConnect.Brokerages
                 var orderPrice = orderType == OrderType.Limit ? limitPrice : stopPrice;
 
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
-                    Invariant($"The {orderType} {orderDirection} order price ({orderPrice}) is too far from the current market price ({currentPrice}).")
-                );
+                    Messages.FxcmBrokerageModel.PriceOutOfRange(orderType, orderDirection, orderPrice, currentPrice));
 
                 return false;
             }

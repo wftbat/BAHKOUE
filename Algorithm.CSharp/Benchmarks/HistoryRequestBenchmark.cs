@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -23,16 +23,16 @@ namespace QuantConnect.Algorithm.CSharp.Benchmarks
         public override void Initialize()
         {
             SetStartDate(2010, 01, 01);
-            SetEndDate(2018, 01, 01);
+            SetEndDate(2022, 01, 01);
             SetCash(10000);
             _symbol = AddEquity("SPY").Symbol;
         }
 
-        public override void OnEndOfDay()
+        public override void OnEndOfDay(Symbol symbol)
         {
-            var minuteHistory = History(_symbol, 60, Resolution.Minute);
+            var minuteHistory = History(symbol, 60, Resolution.Minute);
             var lastHourHigh = minuteHistory.Select(minuteBar => minuteBar.High).DefaultIfEmpty(0).Max();
-            var dailyHistory = History(_symbol, 1, Resolution.Daily).First();
+            var dailyHistory = History(symbol, 1, Resolution.Daily).First();
             var dailyHigh = dailyHistory.High;
             var dailyLow = dailyHistory.Low;
             var dailyOpen = dailyHistory.Open;

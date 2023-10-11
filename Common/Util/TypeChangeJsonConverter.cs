@@ -51,13 +51,6 @@ namespace QuantConnect.Util
             // Create target object based on token
             var target = Create(objectType, token);
 
-            var targetType = target.GetType();
-            if (targetType.IsClass && targetType != typeof(SecurityIdentifier) && targetType != typeof(string) && PopulateProperties)
-            {
-                // Populate the object properties
-                serializer.Populate(token.CreateReader(), target);
-            }
-
             return target;
         }
 
@@ -104,7 +97,7 @@ namespace QuantConnect.Util
         }
 
         /// <summary>
-        /// Convert the input value to a value to be serialzied
+        /// Convert the input value to a value to be serialized
         /// </summary>
         /// <param name="value">The input value to be converted before serialziation</param>
         /// <returns>A new instance of TResult that is to be serialzied</returns>

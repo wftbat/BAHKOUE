@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -30,6 +30,9 @@ namespace QuantConnect.Report
     {
         private JsonSerializerSettings _settings;
 
+        /// <summary>
+        /// Initialize a new instance of <see cref="NullResultValueTypeJsonConverter{T}"/>
+        /// </summary>
         public NullResultValueTypeJsonConverter()
         {
             _settings = new JsonSerializerSettings
@@ -38,11 +41,21 @@ namespace QuantConnect.Report
                 FloatParseHandling = FloatParseHandling.Decimal
             };
         }
+
+        /// <summary>
+        /// Determine if this converter can convert a given type
+        /// </summary>
+        /// <param name="objectType">Object type to convert</param>
+        /// <returns>Always true</returns>
         public override bool CanConvert(Type objectType)
         {
             return true;
         }
 
+        /// <summary>
+        /// Read Json for conversion
+        /// </summary>
+        /// <returns>Resulting object</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var token = JToken.ReadFrom(reader);
@@ -58,8 +71,9 @@ namespace QuantConnect.Report
                     var newValues = new List<JToken>();
                     foreach (var entry in seriesProperty.Value["Values"])
                     {
-                        if (entry["x"] == null || entry["x"].Value<long?>() == null ||
-                            entry["y"] == null || entry["y"].Value<decimal?>() == null)
+                        if (entry is JObject jobj &&
+                            (jobj["x"] == null || jobj["x"].Value<long?>() == null ||
+                             jobj["y"] == null || jobj["y"].Value<decimal?>() == null))
                         {
                             continue;
                         }
@@ -77,6 +91,9 @@ namespace QuantConnect.Report
             return JsonConvert.DeserializeObject<T>(token.ToString(), _settings);
         }
 
+        /// <summary>
+        /// Write Json; Not implemented
+        /// </summary>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();

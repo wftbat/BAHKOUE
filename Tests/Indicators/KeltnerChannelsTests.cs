@@ -24,6 +24,8 @@ namespace QuantConnect.Tests.Indicators
     {
         protected override IndicatorBase<IBaseDataBar> CreateIndicator()
         {
+            RenkoBarSize = 1m;
+            VolumeRenkoBarSize = 0.5m;
             return new KeltnerChannels(20, 1.5m);
         }
 
@@ -62,7 +64,21 @@ namespace QuantConnect.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
+        public void ComparesTimeStampBetweenKeltnerChannelAndMiddleBand()
+        {
+            TestHelper.TestIndicator(
+                CreateIndicator(),
+                TestFileName,
+                "Middle Band",
+                (ind, expected) => Assert.AreEqual(
+                    ((KeltnerChannels)ind).Current.EndTime,
+                    ((KeltnerChannels)ind).MiddleBand.Current.EndTime
+                )
+            );
+        }
+
+        [Test]
+        public override void ResetsProperly()
         {
             var kch = CreateIndicator() as KeltnerChannels;
             foreach (var data in TestHelper.GetTradeBarStream(TestFileName, false))

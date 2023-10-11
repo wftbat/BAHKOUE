@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -15,11 +15,11 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using QuantConnect.Data;
-using QuantConnect.Data.UniverseSelection;
 using QuantConnect.Interfaces;
+using System.Collections.Generic;
+using QuantConnect.Data.UniverseSelection;
 
 namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators.Factories
 {
@@ -31,6 +31,17 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators.Factories
     /// <remarks>This enumerator factory is currently only used in backtesting with coarse data</remarks>
     public class BaseDataCollectionSubscriptionEnumeratorFactory : ISubscriptionEnumeratorFactory
     {
+        private IObjectStore _objectStore;
+
+        /// <summary>
+        /// Instanciates a new <see cref="BaseDataCollectionSubscriptionEnumeratorFactory"/>
+        /// </summary>
+        /// <param name="objectStore">The object store to use</param>
+        public BaseDataCollectionSubscriptionEnumeratorFactory(IObjectStore objectStore)
+        {
+            _objectStore = objectStore;
+        }
+
         /// <summary>
         /// Creates an enumerator to read the specified request
         /// </summary>
@@ -54,7 +65,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators.Factories
                     1,
                     false,
                     configuration.DataTimeZone);
-                var tradableDays = new[] { previousTradableDay }.Concat(request.TradableDays);
+                var tradableDays = new[] { previousTradableDay }.Concat(request.TradableDaysInDataTimeZone);
 
                 // Behaves in the same way as in live trading
                 // (i.e. only emit coarse data on dates following a trading day)
@@ -64,7 +75,8 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators.Factories
                 foreach (var date in tradableDays)
                 {
                     var source = sourceFactory.GetSource(configuration, date, false);
-                    var factory = SubscriptionDataSourceReader.ForSource(source, dataCacheProvider, configuration, date, false, sourceFactory);
+                    var factory = SubscriptionDataSourceReader.ForSource(source, dataCacheProvider, configuration, date, false, sourceFactory,
+                        dataProvider, _objectStore);
                     var coarseFundamentalForDate = factory.Read(source);
                     //  shift all date of emitting the file forward one day to model emitting coarse midnight the next day.
                     yield return new BaseDataCollection(date.AddDays(1), configuration.Symbol, coarseFundamentalForDate);

@@ -1,4 +1,4 @@
-﻿# QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
+# QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
 # Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,22 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from clr import AddReference
-AddReference("System.Core")
-AddReference("System.Collections")
-AddReference("QuantConnect.Algorithm")
-AddReference("QuantConnect.Common")
-
-from System import *
-from System.Linq import *
-from QuantConnect import *
-from QuantConnect.Algorithm import *
-from QuantConnect.Data import *
-from QuantConnect.Orders import *
-from QuantConnect.Securities import *
-from QuantConnect.Util import *
+from AlgorithmImports import *
 from math import copysign
-from datetime import datetime
 
 ### <summary>
 ### Provides a regression baseline focused on updating orders
@@ -53,7 +39,7 @@ class UpdateOrderRegressionAlgorithm(QCAlgorithm):
         self.limit_percentage = 0.025
         self.limit_percentage_delta = 0.005
 
-        OrderTypeEnum = [OrderType.Market, OrderType.Limit, OrderType.StopMarket, OrderType.StopLimit, OrderType.MarketOnOpen, OrderType.MarketOnClose]
+        OrderTypeEnum = [OrderType.Market, OrderType.Limit, OrderType.StopMarket, OrderType.StopLimit, OrderType.MarketOnOpen, OrderType.MarketOnClose, OrderType.TrailingStop]
         self.order_types_queue = CircularQueue[OrderType](OrderTypeEnum)
         self.order_types_queue.CircleCompleted += self.onCircleCompleted
         self.tickets = []
@@ -84,7 +70,8 @@ class UpdateOrderRegressionAlgorithm(QCAlgorithm):
             if orderType == OrderType.Limit:
                 limitPrice = (1 + self.limit_percentage)*data["SPY"].High if not isLong else (1 - self.limit_percentage)*data["SPY"].Low
 
-            request = SubmitOrderRequest(orderType, self.security.Symbol.SecurityType, "SPY", self.quantity, stopPrice, limitPrice, self.UtcTime, str(orderType))
+            request = SubmitOrderRequest(orderType, self.security.Symbol.SecurityType, "SPY", self.quantity, stopPrice, limitPrice, 0, 0.01, True,
+                                         self.UtcTime, str(orderType))
             ticket = self.Transactions.AddOrder(request)
             self.tickets.append(ticket)
 
@@ -104,7 +91,7 @@ class UpdateOrderRegressionAlgorithm(QCAlgorithm):
                     self.Log("TICKET:: {0}".format(ticket))
                     updateOrderFields = UpdateOrderFields()
                     updateOrderFields.LimitPrice = self.security.Price*(1 - copysign(self.limit_percentage_delta, ticket.Quantity))
-                    updateOrderFields.StopPrice = self.security.Price*(1 + copysign(self.stop_percentage_delta, ticket.Quantity))
+                    updateOrderFields.StopPrice = self.security.Price*(1 + copysign(self.stop_percentage_delta, ticket.Quantity)) if ticket.OrderType != OrderType.TrailingStop else None
                     updateOrderFields.Tag = "Change prices: {0}".format(self.Time.day)
                     ticket.Update(updateOrderFields)
             else:

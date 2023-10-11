@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -98,16 +98,6 @@ namespace QuantConnect.Data.UniverseSelection
         }
 
         /// <summary>
-        /// Gets the instance responsible for initializing newly added securities
-        /// </summary>
-        /// <obsolete>The SecurityInitializer won't be used</obsolete>
-        [Obsolete("SecurityInitializer is obsolete and will not be used.")]
-        public ISecurityInitializer SecurityInitializer
-        {
-            get; private set;
-        }
-
-        /// <summary>
         /// Gets the current listing of members in this universe. Modifications
         /// to this dictionary do not change universe membership.
         /// </summary>
@@ -126,19 +116,6 @@ namespace QuantConnect.Data.UniverseSelection
             Securities = new ConcurrentDictionary<Symbol, Member>();
 
             Configuration = config;
-            SecurityInitializer = QuantConnect.Securities.SecurityInitializer.Null;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Universe"/> class
-        /// </summary>
-        /// <param name="config">The configuration used to source data for this universe</param>
-        /// <param name="securityInitializer">Initializes securities when they're added to the universe</param>
-        [Obsolete("This constructor is obsolete because SecurityInitializer is obsolete and will not be used.")]
-        protected Universe(SubscriptionDataConfig config, ISecurityInitializer securityInitializer)
-            : this(config)
-        {
-            SecurityInitializer = securityInitializer;
         }
 
         /// <summary>
@@ -202,10 +179,12 @@ namespace QuantConnect.Data.UniverseSelection
             var result = SelectSymbols(utcTime, data);
             if (ReferenceEquals(result, Unchanged))
             {
+                data.FilteredContracts = _previousSelections;
                 return Unchanged;
             }
 
             var selections = result.ToHashSet();
+            data.FilteredContracts = selections;
             var hasDiffs = _previousSelections.AreDifferent(selections);
             _previousSelections = selections;
             if (!hasDiffs)
@@ -273,7 +252,10 @@ namespace QuantConnect.Data.UniverseSelection
                 UniverseSettings.Resolution,
                 UniverseSettings.FillForward,
                 UniverseSettings.ExtendedMarketHours,
-                dataNormalizationMode: UniverseSettings.DataNormalizationMode);
+                dataNormalizationMode: UniverseSettings.DataNormalizationMode,
+                subscriptionDataTypes: UniverseSettings.SubscriptionDataTypes,
+                dataMappingMode: UniverseSettings.DataMappingMode,
+                contractDepthOffset: (uint)Math.Abs(UniverseSettings.ContractDepthOffset));
             return result.Select(config => new SubscriptionRequest(isUniverseSubscription: false,
                 universe: this,
                 security: security,
@@ -297,9 +279,10 @@ namespace QuantConnect.Data.UniverseSelection
         /// </summary>
         /// <param name="utcTime">The current utc date time</param>
         /// <param name="security">The security to be added</param>
+        /// <param name="isInternal">True if internal member</param>
         /// <returns>True if the security was successfully added,
         /// false if the security was already in the universe</returns>
-        internal virtual bool AddMember(DateTime utcTime, Security security)
+        internal virtual bool AddMember(DateTime utcTime, Security security, bool isInternal)
         {
             // never add members to disposed universes
             if (DisposeRequested)
@@ -312,7 +295,7 @@ namespace QuantConnect.Data.UniverseSelection
                 return false;
             }
 
-            return Securities.TryAdd(security.Symbol, new Member(utcTime, security));
+            return Securities.TryAdd(security.Symbol, new Member(utcTime, security, isInternal));
         }
 
         /// <summary>
@@ -332,16 +315,6 @@ namespace QuantConnect.Data.UniverseSelection
                 return Securities.TryRemove(security.Symbol, out member);
             }
             return false;
-        }
-
-        /// <summary>
-        /// Sets the security initializer, used to initialize/configure securities after creation
-        /// </summary>
-        /// <param name="securityInitializer">The security initializer</param>
-        [Obsolete("SecurityInitializer is obsolete and will not be used.")]
-        public virtual void SetSecurityInitializer(ISecurityInitializer securityInitializer)
-        {
-            SecurityInitializer = securityInitializer;
         }
 
         /// <summary>
@@ -401,14 +374,37 @@ namespace QuantConnect.Data.UniverseSelection
             }
         }
 
+        /// <summary>
+        /// Member of the Universe
+        /// </summary>
         public sealed class Member
         {
+            /// <summary>
+            /// DateTime when added
+            /// </summary>
             public readonly DateTime Added;
+
+            /// <summary>
+            /// The security that was added
+            /// </summary>
             public readonly Security Security;
-            public Member(DateTime added, Security security)
+
+            /// <summary>
+            /// True if the security was added as internal by this universe
+            /// </summary>
+            public readonly bool IsInternal;
+
+            /// <summary>
+            /// Initialize a new member for the universe
+            /// </summary>
+            /// <param name="added">DateTime added</param>
+            /// <param name="security">Security to add</param>
+            /// <param name="isInternal">True if internal member</param>
+            public Member(DateTime added, Security security, bool isInternal)
             {
                 Added = added;
                 Security = security;
+                IsInternal = isInternal;
             }
         }
 

@@ -25,6 +25,8 @@ namespace QuantConnect.Tests.Indicators
     {
         protected override IndicatorBase<IBaseDataBar> CreateIndicator()
         {
+            RenkoBarSize = 1m;
+            VolumeRenkoBarSize = 0.5m;
             return new FractalAdaptiveMovingAverage(16);
         }
 
@@ -37,7 +39,7 @@ namespace QuantConnect.Tests.Indicators
                 Assert.AreEqual(expected, (double) indicator.Current.Value, 0.006);
 
         [Test]
-        public void ResetsProperly()
+        public override void ResetsProperly()
         {
             var frama = new FractalAdaptiveMovingAverage(6);
 

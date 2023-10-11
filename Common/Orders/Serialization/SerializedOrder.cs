@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -153,10 +153,34 @@ namespace QuantConnect.Orders.Serialization
         public decimal? StopPrice { get; set; }
 
         /// <summary>
+        /// The trailing stop order trailing amount
+        /// </summary>
+        [JsonProperty("trailing-amount", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public decimal? TrailingAmount { get; set; }
+
+        /// <summary>
+        /// Whether the <see cref="TrailingAmount"/> is a percentage or an absolute currency amount
+        /// </summary>
+        [JsonProperty("trailing-as-percentage", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool? TrailingAsPercentage { get; set; }
+
+        /// <summary>
         /// Signal showing the "StopLimitOrder" has been converted into a Limit Order
         /// </summary>
         [JsonProperty("stop-triggered", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool? StopTriggered { get; set; }
+
+        /// <summary>
+        /// Signal showing the "LimitIfTouchedOrder" has been converted into a Limit Order
+        /// </summary>
+        [JsonProperty("trigger-touched", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public bool? TriggerTouched { get; set; }
+
+        /// <summary>
+        /// The price which must first be reached before submitting a limit order.
+        /// </summary>
+        [JsonProperty("trigger-price", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public decimal? TriggerPrice { get; set; }
 
         /// <summary>
         /// The current limit price
@@ -177,11 +201,16 @@ namespace QuantConnect.Orders.Serialization
         public double? TimeInForceExpiry { get; set; }
 
         /// <summary>
+        /// The group order manager for combo orders
+        /// </summary>
+        [JsonProperty("group-order-manager", DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
+        public GroupOrderManager GroupOrderManager { get; set; }
+
+        /// <summary>
         /// Empty constructor required for JSON converter.
         /// </summary>
-        private SerializedOrder()
+        protected SerializedOrder()
         {
-
         }
 
         /// <summary>
@@ -216,7 +245,6 @@ namespace QuantConnect.Orders.Serialization
             {
                 CanceledTime = Time.DateTimeToUnixTimeStamp(order.CanceledTime.Value);
             }
-
             if (order.OrderSubmissionData != null)
             {
                 SubmissionAskPrice = order.OrderSubmissionData.AskPrice;
@@ -250,6 +278,22 @@ namespace QuantConnect.Orders.Serialization
                 var stopMarket = order as StopMarketOrder;
                 StopPrice = stopMarket.StopPrice;
             }
+            else if (order.Type == OrderType.TrailingStop)
+            {
+                var trailingStop = order as TrailingStopOrder;
+                StopPrice = trailingStop.StopPrice;
+                TrailingAmount = trailingStop.TrailingAmount;
+                TrailingAsPercentage = trailingStop.TrailingAsPercentage;
+            }
+            else if (order.Type == OrderType.LimitIfTouched)
+            {
+                var limitIfTouched = order as LimitIfTouchedOrder;
+                LimitPrice = limitIfTouched.LimitPrice;
+                TriggerPrice = limitIfTouched.TriggerPrice;
+                TriggerTouched = limitIfTouched.TriggerTouched;
+            }
+
+            GroupOrderManager = order.GroupOrderManager;
         }
     }
 }

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 */
-using MoreLinq;
+
 using System.Linq;
 using QuantConnect.Orders;
 using QuantConnect.Packets;
@@ -61,6 +61,7 @@ namespace QuantConnect.Report.ReportElements
             orders = orders.Union(liveOrders).ToList();
 
             var securityTypes = orders.DistinctBy(o => o.SecurityType).Select(s => s.SecurityType.ToString()).ToList();
+            Result = securityTypes;
 
             return string.Join(",", securityTypes);
         }

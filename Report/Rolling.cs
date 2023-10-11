@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -16,6 +16,7 @@
 using Deedle;
 using MathNet.Numerics.Statistics;
 using System;
+using QuantConnect.Statistics;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,14 +30,25 @@ namespace QuantConnect.Report
         /// <summary>
         /// Calculate the rolling beta with the given window size (in days)
         /// </summary>
-        /// <param name="equityCurve">The equity curve you want to measure beta for</param>
-        /// <param name="benchmarkSeries">The benchmark/series you want to calculate beta with</param>
+        /// <param name="performancePoints">The performance points you want to measure beta for</param>
+        /// <param name="benchmarkPoints">The benchmark/points you want to calculate beta with</param>
         /// <param name="windowSize">Days/window to lookback</param>
         /// <returns>Rolling beta</returns>
-        public static Series<DateTime, double> Beta(Series<DateTime, double> equityCurve, Series<DateTime, double> benchmarkSeries, int windowSize = 132)
+        public static Series<DateTime, double> Beta(SortedList<DateTime, double> performancePoints, SortedList<DateTime, double> benchmarkPoints, int windowSize = 132)
         {
-            var dailyReturnsSeries = equityCurve.ResampleEquivalence(date => date.Date, s => s.TotalReturns());
-            var benchmarkReturns = benchmarkSeries.ResampleEquivalence(date => date.Date, s => s.TotalReturns());
+            var dailyDictionary = StatisticsBuilder.PreprocessPerformanceValues(performancePoints.Select(x => new KeyValuePair<DateTime, decimal>(x.Key, (decimal)x.Value)));
+            var dailyReturnsSeries = new Series<DateTime, double>(dailyDictionary);
+
+            Series<DateTime, double> benchmarkReturns;
+            if (benchmarkPoints.Count != 0)
+            {
+                var benchmarkReturnsDictionary = StatisticsBuilder.CreateBenchmarkDifferences(benchmarkPoints.Select(x => new KeyValuePair<DateTime, decimal>(x.Key, (decimal)x.Value)), benchmarkPoints.Keys.First(), benchmarkPoints.Keys.Last());
+                benchmarkReturns = new Series<DateTime, double>(benchmarkReturnsDictionary);
+            }
+            else
+            {
+                benchmarkReturns = new Series<DateTime, double>(benchmarkPoints);
+            }
 
             var returns = Frame.CreateEmpty<DateTime, string>();
             returns["strategy"] = dailyReturnsSeries;
@@ -61,16 +73,18 @@ namespace QuantConnect.Report
         /// </summary>
         /// <param name="equityCurve">Equity curve to calculate rolling sharpe for</param>
         /// <param name="months">Number of months to calculate the rolling period for</param>
-        /// <param name="riskFreeRate">Risk free rate</param>
         /// <returns>Rolling sharpe ratio</returns>
-        public static Series<DateTime, double> Sharpe(Series<DateTime, double> equityCurve, int months, double riskFreeRate = 0.0)
+        public static Series<DateTime, double> Sharpe(Series<DateTime, double> equityCurve, int months)
         {
+            var riskFreeRate = (double)PortfolioStatistics.GetAverageRiskFreeRate(equityCurve.Keys);
             if (equityCurve.IsEmpty)
             {
                 return equityCurve;
             }
 
-            var dailyReturns = equityCurve.ResampleEquivalence(date => date.Date, s => s.TotalReturns());
+            var dailyReturns = equityCurve.ResampleEquivalence(date => date.Date, s => s.LastValue())
+                .PercentChange();
+
             var rollingSharpeData = new List<KeyValuePair<DateTime, double>>();
             var firstDate = equityCurve.FirstKey();
 

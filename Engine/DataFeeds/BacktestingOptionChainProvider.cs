@@ -1,11 +1,11 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,51 +14,91 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.IO;
 using QuantConnect.Interfaces;
-using QuantConnect.Logging;
-using QuantConnect.Util;
+using System.Collections.Generic;
+using QuantConnect.Data.Auxiliary;
 
 namespace QuantConnect.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// An implementation of <see cref="IOptionChainProvider"/> that reads the list of contracts from open interest zip data files
     /// </summary>
-    public class BacktestingOptionChainProvider : IOptionChainProvider
+    public class BacktestingOptionChainProvider : BacktestingChainProvider, IOptionChainProvider
     {
+        private IMapFileProvider _mapFileProvider;
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="dataCacheProvider">The data cache provider instance to use</param>
+        /// <param name="mapFileProvider">The map file provider instance to use</param>
+        public BacktestingOptionChainProvider(IDataCacheProvider dataCacheProvider, IMapFileProvider mapFileProvider)
+            : base(dataCacheProvider)
+        {
+            _mapFileProvider = mapFileProvider;
+        }
+
         /// <summary>
         /// Gets the list of option contracts for a given underlying symbol
         /// </summary>
-        /// <param name="symbol">The underlying symbol</param>
+        /// <param name="symbol">The option or the underlying symbol to get the option chain for.
+        /// Providing the option allows targetting an option ticker different than the default e.g. SPXW</param>
         /// <param name="date">The date for which to request the option chain (only used in backtesting)</param>
         /// <returns>The list of option contracts</returns>
-        public IEnumerable<Symbol> GetOptionContractList(Symbol symbol, DateTime date)
+        public virtual IEnumerable<Symbol> GetOptionContractList(Symbol symbol, DateTime date)
         {
-            if (symbol.SecurityType != SecurityType.Equity)
+            Symbol canonicalSymbol;
+            if (!symbol.SecurityType.HasOptions())
             {
-                throw new NotSupportedException($"BacktestingOptionChainProvider.GetOptionContractList(): SecurityType.Equity is expected but was {symbol.SecurityType}");
+                // we got an option
+                if (symbol.SecurityType.IsOption() && symbol.Underlying != null)
+                {
+                    canonicalSymbol = GetCanonical(symbol, date);
+                }
+                else
+                {
+                    throw new NotSupportedException($"BacktestingOptionChainProvider.GetOptionContractList(): " +
+                        $"{nameof(SecurityType.Equity)}, {nameof(SecurityType.Future)}, or {nameof(SecurityType.Index)} is expected but was {symbol.SecurityType}");
+                }
+            }
+            else
+            {
+                // we got the underlying
+                var mappedUnderlyingSymbol = MapUnderlyingSymbol(symbol, date);
+                canonicalSymbol = Symbol.CreateCanonicalOption(mappedUnderlyingSymbol);
             }
 
-            // build the option contract list from the open interest zip file entry names
+            return GetSymbols(canonicalSymbol, date);
+        }
 
-            // create a canonical option symbol for the given underlying
-            var canonicalSymbol = Symbol.CreateOption(symbol.Value, symbol.ID.Market, default(OptionStyle), default(OptionRight), 0, SecurityIdentifier.DefaultDate);
-
-            // build the zip file name for open interest data
-            var zipFileName = LeanData.GenerateZipFilePath(Globals.DataFolder, canonicalSymbol, date, Resolution.Minute, TickType.OpenInterest);
-
-            if (!File.Exists(zipFileName))
+        private Symbol GetCanonical(Symbol optionSymbol, DateTime date)
+        {
+            // Resolve any mapping before requesting option contract list for equities
+            // Needs to be done in order for the data file key to be accurate
+            if (optionSymbol.Underlying.RequiresMapping())
             {
-                Log.Trace($"BacktestingOptionChainProvider.GetOptionContractList(): File not found: {zipFileName}");
-                yield break;
+                var mappedUnderlyingSymbol = MapUnderlyingSymbol(optionSymbol.Underlying, date);
+
+                return Symbol.CreateCanonicalOption(mappedUnderlyingSymbol);
             }
-
-            // generate and return the contract symbol for each zip entry
-            var zipEntryNames = Compression.GetZipEntryFileNames(zipFileName);
-            foreach (var zipEntryName in zipEntryNames)
+            else
             {
-                yield return LeanData.ReadSymbolFromZipEntry(canonicalSymbol, Resolution.Minute, zipEntryName);
+                return optionSymbol.Canonical;
+            }
+        }
+
+        private Symbol MapUnderlyingSymbol(Symbol underlying, DateTime date)
+        {
+            if (underlying.RequiresMapping())
+            {
+                var mapFileResolver = _mapFileProvider.Get(AuxiliaryDataKey.Create(underlying));
+                var mapFile = mapFileResolver.ResolveMapFile(underlying);
+                var ticker = mapFile.GetMappedSymbol(date, underlying.Value);
+                return underlying.UpdateMappedSymbol(ticker);
+            }
+            else
+            {
+                return underlying;
             }
         }
     }

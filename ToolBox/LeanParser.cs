@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.IO;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
-using QuantConnect.ToolBox.AlgoSeekOptionsConverter;
 using QuantConnect.Util;
 
 namespace QuantConnect.ToolBox
@@ -82,12 +81,14 @@ namespace QuantConnect.ToolBox
                     return typeof (QuoteBar);
 
                 case SecurityType.Option:
+                case SecurityType.FutureOption:
+                case SecurityType.IndexOption:
                     if (tickType == TickType.Trade) return typeof (TradeBar);
                     if (tickType == TickType.Quote) return typeof (QuoteBar);
                     break;
             }
             var parameters = string.Join(" | ", securityType, resolution, tickType);
-            throw new NotImplementedException("LeanParser.GetDataType does has not yet implemented: " + parameters);
+            throw new NotImplementedException("LeanParser.GetDataType has not yet implemented: " + parameters);
         }
     }
 }

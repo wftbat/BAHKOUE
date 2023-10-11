@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using QuantConnect.Data;
-using QuantConnect.Data.Custom;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 using QuantConnect.Interfaces;
@@ -34,9 +33,11 @@ namespace QuantConnect.Algorithm.CSharp
     public class IndicatorSuiteAlgorithm : QCAlgorithm, IRegressionAlgorithmDefinition
     {
         private string _ticker = "SPY";
-        private string _customTicker = "WIKI/FB";
+        private string _ticker2 = "GOOG";
+        private string _customTicker = "IBM";
 
         private Symbol _symbol;
+        private Symbol _symbol2;
         private Symbol _customSymbol;
 
         private Indicators _indicators;
@@ -62,9 +63,10 @@ namespace QuantConnect.Algorithm.CSharp
 
             //Add as many securities as you like. All the data will be passed into the event handler:
             _symbol = AddSecurity(SecurityType.Equity, _ticker, Resolution.Daily).Symbol;
+            _symbol2 = AddSecurity(SecurityType.Equity, _ticker2, Resolution.Daily).Symbol;
 
             //Add the Custom Data:
-            _customSymbol = AddData<Quandl>(_customTicker, Resolution.Daily).Symbol;
+            _customSymbol = AddData<CustomData>(_customTicker, Resolution.Daily).Symbol;
 
             //Set up default Indicators, these indicators are defined on the Value property of incoming data (except ATR and AROON which use the full TradeBar object)
             _indicators = new Indicators
@@ -80,7 +82,8 @@ namespace QuantConnect.Algorithm.CSharp
                 MOMP = MOMP(_symbol, 20, Resolution.Daily),
                 STD = STD(_symbol, 20, Resolution.Daily),
                 MIN = MIN(_symbol, 14, Resolution.Daily), // by default if the symbol is a tradebar type then it will be the min of the low property
-                MAX = MAX(_symbol, 14, Resolution.Daily)  // by default if the symbol is a tradebar type then it will be the max of the high property
+                MAX = MAX(_symbol, 14, Resolution.Daily),  // by default if the symbol is a tradebar type then it will be the max of the high property
+                B = B(_symbol, _symbol2, 14),
             };
 
             // Here we're going to define indicators using 'selector' functions. These 'selector' functions will define what data gets sent into the indicator
@@ -118,9 +121,9 @@ namespace QuantConnect.Algorithm.CSharp
             // these are indicators that require multiple inputs. the most common of which is a ratio.
             // suppose we seek the ratio of BTC to SPY, we could write the following:
             var spyClose = Identity(_symbol);
-            var fbClose = Identity(_customSymbol);
+            var ibmClose = Identity(_customSymbol);
             // this will create a new indicator whose value is FB/SPY
-            _ratio = fbClose.Over(spyClose);
+            _ratio = ibmClose.Over(spyClose);
             // we can also easily plot our indicators each time they update using th PlotIndicator function
             PlotIndicator("Ratio", _ratio);
         }
@@ -128,8 +131,8 @@ namespace QuantConnect.Algorithm.CSharp
         /// <summary>
         /// Custom data event handler:
         /// </summary>
-        /// <param name="data">Quandl - dictionary Bars of Quandl Data</param>
-        public void OnData(Quandl data)
+        /// <param name="data">CustomData - dictionary Bars of custom data</param>
+        public void OnData(CustomData data)
         {
         }
 
@@ -158,8 +161,10 @@ namespace QuantConnect.Algorithm.CSharp
         /// <summary>
         /// Fire plotting events once per day.
         /// </summary>
-        public override void OnEndOfDay()
+        public override void OnEndOfDay(Symbol symbol)
         {
+            if (symbol != _symbol) return;
+
             if (!_indicators.BB.IsReady) return;
 
             Plot("BB", "Price", _price);
@@ -203,6 +208,7 @@ namespace QuantConnect.Algorithm.CSharp
             public MovingAverageConvergenceDivergence MACD;
             public Minimum MIN;
             public Maximum MAX;
+            public Beta B;
         }
 
         /// <summary>
@@ -237,6 +243,16 @@ namespace QuantConnect.Algorithm.CSharp
         public Language[] Languages { get; } = { Language.CSharp, Language.Python };
 
         /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 4733;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 0;
+
+        /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
         /// </summary>
         public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
@@ -244,43 +260,27 @@ namespace QuantConnect.Algorithm.CSharp
             {"Total Trades", "1"},
             {"Average Win", "0%"},
             {"Average Loss", "0%"},
-            {"Compounding Annual Return", "19.104%"},
+            {"Compounding Annual Return", "19.058%"},
             {"Drawdown", "7.300%"},
             {"Expectancy", "0"},
-            {"Net Profit", "41.858%"},
-            {"Sharpe Ratio", "1.607"},
-            {"Probabilistic Sharpe Ratio", "77.376%"},
+            {"Net Profit", "41.748%"},
+            {"Sharpe Ratio", "1.366"},
+            {"Probabilistic Sharpe Ratio", "72.548%"},
             {"Loss Rate", "0%"},
             {"Win Rate", "0%"},
             {"Profit-Loss Ratio", "0"},
-            {"Alpha", "0.171"},
-            {"Beta", "-0.06"},
-            {"Annual Standard Deviation", "0.099"},
-            {"Annual Variance", "0.01"},
-            {"Information Ratio", "-0.187"},
-            {"Tracking Error", "0.146"},
-            {"Treynor Ratio", "-2.677"},
+            {"Alpha", "-0.017"},
+            {"Beta", "0.963"},
+            {"Annual Standard Deviation", "0.092"},
+            {"Annual Variance", "0.008"},
+            {"Information Ratio", "-1.289"},
+            {"Tracking Error", "0.018"},
+            {"Treynor Ratio", "0.13"},
             {"Total Fees", "$1.00"},
-            {"Fitness Score", "0.001"},
-            {"Kelly Criterion Estimate", "0"},
-            {"Kelly Criterion Probability Value", "0"},
-            {"Sortino Ratio", "2.305"},
-            {"Return Over Maximum Drawdown", "2.632"},
-            {"Portfolio Turnover", "0.001"},
-            {"Total Insights Generated", "0"},
-            {"Total Insights Closed", "0"},
-            {"Total Insights Analysis Completed", "0"},
-            {"Long Insight Count", "0"},
-            {"Short Insight Count", "0"},
-            {"Long/Short Ratio", "100%"},
-            {"Estimated Monthly Alpha Value", "$0"},
-            {"Total Accumulated Estimated Alpha Value", "$0"},
-            {"Mean Population Estimated Insight Value", "$0"},
-            {"Mean Population Direction", "0%"},
-            {"Mean Population Magnitude", "0%"},
-            {"Rolling Averaged Population Direction", "0%"},
-            {"Rolling Averaged Population Magnitude", "0%"},
-            {"OrderListHash", "-1514456802"}
+            {"Estimated Strategy Capacity", "$580000000.00"},
+            {"Lowest Capacity Asset", "SPY R735QTJ8XC9X"},
+            {"Portfolio Turnover", "0.14%"},
+            {"OrderListHash", "ee33b931de5b59dfa930cbcacdaa2c9b"}
         };
     }
 }

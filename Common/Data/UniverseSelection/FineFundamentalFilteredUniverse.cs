@@ -14,10 +14,9 @@
 */
 
 using System;
-using System.Collections.Generic;
 using Python.Runtime;
+using System.Collections.Generic;
 using QuantConnect.Data.Fundamental;
-using QuantConnect.Securities;
 
 namespace QuantConnect.Data.UniverseSelection
 {
@@ -39,7 +38,7 @@ namespace QuantConnect.Data.UniverseSelection
         public FineFundamentalFilteredUniverse(Universe universe, Func<IEnumerable<FineFundamental>, IEnumerable<Symbol>> fineSelector)
             : base(universe, universe.SelectSymbols)
         {
-            FineFundamentalUniverse = new FineFundamentalUniverse(universe.UniverseSettings, universe.SecurityInitializer, fineSelector);
+            FineFundamentalUniverse = new FineFundamentalUniverse(universe.UniverseSettings, fineSelector);
             FineFundamentalUniverse.SelectionChanged += (sender, args) => OnSelectionChanged(((SelectionEventArgs) args).CurrentSelection);
         }
 
@@ -51,20 +50,9 @@ namespace QuantConnect.Data.UniverseSelection
         public FineFundamentalFilteredUniverse(Universe universe, PyObject fineSelector)
             : base(universe, universe.SelectSymbols)
         {
-            var func = fineSelector.ConvertToDelegate<Func< IEnumerable<FineFundamental>, Symbol[]>>();
-            FineFundamentalUniverse = new FineFundamentalUniverse(universe.UniverseSettings, universe.SecurityInitializer, func);
+            var func = fineSelector.ConvertToDelegate<Func< IEnumerable<FineFundamental>, object>>();
+            FineFundamentalUniverse = new FineFundamentalUniverse(universe.UniverseSettings, func.ConvertToUniverseSelectionSymbolDelegate());
             FineFundamentalUniverse.SelectionChanged += (sender, args) => OnSelectionChanged(((SelectionEventArgs)args).CurrentSelection);
-        }
-
-        /// <summary>
-        /// Sets the security initializer, used to initialize/configure securities after creation
-        /// </summary>
-        /// <param name="securityInitializer">The security initializer</param>
-        public override void SetSecurityInitializer(ISecurityInitializer securityInitializer)
-        {
-            base.SetSecurityInitializer(securityInitializer);
-            Universe.SetSecurityInitializer(securityInitializer);
-            FineFundamentalUniverse.SetSecurityInitializer(securityInitializer);
         }
     }
 }

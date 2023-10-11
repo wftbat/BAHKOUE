@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -17,6 +17,7 @@ using Deedle;
 using NUnit.Framework;
 using QuantConnect.Orders;
 using QuantConnect.Report;
+using QuantConnect.Brokerages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -112,6 +113,112 @@ namespace QuantConnect.Tests.Report
             Assert.AreEqual(100000, pointInTimePortfolio[0].TotalPortfolioValue);
             Assert.AreEqual(80000, pointInTimePortfolio[1].TotalPortfolioValue);
             Assert.AreEqual(80000, pointInTimePortfolio[2].TotalPortfolioValue);
+        }
+
+        [Test]
+        public void OptionOrderDoesNotThrow()
+        {
+            var equityPoints = new SortedList<DateTime, double>
+            {
+                { new DateTime(2019, 1, 3, 5, 0, 5), 100000 },
+                { new DateTime(2019, 1, 4, 5, 0, 5), 90000 },
+            };
+
+            var series = new Series<DateTime, double>(equityPoints);
+            var equity = Symbol.Create("SPY", SecurityType.Equity, Market.USA);
+            var optionSid = SecurityIdentifier.GenerateOption(
+                equity.ID.Date,
+                equity.ID,
+                equity.ID.Market,
+                200m,
+                OptionRight.Call,
+                OptionStyle.American);
+            var option = new Symbol(optionSid, optionSid.Symbol);
+
+            var entryOrder = Order.CreateOrder(new SubmitOrderRequest(
+                OrderType.Market,
+                SecurityType.Option,
+                option,
+                1,
+                0m,
+                0m,
+                new DateTime(2019, 1, 3, 5, 0, 5),
+                string.Empty
+            ));
+            var exitOrder = Order.CreateOrder(new SubmitOrderRequest(
+                OrderType.Market,
+                SecurityType.Option,
+                option,
+                -1,
+                0m,
+                0m,
+                new DateTime(2019, 1, 4, 5, 0, 5),
+                string.Empty
+            ));
+
+            entryOrder.LastFillTime = new DateTime(2019, 1, 3, 5, 0, 5);
+            exitOrder.LastFillTime = new DateTime(2019, 1, 4, 5, 0, 5);
+
+            entryOrder.GetType().GetProperty("Id").SetValue(entryOrder, 1);
+            entryOrder.GetType().GetProperty("Price").SetValue(entryOrder, 100000m);
+
+            Order marketOnFillOrder = null;
+            exitOrder.GetType().GetProperty("Id").SetValue(exitOrder, 2);
+            exitOrder.GetType().GetProperty("Price").SetValue(exitOrder, 80000m);
+            exitOrder.GetType().GetProperty("Status").SetValue(exitOrder, OrderStatus.Filled);
+
+            var orders = new[] { entryOrder, marketOnFillOrder, exitOrder }.Where(x => x != null);
+
+            var looper = PortfolioLooper.FromOrders(series, orders);
+            Assert.DoesNotThrow(() =>
+            {
+                foreach (var pointInTimePortfolio in looper)
+                {
+                    Assert.AreEqual(option, pointInTimePortfolio.Order.Symbol);
+                    Assert.AreEqual(option.Underlying, pointInTimePortfolio.Order.Symbol.Underlying);
+                }
+            });
+        }
+
+        [TestCase("BNTUSDT", "USDT")]
+        [TestCase("AUDBUSD", "BUSD")]
+        public void OrderProcessedInLooper_WithNonDefaultAlgorithmSettings(string symbol, string currency)
+        {
+            var equityPoints = new SortedList<DateTime, double>
+            {
+                { new DateTime(2020, 2, 12, 20, 0, 0), 100000 },
+                { new DateTime(2020, 2, 13, 20, 0, 0), 900000 },
+            };
+            var series = new Series<DateTime, double>(equityPoints);
+            var orderPrice = 0.35m;
+            var orderQuantity = 30000m;
+            var order = Order.CreateOrder(new SubmitOrderRequest(
+                OrderType.Market,
+                SecurityType.Crypto,
+                Symbol.Create(symbol, SecurityType.Crypto, Market.Binance),
+                orderQuantity,
+                0m,
+                0m,
+                new DateTime(2020, 2, 12, 20, 0, 0),
+                string.Empty
+            ));
+            order.LastFillTime = new DateTime(2020, 2, 12, 20, 0, 0);
+            order.GetType().GetProperty("Id").SetValue(order, 1);
+            order.GetType().GetProperty("Status").SetValue(order, OrderStatus.Filled);
+            order.GetType().GetProperty("Price").SetValue(order, orderPrice);
+            var orders = new[] { order };
+
+            var looper = PortfolioLooper.FromOrders(series, orders,
+                new AlgorithmConfiguration(currency, BrokerageName.Binance, AccountType.Cash, new Dictionary<string, string>()));
+            var pointInTimePortfolio = looper.ToList();
+
+            Assert.AreEqual(2, pointInTimePortfolio.Count);
+            Assert.AreEqual(100000m, pointInTimePortfolio[0].TotalPortfolioValue);
+
+            var holdings = pointInTimePortfolio[0].Holdings;
+            Assert.AreEqual(1, holdings.Count);
+            Assert.AreEqual(orderQuantity, holdings[0].Quantity);
+            Assert.AreEqual(orderQuantity * orderPrice, holdings[0].HoldingsValue);
         }
     }
 }

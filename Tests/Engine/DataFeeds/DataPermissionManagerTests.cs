@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -54,7 +54,6 @@ namespace QuantConnect.Tests.Engine.DataFeeds
 
             var result = AlgorithmRunner.RunLocalBacktest(parameter.Algorithm,
                 parameter.Statistics,
-                parameter.AlphaStatistics,
                 parameter.Language,
                 parameter.ExpectedFinalStatus);
 
@@ -73,7 +72,6 @@ namespace QuantConnect.Tests.Engine.DataFeeds
 
             var result = AlgorithmRunner.RunLocalBacktest(parameter.Algorithm,
                 parameter.Statistics,
-                parameter.AlphaStatistics,
                 parameter.Language,
                 parameter.ExpectedFinalStatus,
                 setupHandler: "TestInvalidConfigurationSetupHandler");
@@ -86,13 +84,13 @@ namespace QuantConnect.Tests.Engine.DataFeeds
 
         public class TestDataPermissionManager : DataPermissionManager
         {
-            public override void AssertConfiguration(SubscriptionDataConfig subscriptionDataConfig)
+            public override void AssertConfiguration(SubscriptionDataConfig subscriptionDataConfig, DateTime startTimeLocal, DateTime endTimeLocal)
             {
                 throw new InvalidOperationException("Invalid configuration");
             }
         }
 
-        internal class TestInvalidConfigurationAlgorithm : BasicTemplateDailyAlgorithm
+        public class TestInvalidConfigurationAlgorithm : BasicTemplateDailyAlgorithm
         {
             public static int Count;
             public override void Initialize()
@@ -103,7 +101,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             }
         }
         
-        internal class TestInvalidConfigurationSetupHandler : AlgorithmRunner.RegressionSetupHandlerWrapper
+        public class TestInvalidConfigurationSetupHandler : AlgorithmRunner.RegressionSetupHandlerWrapper
         {
             public override IAlgorithm CreateAlgorithmInstance(AlgorithmNodePacket algorithmNodePacket, string assemblyPath)
             {

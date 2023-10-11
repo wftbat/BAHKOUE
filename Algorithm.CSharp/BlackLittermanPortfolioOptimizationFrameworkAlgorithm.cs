@@ -37,6 +37,10 @@ namespace QuantConnect.Algorithm.CSharp
             // Set requested data resolution
             UniverseSettings.Resolution = Resolution.Minute;
 
+            // Order margin value has to have a minimum of 0.5% of Portfolio value, allows filtering out small trades and reduce fees.
+            // Commented so regression algorithm is more sensitive
+            //Settings.MinimumOrderMarginPortfolioPercentage = 0.005m;
+
             SetStartDate(2013, 10, 07);  //Set Start Date
             SetEndDate(2013, 10, 11);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
@@ -70,50 +74,44 @@ namespace QuantConnect.Algorithm.CSharp
         public Language[] Languages { get; } = { Language.CSharp, Language.Python };
 
         /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 14082;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 256;
+
+        /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
         /// </summary>
         public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
         {
-            {"Total Trades", "18"},
+            {"Total Trades", "14"},
             {"Average Win", "0%"},
-            {"Average Loss", "-0.16%"},
-            {"Compounding Annual Return", "72.164%"},
+            {"Average Loss", "-0.23%"},
+            {"Compounding Annual Return", "63.336%"},
             {"Drawdown", "1.100%"},
             {"Expectancy", "-1"},
-            {"Net Profit", "0.747%"},
-            {"Sharpe Ratio", "4.086"},
-            {"Probabilistic Sharpe Ratio", "61.091%"},
+            {"Net Profit", "0.674%"},
+            {"Sharpe Ratio", "3.986"},
+            {"Probabilistic Sharpe Ratio", "58.892%"},
             {"Loss Rate", "100%"},
             {"Win Rate", "0%"},
             {"Profit-Loss Ratio", "0"},
-            {"Alpha", "-0.305"},
-            {"Beta", "0.564"},
-            {"Annual Standard Deviation", "0.113"},
-            {"Annual Variance", "0.013"},
-            {"Information Ratio", "-10.007"},
-            {"Tracking Error", "0.09"},
-            {"Treynor Ratio", "0.82"},
-            {"Total Fees", "$41.70"},
-            {"Fitness Score", "0.634"},
-            {"Kelly Criterion Estimate", "13.656"},
-            {"Kelly Criterion Probability Value", "0.228"},
-            {"Sortino Ratio", "79228162514264337593543950335"},
-            {"Return Over Maximum Drawdown", "80.05"},
-            {"Portfolio Turnover", "0.634"},
-            {"Total Insights Generated", "17"},
-            {"Total Insights Closed", "14"},
-            {"Total Insights Analysis Completed", "14"},
-            {"Long Insight Count", "6"},
-            {"Short Insight Count", "7"},
-            {"Long/Short Ratio", "85.71%"},
-            {"Estimated Monthly Alpha Value", "$72447.6813"},
-            {"Total Accumulated Estimated Alpha Value", "$12477.1007"},
-            {"Mean Population Estimated Insight Value", "$891.2215"},
-            {"Mean Population Direction", "50%"},
-            {"Mean Population Magnitude", "50%"},
-            {"Rolling Averaged Population Direction", "12.6429%"},
-            {"Rolling Averaged Population Magnitude", "12.6429%"},
-            {"OrderListHash", "-2004493274"}
+            {"Alpha", "-0.595"},
+            {"Beta", "0.57"},
+            {"Annual Standard Deviation", "0.133"},
+            {"Annual Variance", "0.018"},
+            {"Information Ratio", "-13.918"},
+            {"Tracking Error", "0.104"},
+            {"Treynor Ratio", "0.93"},
+            {"Total Fees", "$40.20"},
+            {"Estimated Strategy Capacity", "$4400000.00"},
+            {"Lowest Capacity Asset", "AIG R735QTJ8XC9X"},
+            {"Portfolio Turnover", "64.47%"},
+            {"OrderListHash", "7e43a08e470a1709c7f7066d6ed1d445"}
         };
     }
 }

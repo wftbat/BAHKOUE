@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -57,7 +57,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
             var request = new SubscriptionRequest(false, null, security, config, parameters.StartDate, parameters.EndDate);
             var fileProvider = new DefaultDataProvider();
 
-            var factory = new FineFundamentalSubscriptionEnumeratorFactory(parameters.LiveMode);
+            var factory = new FineFundamentalSubscriptionEnumeratorFactory(parameters.LiveMode, null);
             var enumerator = factory.CreateEnumerator(request, fileProvider);
             while (enumerator.MoveNext())
             {
@@ -66,7 +66,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
             }
 
             stopwatch.Stop();
-            Console.WriteLine("Total rows: {0}, elapsed time: {1}", rows.Count, stopwatch.Elapsed);
+            Log.Trace("Total rows: {0}, elapsed time: {1}", rows.Count, stopwatch.Elapsed);
 
             Assert.AreEqual(parameters.RowCount, rows.Count);
 
@@ -112,7 +112,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
             );
             var request = new SubscriptionRequest(false, null, security, config, startDate, endDate);
             var fileProvider = new DefaultDataProvider();
-            var factory = new FineFundamentalSubscriptionEnumeratorFactory(false);
+            var factory = new FineFundamentalSubscriptionEnumeratorFactory(false, null);
             var enumerator = factory.CreateEnumerator(request, fileProvider);
             enumerator.MoveNext();
             var fine = (FineFundamental)enumerator.Current;
@@ -153,7 +153,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
             );
             var request = new SubscriptionRequest(false, null, security, config, startDate, endDate);
             var fileProvider = new DefaultDataProvider();
-            var factory = new FineFundamentalSubscriptionEnumeratorFactory(false);
+            var factory = new FineFundamentalSubscriptionEnumeratorFactory(false, null);
 
             GC.Collect();
             var ramUsageBeforeLoop = OS.TotalPhysicalMemoryUsed;
@@ -215,7 +215,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
                     CostOfRevenue3M = 35748000000m,
                     CostOfRevenue12M = 106606000000m,
                     EquityPerShareGrowth1Y = 0.091652m,
-                    PeRatio = 13.012858m,
+                    PeRatio = 13.012856m,
                     LiveMode = liveMode
                 },
                 new FineFundamentalTestParameters("AAPL-AfterFirstDate")
@@ -230,7 +230,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
                     CostOfRevenue3M = 35748000000m,
                     CostOfRevenue12M = 106606000000m,
                     EquityPerShareGrowth1Y = 0.091652m,
-                    PeRatio = 13.012858m
+                    PeRatio = 13.012856m
                 },
                 new FineFundamentalTestParameters("AAPL-PreviousBeforeLastDate")
                 {
@@ -244,7 +244,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
                     CostOfRevenue3M = 35748000000m,
                     CostOfRevenue12M = 106606000000m,
                     EquityPerShareGrowth1Y = 0.091652m,
-                    PeRatio = 13.272502m,
+                    PeRatio = 13.2725m,
                     LiveMode = liveMode
                 },
                 new FineFundamentalTestParameters("AAPL-BeforeLastDate")
@@ -259,7 +259,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
                     CostOfRevenue3M = 27699000000m,
                     CostOfRevenue12M = 106606000000m,
                     EquityPerShareGrowth1Y = 0.091652m,
-                    PeRatio = 13.272502m,
+                    PeRatio = 13.2725m,
                     FinancialHealthGrade = "A",
                     LiveMode = liveMode
                 },
@@ -275,7 +275,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
                     CostOfRevenue3M = 27699000000m,
                     CostOfRevenue12M = 106606000000m,
                     EquityPerShareGrowth1Y = 0.091652m,
-                    PeRatio = 13.272502m,
+                    PeRatio = 13.2725m,
                     // different than AAPL-BeforeLastDate
                     FinancialHealthGrade = "B",
                     LiveMode = liveMode
@@ -292,7 +292,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
                     CostOfRevenue3M = 27699000000m,
                     CostOfRevenue12M = 106606000000m,
                     EquityPerShareGrowth1Y = 0.091652m,
-                    PeRatio = 13.272502m,
+                    PeRatio = 13.2725m,
                     // different than AAPL-BeforeLastDate
                     FinancialHealthGrade = "B",
                     LiveMode = liveMode

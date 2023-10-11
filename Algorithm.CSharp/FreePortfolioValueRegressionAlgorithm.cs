@@ -53,9 +53,10 @@ namespace QuantConnect.Algorithm.CSharp
 
         public override void OnEndOfAlgorithm()
         {
-            if (Settings.FreePortfolioValue != 1000000 * Settings.FreePortfolioValuePercentage)
+            var freePortfolioValue = Portfolio.TotalPortfolioValue - Portfolio.TotalPortfolioValueLessFreeBuffer;
+            if (freePortfolioValue != Portfolio.TotalPortfolioValue * Settings.FreePortfolioValuePercentage)
             {
-                throw new Exception($"Unexpected FreePortfolioValue value: {Settings.FreePortfolioValue}");
+                throw new Exception($"Unexpected FreePortfolioValue value: {freePortfolioValue}");
             }
         }
 
@@ -75,50 +76,44 @@ namespace QuantConnect.Algorithm.CSharp
         public Language[] Languages { get; } = { Language.CSharp };
 
         /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 20812;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 0;
+
+        /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
         /// </summary>
-        public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
+        public virtual Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
         {
-            {"Total Trades", "2"},
-            {"Average Win", "0%"},
-            {"Average Loss", "0.00%"},
-            {"Compounding Annual Return", "8.172%"},
+            {"Total Trades", "4"},
+            {"Average Win", "0.06%"},
+            {"Average Loss", "-0.01%"},
+            {"Compounding Annual Return", "8.173%"},
             {"Drawdown", "55.100%"},
-            {"Expectancy", "-1"},
-            {"Net Profit", "125.433%"},
-            {"Sharpe Ratio", "0.468"},
-            {"Probabilistic Sharpe Ratio", "2.573%"},
-            {"Loss Rate", "100%"},
-            {"Win Rate", "0%"},
-            {"Profit-Loss Ratio", "0"},
-            {"Alpha", "0.093"},
-            {"Beta", "-0.1"},
-            {"Annual Standard Deviation", "0.18"},
-            {"Annual Variance", "0.032"},
-            {"Information Ratio", "-0.001"},
-            {"Tracking Error", "0.267"},
-            {"Treynor Ratio", "-0.846"},
-            {"Total Fees", "$41.17"},
-            {"Fitness Score", "0"},
-            {"Kelly Criterion Estimate", "38.884"},
-            {"Kelly Criterion Probability Value", "0.009"},
-            {"Sortino Ratio", "0.501"},
-            {"Return Over Maximum Drawdown", "0.148"},
-            {"Portfolio Turnover", "0"},
-            {"Total Insights Generated", "2604"},
-            {"Total Insights Closed", "2603"},
-            {"Total Insights Analysis Completed", "2603"},
-            {"Long Insight Count", "2604"},
-            {"Short Insight Count", "0"},
-            {"Long/Short Ratio", "100%"},
-            {"Estimated Monthly Alpha Value", "$1176372.2118"},
-            {"Total Accumulated Estimated Alpha Value", "$148113430.7231"},
-            {"Mean Population Estimated Insight Value", "$56901.0491"},
-            {"Mean Population Direction", "43.2962%"},
-            {"Mean Population Magnitude", "43.2962%"},
-            {"Rolling Averaged Population Direction", "48.763%"},
-            {"Rolling Averaged Population Magnitude", "48.763%"},
-            {"OrderListHash", "-1756838669"}
+            {"Expectancy", "2.639"},
+            {"Net Profit", "125.461%"},
+            {"Sharpe Ratio", "0.36"},
+            {"Probabilistic Sharpe Ratio", "1.164%"},
+            {"Loss Rate", "50%"},
+            {"Win Rate", "50%"},
+            {"Profit-Loss Ratio", "6.28"},
+            {"Alpha", "-0"},
+            {"Beta", "0.998"},
+            {"Annual Standard Deviation", "0.164"},
+            {"Annual Variance", "0.027"},
+            {"Information Ratio", "-0.192"},
+            {"Tracking Error", "0.001"},
+            {"Treynor Ratio", "0.059"},
+            {"Total Fees", "$45.46"},
+            {"Estimated Strategy Capacity", "$190000000.00"},
+            {"Lowest Capacity Asset", "SPY R735QTJ8XC9X"},
+            {"Portfolio Turnover", "0.03%"},
+            {"OrderListHash", "0b931e51f326f7ddcf28a3d1b9e7de8f"}
         };
     }
 }

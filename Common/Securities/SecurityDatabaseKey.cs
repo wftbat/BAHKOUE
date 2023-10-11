@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -14,7 +14,6 @@
 */
 
 using System;
-using static QuantConnect.StringExtensions;
 
 namespace QuantConnect.Securities
 {
@@ -57,6 +56,14 @@ namespace QuantConnect.Securities
         }
 
         /// <summary>
+        /// Based on this entry will initializes the generic market and security type instance of the <see cref="SecurityDatabaseKey"/> class
+        /// </summary>
+        public SecurityDatabaseKey CreateCommonKey()
+        {
+            return new SecurityDatabaseKey(Market, null, SecurityType);
+        }
+
+        /// <summary>
         /// Parses the specified string as a <see cref="SecurityDatabaseKey"/>
         /// </summary>
         /// <param name="key">The string representation of the key</param>
@@ -64,14 +71,14 @@ namespace QuantConnect.Securities
         public static SecurityDatabaseKey Parse(string key)
         {
             var parts = key.Split('-');
-            if (parts.Length != 3)
+            if (parts.Length != 3 || parts[0] == Wildcard)
             {
-                throw new FormatException($"The specified key was not in the expected format: {key}");
+                throw new FormatException(Messages.SecurityDatabaseKey.KeyNotInExpectedFormat(key));
             }
             SecurityType type;
-            if (!Enum.TryParse(parts[0], out type))
+            if (!parts[0].TryParseSecurityType(out type))
             {
-                throw new ArgumentException($"Unable to parse \'{parts[2]}\' as a SecurityType.");
+                return null;
             }
 
             return new SecurityDatabaseKey(parts[1], parts[2], type);
@@ -127,11 +134,19 @@ namespace QuantConnect.Securities
             }
         }
 
+        /// <summary>
+        /// Security Database Key == operator
+        /// </summary>
+        /// <returns>True if they are the same</returns>
         public static bool operator ==(SecurityDatabaseKey left, SecurityDatabaseKey right)
         {
             return Equals(left, right);
         }
 
+        /// <summary>
+        /// Security Database Key != operator
+        /// </summary>
+        /// <returns>True if they are not the same</returns>
         public static bool operator !=(SecurityDatabaseKey left, SecurityDatabaseKey right)
         {
             return !Equals(left, right);
@@ -147,7 +162,7 @@ namespace QuantConnect.Securities
         /// </returns>
         public override string ToString()
         {
-            return Invariant($"{SecurityType}-{Market}-{Symbol}");
+            return Messages.SecurityDatabaseKey.ToString(this);
         }
     }
 }

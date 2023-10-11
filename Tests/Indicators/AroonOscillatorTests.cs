@@ -25,6 +25,8 @@ namespace QuantConnect.Tests.Indicators
     {
         protected override IndicatorBase<IBaseDataBar> CreateIndicator()
         {
+            RenkoBarSize = 1m;
+            VolumeRenkoBarSize = 0.5m;
             return new AroonOscillator(14, 14);
         }
 
@@ -33,7 +35,7 @@ namespace QuantConnect.Tests.Indicators
         protected override string TestColumnName => "Aroon Oscillator 14";
 
         [Test]
-        public void ResetsProperly()
+        public override void ResetsProperly()
         {
             var aroon = new AroonOscillator(3, 3);
             aroon.Update(new TradeBar

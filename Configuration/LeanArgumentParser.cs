@@ -1,5 +1,20 @@
-﻿using System.Collections.Generic;
-using Microsoft.Extensions.CommandLineUtils;
+/*
+ * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
+ * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
+using System.Collections.Generic;
+using McMaster.Extensions.CommandLineUtils;
 
 namespace QuantConnect.Configuration
 {
@@ -16,22 +31,25 @@ namespace QuantConnect.Configuration
         private const string ApplicationHelpText =
             "If you are looking for help, please go to https://www.quantconnect.com/lean/docs";
 
-        /// <summary>
-        /// Configuration file path
-        /// </summary>
-        private const string OptionConfig = "-c|--config";
-
-        private static readonly string[] AdvancedProperties =
-        {
-            "parameters",
-            "environments"
-        };
-
         private static readonly List<CommandLineOption> Options = new List<CommandLineOption>
             {
+                // the location of the configuration to use
                 new CommandLineOption("config", CommandOptionType.SingleValue),
+
+                // true will close lean console automatically without waiting for input
+                new CommandLineOption("close-automatically", CommandOptionType.SingleValue),
+
+                // the result destination folder this algorithm should use for logging and result.json
                 new CommandLineOption("results-destination-folder", CommandOptionType.SingleValue),
+
+                // the algorithm name
+                new CommandLineOption("backtest-name", CommandOptionType.SingleValue),
+
+                // the unique algorithm id
                 new CommandLineOption("algorithm-id", CommandOptionType.SingleValue),
+
+                // the unique optimization id
+                new CommandLineOption("optimization-id", CommandOptionType.SingleValue),
 
                 // Options grabbed from json file
                 new CommandLineOption("environment", CommandOptionType.SingleValue),
@@ -39,7 +57,7 @@ namespace QuantConnect.Configuration
                 // algorithm class selector
                 new CommandLineOption("algorithm-type-name", CommandOptionType.SingleValue),
 
-                // Algorithm language selector - options CSharp, FSharp, VisualBasic, Python, Java
+                // Algorithm language selector - options CSharp, Python
                 new CommandLineOption("algorithm-language", CommandOptionType.SingleValue),
 
                 //Physical DLL location

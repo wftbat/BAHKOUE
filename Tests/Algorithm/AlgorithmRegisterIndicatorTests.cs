@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -97,11 +97,13 @@ namespace QuantConnect.Tests.Algorithm
             new TestCaseData(Symbols.SPY, "TEST", Resolution.Hour, "TEST(SPY_hr)"),
             new TestCaseData(Symbols.SPY, "TEST", Resolution.Daily, "TEST(SPY_day)"),
             new TestCaseData(Symbol.Empty, "TEST", Resolution.Minute, "TEST(min)"),
-            new TestCaseData(Symbol.None, "TEST", Resolution.Minute, "TEST(min)")
+            new TestCaseData(Symbol.None, "TEST", Resolution.Minute, "TEST(min)"),
+            new TestCaseData(Symbol.Empty, "TEST", null, "TEST()"),
+            new TestCaseData(Symbol.None, "TEST", null, "TEST()")
         };
 
         [Test, TestCaseSource(nameof(IndicatorNameParameters))]
-        public void CreateIndicatorName(Symbol symbol, string baseName, Resolution resolution, string expectation)
+        public void CreateIndicatorName(Symbol symbol, string baseName, Resolution? resolution, string expectation)
         {
             Assert.AreEqual(expectation, _algorithm.CreateIndicatorName(symbol, baseName, resolution));
         }
@@ -163,7 +165,7 @@ class BadCustomIndicator:
 
             using (Py.GIL())
             {
-                var module = PythonEngine.ModuleFromString(Guid.NewGuid().ToString(), code);
+                var module = PyModule.FromString(Guid.NewGuid().ToString(), code);
 
                 var goodIndicator = module.GetAttr("GoodCustomIndicator").Invoke();
                 Assert.DoesNotThrow(() => _algorithm.RegisterIndicator(_spy, goodIndicator, Resolution.Minute));
@@ -182,18 +184,9 @@ class BadCustomIndicator:
         public void RegistersIndicatorProperlyPythonScript()
         {
             const string code = @"
-from clr import AddReference
-AddReference('System')
-AddReference('QuantConnect.Algorithm')
-AddReference('QuantConnect.Indicators')
-AddReference('QuantConnect.Common')
-AddReference('QuantConnect.Lean.Engine')
+from AlgorithmImports import *
 
-from System import *
-from QuantConnect import *
-from QuantConnect.Securities import *
-from QuantConnect.Algorithm import *
-from QuantConnect.Indicators import *
+AddReference('QuantConnect.Lean.Engine')
 from QuantConnect.Lean.Engine.DataFeeds import *
 
 algo = QCAlgorithm()
@@ -213,7 +206,7 @@ algo.RegisterIndicator(forex.Symbol, indicator, Resolution.Daily)";
 
             using (Py.GIL())
             {
-                Assert.DoesNotThrow(() => PythonEngine.ModuleFromString("RegistersIndicatorProperlyPythonScript", code));
+                Assert.DoesNotThrow(() => PyModule.FromString("RegistersIndicatorProperlyPythonScript", code));
             }
         }
     }

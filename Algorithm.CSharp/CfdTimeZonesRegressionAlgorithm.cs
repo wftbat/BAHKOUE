@@ -33,11 +33,11 @@ namespace QuantConnect.Algorithm.CSharp
         {
             SetAccountCurrency("EUR");
 
-            SetStartDate(2019, 2, 20);
+            SetStartDate(2019, 2, 19);
             SetEndDate(2019, 2, 21);
             SetCash("EUR", 100000);
 
-            _symbol = AddCfd("DE30EUR", Resolution.Minute, Market.Oanda).Symbol;
+            _symbol = AddCfd("DE30EUR").Symbol;
 
             SetBenchmark(_symbol);
         }
@@ -71,50 +71,44 @@ namespace QuantConnect.Algorithm.CSharp
         public Language[] Languages { get; } = { Language.CSharp };
 
         /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 2776;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 0;
+
+        /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
         /// </summary>
         public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
         {
-            {"Total Trades", "167"},
-            {"Average Win", "0%"},
-            {"Average Loss", "0%"},
-            {"Compounding Annual Return", "0%"},
-            {"Drawdown", "0%"},
-            {"Expectancy", "0"},
-            {"Net Profit", "0%"},
-            {"Sharpe Ratio", "0"},
+            {"Total Trades", "279"},
+            {"Average Win", "0.01%"},
+            {"Average Loss", "-0.01%"},
+            {"Compounding Annual Return", "-33.650%"},
+            {"Drawdown", "0.300%"},
+            {"Expectancy", "-0.345"},
+            {"Net Profit", "-0.337%"},
+            {"Sharpe Ratio", "-21.957"},
             {"Probabilistic Sharpe Ratio", "0%"},
-            {"Loss Rate", "0%"},
-            {"Win Rate", "0%"},
-            {"Profit-Loss Ratio", "0"},
+            {"Loss Rate", "68%"},
+            {"Win Rate", "32%"},
+            {"Profit-Loss Ratio", "1.07"},
             {"Alpha", "0"},
             {"Beta", "0"},
-            {"Annual Standard Deviation", "0"},
+            {"Annual Standard Deviation", "0.014"},
             {"Annual Variance", "0"},
-            {"Information Ratio", "0"},
-            {"Tracking Error", "0"},
+            {"Information Ratio", "-19.772"},
+            {"Tracking Error", "0.014"},
             {"Treynor Ratio", "0"},
-            {"Total Fees", "$0.00"},
-            {"Fitness Score", "0.5"},
-            {"Kelly Criterion Estimate", "0"},
-            {"Kelly Criterion Probability Value", "0"},
-            {"Sortino Ratio", "79228162514264337593543950335"},
-            {"Return Over Maximum Drawdown", "-325.922"},
-            {"Portfolio Turnover", "9.561"},
-            {"Total Insights Generated", "0"},
-            {"Total Insights Closed", "0"},
-            {"Total Insights Analysis Completed", "0"},
-            {"Long Insight Count", "0"},
-            {"Short Insight Count", "0"},
-            {"Long/Short Ratio", "100%"},
-            {"Estimated Monthly Alpha Value", "€0"},
-            {"Total Accumulated Estimated Alpha Value", "€0"},
-            {"Mean Population Estimated Insight Value", "€0"},
-            {"Mean Population Direction", "0%"},
-            {"Mean Population Magnitude", "0%"},
-            {"Rolling Averaged Population Direction", "0%"},
-            {"Rolling Averaged Population Magnitude", "0%"},
-            {"OrderListHash", "1456907343"}
+            {"Total Fees", "€0.00"},
+            {"Estimated Strategy Capacity", "€670000.00"},
+            {"Lowest Capacity Asset", "DE30EUR 8I"},
+            {"Portfolio Turnover", "1062.25%"},
+            {"OrderListHash", "64c098abe3c1e7206424b0c3825b0069"}
         };
     }
 }

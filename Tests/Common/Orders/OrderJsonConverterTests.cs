@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -38,6 +38,67 @@ namespace QuantConnect.Tests.Common.Orders
                 Price = 209.03m,
                 ContingentId = 123456,
                 BrokerId = new List<string> {"727", "54970"}
+            };
+
+            TestOrderType(expected);
+        }
+
+        [TestCase(Symbols.SymbolsKey.SPY)]
+        [TestCase(Symbols.SymbolsKey.EURUSD)]
+        [TestCase(Symbols.SymbolsKey.BTCUSD)]
+        public void DeserializesComboMarketOrder(Symbols.SymbolsKey key)
+        {
+            var groupOrderManager = new GroupOrderManager(1, 2, 10);
+            groupOrderManager.OrderIds.Add(12345);
+            groupOrderManager.OrderIds.Add(12346);
+
+            var expected = new ComboMarketOrder(Symbols.Lookup(key), 100, new DateTime(2015, 11, 23, 17, 15, 37), groupOrderManager, "now")
+            {
+                Id = 12345,
+                Price = 209.03m,
+                ContingentId = 123457,
+                BrokerId = new List<string> { "727", "54970" }
+            };
+
+            TestOrderType(expected);
+        }
+
+        [TestCase(Symbols.SymbolsKey.SPY)]
+        [TestCase(Symbols.SymbolsKey.EURUSD)]
+        [TestCase(Symbols.SymbolsKey.BTCUSD)]
+        public void DeserializesComboLimitOrder(Symbols.SymbolsKey key)
+        {
+            var groupOrderManager = new GroupOrderManager(1, 2, 10);
+            groupOrderManager.OrderIds.Add(12345);
+            groupOrderManager.OrderIds.Add(12346);
+            groupOrderManager.LimitPrice = 201.1m;
+
+            var expected = new ComboLimitOrder(Symbols.Lookup(key), 100, 210.1m, new DateTime(2015, 11, 23, 17, 15, 37), groupOrderManager, "now")
+            {
+                Id = 12345,
+                Price = 209.03m,
+                ContingentId = 123457,
+                BrokerId = new List<string> { "727", "54970" }
+            };
+
+            TestOrderType(expected);
+        }
+
+        [TestCase(Symbols.SymbolsKey.SPY)]
+        [TestCase(Symbols.SymbolsKey.EURUSD)]
+        [TestCase(Symbols.SymbolsKey.BTCUSD)]
+        public void DeserializesComboLegLimitOrder(Symbols.SymbolsKey key)
+        {
+            var groupOrderManager = new GroupOrderManager(1, 2, 10);
+            groupOrderManager.OrderIds.Add(12345);
+            groupOrderManager.OrderIds.Add(12346);
+
+            var expected = new ComboLegLimitOrder(Symbols.Lookup(key), 100, 210.1m, new DateTime(2015, 11, 23, 17, 15, 37), groupOrderManager, "now")
+            {
+                Id = 12345,
+                Price = 209.03m,
+                ContingentId = 123457,
+                BrokerId = new List<string> { "727", "54970" }
             };
 
             TestOrderType(expected);
@@ -114,6 +175,26 @@ namespace QuantConnect.Tests.Common.Orders
         [TestCase(Symbols.SymbolsKey.SPY)]
         [TestCase(Symbols.SymbolsKey.EURUSD)]
         [TestCase(Symbols.SymbolsKey.BTCUSD)]
+        public void DeserializesTrailingStopOrder(Symbols.SymbolsKey key)
+        {
+            var expected = new TrailingStopOrder(Symbols.Lookup(key), 100, 210.10m, 0.1m, true, new DateTime(2015, 11, 23, 17, 15, 37), "now")
+            {
+                Id = 12345,
+                Price = 209.03m,
+                ContingentId = 123456,
+                BrokerId = new List<string> { "727", "54970" }
+            };
+
+            var actual = TestOrderType(expected);
+
+            Assert.AreEqual(expected.StopPrice, actual.StopPrice);
+            Assert.AreEqual(expected.TrailingAmount, actual.TrailingAmount);
+            Assert.AreEqual(expected.TrailingAsPercentage, actual.TrailingAsPercentage);
+        }
+
+        [TestCase(Symbols.SymbolsKey.SPY)]
+        [TestCase(Symbols.SymbolsKey.EURUSD)]
+        [TestCase(Symbols.SymbolsKey.BTCUSD)]
         public void DeserializesStopLimitOrder(Symbols.SymbolsKey key)
         {
             var expected = new StopLimitOrder(Symbols.Lookup(key), 100, 210.10m, 200.23m, new DateTime(2015, 11, 23, 17, 15, 37), "now")
@@ -127,6 +208,25 @@ namespace QuantConnect.Tests.Common.Orders
             var actual = TestOrderType(expected);
 
             Assert.AreEqual(expected.StopPrice, actual.StopPrice);
+            Assert.AreEqual(expected.LimitPrice, actual.LimitPrice);
+        }
+
+        [TestCase(Symbols.SymbolsKey.SPY)]
+        [TestCase(Symbols.SymbolsKey.EURUSD)]
+        [TestCase(Symbols.SymbolsKey.BTCUSD)]
+        public void DeserializesLimitIfTouchedOrder(Symbols.SymbolsKey key)
+        {
+            var expected = new LimitIfTouchedOrder(Symbols.Lookup(key), 100, 210.10m, 200.23m, new DateTime(2015, 11, 23, 17, 15, 37), "now")
+            {
+                Id = 12345,
+                Price = 209.03m,
+                ContingentId = 123456,
+                BrokerId = new List<string> {"727", "54970"}
+            };
+
+            var actual = TestOrderType(expected);
+
+            Assert.AreEqual(expected.TriggerPrice, actual.TriggerPrice);
             Assert.AreEqual(expected.LimitPrice, actual.LimitPrice);
         }
 
@@ -684,7 +784,26 @@ namespace QuantConnect.Tests.Common.Orders
             Assert.AreEqual(expected.Quantity, actual.Quantity);
             Assert.AreEqual(expected.Symbol.ID.Market, actual.Symbol.ID.Market);
 
+            TestGroupOrderManager(expected.GroupOrderManager, actual.GroupOrderManager);
+
             return (T) actual;
+        }
+
+        private static void TestGroupOrderManager(GroupOrderManager expected, GroupOrderManager actual)
+        {
+            if (expected == null)
+            {
+                Assert.IsNull(actual);
+                return;
+            }
+
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(expected.Id, actual.Id);
+            Assert.AreEqual(expected.Quantity, actual.Quantity);
+            Assert.AreEqual(expected.Count, actual.Count);
+            Assert.AreEqual(expected.LimitPrice, actual.LimitPrice);
+            Assert.AreEqual(expected.Direction, actual.Direction);
+            CollectionAssert.AreEqual(expected.OrderIds, actual.OrderIds);
         }
 
         private static Order DeserializeOrder<T>(string json) where T : Order

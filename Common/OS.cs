@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -14,11 +14,12 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Reflection;
-using Log = QuantConnect.Logging.Log;
+using QuantConnect.Util;
+using System.Diagnostics;
+using System.Collections.Generic;
 using static QuantConnect.StringExtensions;
 
 namespace QuantConnect
@@ -29,7 +30,10 @@ namespace QuantConnect
     /// <remarks>Good design should remove the need for this function. Over time it should disappear.</remarks>
     public static class OS
     {
-        private static PerformanceCounter _cpuUsageCounter;
+        /// <summary>
+        /// CPU performance counter measures percentage of CPU used in a background thread.
+        /// </summary>
+        private static CpuPerformance CpuPerformanceCounter;
 
         /// <summary>
         /// Global Flag :: Operating System
@@ -124,25 +128,11 @@ namespace QuantConnect
         {
             get
             {
-                if (_cpuUsageCounter == null)
+                if(CpuPerformanceCounter != null)
                 {
-                    try
-                    {
-                        _cpuUsageCounter = new PerformanceCounter(
-                            "Process",
-                            "% Processor Time",
-                            IsWindows ? Process.GetCurrentProcess().ProcessName : Process.GetCurrentProcess().Id.ToStringInvariant());
-                    }
-                    catch (Exception exception)
-                    {
-                        Log.Error(exception);
-                        return 0;
-                    }
+                    return (decimal)CpuPerformanceCounter.CpuPercentage;
                 }
-
-                var newSample = (decimal) _cpuUsageCounter.NextValue();
-                // mono is reporting double https://github.com/mono/mono/issues/20128
-                return IsWindows ? newSample : newSample / 2;
+                return 0m;
             }
         }
 
@@ -153,12 +143,89 @@ namespace QuantConnect
         {
             return new Dictionary<string, string>
             {
-                { "CPU Usage", Invariant($"{CpuUsage:0.0}%")},
-                { "Used RAM (MB)", TotalPhysicalMemoryUsed.ToStringInvariant() },
-                { "Total RAM (MB)", "" },
-                { "Hostname", Environment.MachineName },
-                { "LEAN Version", $"v{Globals.Version}"}
+                { Messages.OS.CPUUsageKey, Invariant($"{CpuUsage:0.0}%")},
+                { Messages.OS.UsedRAMKey, TotalPhysicalMemoryUsed.ToStringInvariant() },
+                { Messages.OS.TotalRAMKey, "" },
+                { Messages.OS.HostnameKey, Environment.MachineName },
+                { Messages.OS.LEANVersionKey, $"v{Globals.Version}"}
             };
+        }
+
+        /// <summary>
+        /// Initializes the OS internal resources
+        /// </summary>
+        public static void Initialize()
+        {
+            CpuPerformanceCounter = new CpuPerformance();
+        }
+
+        /// <summary>
+        /// Disposes of the OS internal resources
+        /// </summary>
+        public static void Dispose()
+        {
+            CpuPerformanceCounter.DisposeSafely();
+        }
+
+        /// <summary>
+        /// Calculates the CPU usage in a background thread
+        /// </summary>
+        private class CpuPerformance : IDisposable
+        {
+            private readonly CancellationTokenSource _cancellationToken;
+            private readonly Thread _cpuThread;
+
+            /// <summary>
+            /// CPU usage as a percentage (0-100)
+            /// </summary>
+            /// <remarks>Float to avoid any atomicity issues</remarks>
+            public float CpuPercentage { get; private set; }
+
+            /// <summary>
+            /// Initializes an instance of the class and starts a new thread.
+            /// </summary>
+            public CpuPerformance()
+            {
+                _cancellationToken = new CancellationTokenSource();
+                _cpuThread = new Thread(CalculateCpu) { IsBackground = true, Name = "CpuPerformance" };
+                _cpuThread.Start();
+            }
+
+            /// <summary>
+            /// Event loop that calculates the CPU percentage the process is using
+            /// </summary>
+            private void CalculateCpu()
+            {
+                var process = Process.GetCurrentProcess();
+                while (!_cancellationToken.IsCancellationRequested)
+                {
+                    var startTime = DateTime.UtcNow;
+                    var startCpuUsage = process.TotalProcessorTime;
+
+                    if (_cancellationToken.Token.WaitHandle.WaitOne(startTime.GetSecondUnevenWait(5000)))
+                    {
+                        return;
+                    }
+
+                    var endTime = DateTime.UtcNow;
+                    var endCpuUsage = process.TotalProcessorTime;
+
+                    var cpuUsedMs = (endCpuUsage - startCpuUsage).TotalMilliseconds;
+                    var totalMsPassed = (endTime - startTime).TotalMilliseconds;
+                    var cpuUsageTotal = cpuUsedMs / totalMsPassed;
+
+                    CpuPercentage = (float)cpuUsageTotal * 100;
+                }
+            }
+
+            /// <summary>
+            /// Stops the execution of the task
+            /// </summary>
+            public void Dispose()
+            {
+                _cpuThread.StopSafely(TimeSpan.FromSeconds(5), _cancellationToken);
+                _cancellationToken.DisposeSafely();
+            }
         }
     }
 }

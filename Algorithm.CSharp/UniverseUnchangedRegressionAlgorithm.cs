@@ -35,6 +35,11 @@ namespace QuantConnect.Algorithm.CSharp
         public override void Initialize()
         {
             UniverseSettings.Resolution = Resolution.Daily;
+
+            // Order margin value has to have a minimum of 0.5% of Portfolio value, allows filtering out small trades and reduce fees.
+            // Commented so regression algorithm is more sensitive
+            //Settings.MinimumOrderMarginPortfolioPercentage = 0.005m;
+
             SetStartDate(2014, 03, 25);
             SetEndDate(2014, 04, 07);
 
@@ -96,50 +101,44 @@ namespace QuantConnect.Algorithm.CSharp
         public Language[] Languages { get; } = { Language.CSharp, Language.Python };
 
         /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 63893;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 0;
+
+        /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
         /// </summary>
         public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
         {
-            {"Total Trades", "11"},
+            {"Total Trades", "8"},
             {"Average Win", "0.01%"},
             {"Average Loss", "0.00%"},
-            {"Compounding Annual Return", "-5.981%"},
+            {"Compounding Annual Return", "-5.161%"},
             {"Drawdown", "2.100%"},
-            {"Expectancy", "1.186"},
-            {"Net Profit", "-0.236%"},
-            {"Sharpe Ratio", "-0.296"},
-            {"Probabilistic Sharpe Ratio", "39.371%"},
-            {"Loss Rate", "40%"},
-            {"Win Rate", "60%"},
-            {"Profit-Loss Ratio", "2.64"},
-            {"Alpha", "-0.051"},
-            {"Beta", "-0.055"},
-            {"Annual Standard Deviation", "0.136"},
-            {"Annual Variance", "0.019"},
-            {"Information Ratio", "0.927"},
-            {"Tracking Error", "0.174"},
-            {"Treynor Ratio", "0.737"},
-            {"Total Fees", "$14.03"},
-            {"Fitness Score", "0.022"},
-            {"Kelly Criterion Estimate", "-2.186"},
-            {"Kelly Criterion Probability Value", "0.543"},
-            {"Sortino Ratio", "-0.911"},
-            {"Return Over Maximum Drawdown", "-2.817"},
-            {"Portfolio Turnover", "0.083"},
-            {"Total Insights Generated", "22"},
-            {"Total Insights Closed", "20"},
-            {"Total Insights Analysis Completed", "20"},
-            {"Long Insight Count", "22"},
-            {"Short Insight Count", "0"},
-            {"Long/Short Ratio", "100%"},
-            {"Estimated Monthly Alpha Value", "$-231023.1"},
-            {"Total Accumulated Estimated Alpha Value", "$-109094.2"},
-            {"Mean Population Estimated Insight Value", "$-5454.712"},
-            {"Mean Population Direction", "30%"},
-            {"Mean Population Magnitude", "30%"},
-            {"Rolling Averaged Population Direction", "42.9591%"},
-            {"Rolling Averaged Population Magnitude", "42.9591%"},
-            {"OrderListHash", "-308164574"}
+            {"Expectancy", "2.059"},
+            {"Net Profit", "-0.203%"},
+            {"Sharpe Ratio", "-3.683"},
+            {"Probabilistic Sharpe Ratio", "11.993%"},
+            {"Loss Rate", "33%"},
+            {"Win Rate", "67%"},
+            {"Profit-Loss Ratio", "3.59"},
+            {"Alpha", "-0.214"},
+            {"Beta", "0.678"},
+            {"Annual Standard Deviation", "0.093"},
+            {"Annual Variance", "0.009"},
+            {"Information Ratio", "-2.107"},
+            {"Tracking Error", "0.073"},
+            {"Treynor Ratio", "-0.506"},
+            {"Total Fees", "$22.21"},
+            {"Estimated Strategy Capacity", "$75000000.00"},
+            {"Lowest Capacity Asset", "IBM R735QTJ8XC9X"},
+            {"Portfolio Turnover", "7.20%"},
+            {"OrderListHash", "6dfa3d1f0f738ed72627c742939a2791"}
         };
     }
 }

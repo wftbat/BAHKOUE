@@ -18,11 +18,14 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using QuantConnect.Brokerages;
 using QuantConnect.Interfaces;
 using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Lean.Engine.TransactionHandlers;
 using QuantConnect.Orders;
 using QuantConnect.Packets;
+using QuantConnect.Statistics;
+using QuantConnect.Util;
 
 namespace QuantConnect.Tests.Engine
 {
@@ -39,9 +42,9 @@ namespace QuantConnect.Tests.Engine
         private readonly Action<Packet> _packetHandler;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public ConcurrentQueue<Packet> Messages { get; set; }
-        public ConcurrentDictionary<string, Chart> Charts { get; set; }
-        public bool IsActive { get; private set; }
+        public new ConcurrentQueue<Packet> Messages { get; set; }
+        public new ConcurrentDictionary<string, Chart> Charts { get; set; }
+        public new bool IsActive { get; private set; }
 
         public TestResultHandler(Action<Packet> packetHandler = null)
         {
@@ -115,7 +118,11 @@ namespace QuantConnect.Tests.Engine
             Messages.Enqueue(new RuntimeErrorPacket(_job.UserId, _job.AlgorithmId, message, stacktrace));
         }
 
-        protected override void Sample(string chartName, string seriesName, int seriesIndex, SeriesType seriesType, DateTime time, decimal value, string unit = "$")
+        public void BrokerageMessage(BrokerageMessageEvent brokerageMessageEvent)
+        {
+        }
+
+        protected override void Sample(string chartName, string seriesName, int seriesIndex, SeriesType seriesType, ISeriesPoint value, string unit = "$")
         {
             //Add a copy locally:
             if (!Charts.ContainsKey(chartName))
@@ -130,7 +137,7 @@ namespace QuantConnect.Tests.Engine
             }
 
             //Add our value:
-            Charts[chartName].Series[seriesName].Values.Add(new ChartPoint(time, value));
+            Charts[chartName].Series[seriesName].Values.Add(value);
         }
 
         protected override void AddToLogStore(string message)
@@ -178,16 +185,26 @@ namespace QuantConnect.Tests.Engine
         {
         }
 
-        public void OrderEvent(OrderEvent newEvent)
+        public override void OrderEvent(OrderEvent newEvent)
         {
         }
 
-        public void Exit()
+        public override void Exit()
         {
             _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.DisposeSafely();
         }
 
         public void ProcessSynchronousEvents(bool forceProcess = false)
+        {
+        }
+
+        public StatisticsResults StatisticsResults()
+        {
+            return new StatisticsResults();
+        }
+
+        public void SetSummaryStatistic(string name, string value)
         {
         }
     }

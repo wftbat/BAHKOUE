@@ -28,9 +28,9 @@ namespace QuantConnect.Algorithm.CSharp
     /// <meta name="tag" content="using quantconnect" />
     public class ParameterizedAlgorithm : QCAlgorithm, IRegressionAlgorithmDefinition
     {
-        // we place attributes on top of our fields or properties that should receive
+        // We place attributes on top of our fields or properties that should receive
         // their values from the job. The values 100 and 200 are just default values that
-        // or only used if the parameters do not exist
+        // are only used if the parameters do not exist.
         [Parameter("ema-fast")]
         public int FastPeriod = 100;
 
@@ -78,6 +78,16 @@ namespace QuantConnect.Algorithm.CSharp
         public Language[] Languages { get; } = { Language.CSharp, Language.Python };
 
         /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 3943;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 0;
+
+        /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
         /// </summary>
         public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
@@ -85,43 +95,27 @@ namespace QuantConnect.Algorithm.CSharp
             {"Total Trades", "1"},
             {"Average Win", "0%"},
             {"Average Loss", "0%"},
-            {"Compounding Annual Return", "279.188%"},
+            {"Compounding Annual Return", "286.047%"},
             {"Drawdown", "0.300%"},
             {"Expectancy", "0"},
-            {"Net Profit", "1.719%"},
-            {"Sharpe Ratio", "23.244"},
+            {"Net Profit", "1.742%"},
+            {"Sharpe Ratio", "23.023"},
             {"Probabilistic Sharpe Ratio", "0%"},
             {"Loss Rate", "0%"},
             {"Win Rate", "0%"},
             {"Profit-Loss Ratio", "0"},
-            {"Alpha", "1.262"},
-            {"Beta", "0.348"},
-            {"Annual Standard Deviation", "0.083"},
+            {"Alpha", "1.266"},
+            {"Beta", "0.356"},
+            {"Annual Standard Deviation", "0.086"},
             {"Annual Variance", "0.007"},
-            {"Information Ratio", "0.046"},
+            {"Information Ratio", "-0.044"},
             {"Tracking Error", "0.147"},
-            {"Treynor Ratio", "5.552"},
-            {"Total Fees", "$3.26"},
-            {"Fitness Score", "0.247"},
-            {"Kelly Criterion Estimate", "0"},
-            {"Kelly Criterion Probability Value", "0"},
-            {"Sortino Ratio", "79228162514264337593543950335"},
-            {"Return Over Maximum Drawdown", "79228162514264337593543950335"},
-            {"Portfolio Turnover", "0.247"},
-            {"Total Insights Generated", "0"},
-            {"Total Insights Closed", "0"},
-            {"Total Insights Analysis Completed", "0"},
-            {"Long Insight Count", "0"},
-            {"Short Insight Count", "0"},
-            {"Long/Short Ratio", "100%"},
-            {"Estimated Monthly Alpha Value", "$0"},
-            {"Total Accumulated Estimated Alpha Value", "$0"},
-            {"Mean Population Estimated Insight Value", "$0"},
-            {"Mean Population Direction", "0%"},
-            {"Mean Population Magnitude", "0%"},
-            {"Rolling Averaged Population Direction", "0%"},
-            {"Rolling Averaged Population Magnitude", "0%"},
-            {"OrderListHash", "-772213996"}
+            {"Treynor Ratio", "5.531"},
+            {"Total Fees", "$3.45"},
+            {"Estimated Strategy Capacity", "$48000000.00"},
+            {"Lowest Capacity Asset", "SPY R735QTJ8XC9X"},
+            {"Portfolio Turnover", "19.72%"},
+            {"OrderListHash", "d54f031ece393c8b3fc653ca3e6259f8"}
         };
     }
 }

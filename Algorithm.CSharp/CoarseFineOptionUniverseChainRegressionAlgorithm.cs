@@ -35,13 +35,19 @@ namespace QuantConnect.Algorithm.CSharp
         private Symbol _aapl;
         private Symbol _twx;
 
+        private Dictionary<string, decimal> _rawPrices = new()
+        {
+            { "AOL", 70  },
+            { "AAPL", 650 }
+        };
+
         public override void Initialize()
         {
             _twx = QuantConnect.Symbol.Create("TWX", SecurityType.Equity, Market.USA);
             _aapl = QuantConnect.Symbol.Create("AAPL", SecurityType.Equity, Market.USA);
             UniverseSettings.Resolution = Resolution.Minute;
 
-            SetStartDate(2014, 06, 05);
+            SetStartDate(2014, 06, 04);
             SetEndDate(2014, 06, 06);
 
             var selectionUniverse = AddUniverse(enumerable => new[] { Time.Date <= new DateTime(2014, 6, 5) ? _twx : _aapl },
@@ -106,6 +112,15 @@ namespace QuantConnect.Algorithm.CSharp
                 {
                     throw new Exception($"Was expecting DataNormalizationMode.Raw configurations for {security.Symbol}");
                 }
+
+                if (security.Symbol.SecurityType == SecurityType.Equity)
+                {
+                    var expectedPrice = _rawPrices[security.Symbol.ID.Symbol];
+                    if (Math.Abs(security.Price - expectedPrice) > expectedPrice * 0.1m)
+                    {
+                        throw new Exception($"Unexpected raw prices for symbol {security.Symbol}");
+                    }
+                }
             }
             _changes = SecurityChanges.None;
         }
@@ -140,50 +155,44 @@ namespace QuantConnect.Algorithm.CSharp
         public Language[] Languages { get; } = { Language.CSharp, Language.Python };
 
         /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 998462;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 0;
+
+        /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
         /// </summary>
         public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
         {
             {"Total Trades", "13"},
-            {"Average Win", "0.65%"},
+            {"Average Win", "0.04%"},
             {"Average Loss", "-0.05%"},
-            {"Compounding Annual Return", "3216040423556140000000000%"},
+            {"Compounding Annual Return", "-24.719%"},
             {"Drawdown", "0.500%"},
-            {"Expectancy", "1.393"},
-            {"Net Profit", "32.840%"},
-            {"Sharpe Ratio", "7.14272222483913E+15"},
+            {"Expectancy", "-0.685"},
+            {"Net Profit", "-0.233%"},
+            {"Sharpe Ratio", "-9.078"},
             {"Probabilistic Sharpe Ratio", "0%"},
             {"Loss Rate", "83%"},
             {"Win Rate", "17%"},
-            {"Profit-Loss Ratio", "13.36"},
-            {"Alpha", "2.59468989671647E+16"},
-            {"Beta", "67.661"},
-            {"Annual Standard Deviation", "3.633"},
-            {"Annual Variance", "13.196"},
-            {"Information Ratio", "7.24987266907741E+15"},
-            {"Tracking Error", "3.579"},
-            {"Treynor Ratio", "383485597312030"},
-            {"Total Fees", "$13.00"},
-            {"Fitness Score", "0.232"},
-            {"Kelly Criterion Estimate", "0"},
-            {"Kelly Criterion Probability Value", "0"},
-            {"Sortino Ratio", "79228162514264337593543950335"},
-            {"Return Over Maximum Drawdown", "79228162514264337593543950335"},
-            {"Portfolio Turnover", "0.232"},
-            {"Total Insights Generated", "0"},
-            {"Total Insights Closed", "0"},
-            {"Total Insights Analysis Completed", "0"},
-            {"Long Insight Count", "0"},
-            {"Short Insight Count", "0"},
-            {"Long/Short Ratio", "100%"},
-            {"Estimated Monthly Alpha Value", "$0"},
-            {"Total Accumulated Estimated Alpha Value", "$0"},
-            {"Mean Population Estimated Insight Value", "$0"},
-            {"Mean Population Direction", "0%"},
-            {"Mean Population Magnitude", "0%"},
-            {"Rolling Averaged Population Direction", "0%"},
-            {"Rolling Averaged Population Magnitude", "0%"},
-            {"OrderListHash", "1630141557"}
+            {"Profit-Loss Ratio", "0.89"},
+            {"Alpha", "4.632"},
+            {"Beta", "-1.524"},
+            {"Annual Standard Deviation", "0.029"},
+            {"Annual Variance", "0.001"},
+            {"Information Ratio", "-72.647"},
+            {"Tracking Error", "0.048"},
+            {"Treynor Ratio", "0.172"},
+            {"Total Fees", "$16.10"},
+            {"Estimated Strategy Capacity", "$3100000.00"},
+            {"Lowest Capacity Asset", "AOL VRKS95ENLBYE|AOL R735QTJ8XC9X"},
+            {"Portfolio Turnover", "17.64%"},
+            {"OrderListHash", "ad0539728c979e78a32749dda2e544ca"}
         };
     }
 }

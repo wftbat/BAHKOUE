@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -14,6 +14,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
@@ -54,7 +55,9 @@ namespace QuantConnect.Tests.Engine.DataFeeds
                 _dataCacheProvider,
                 config,
                 _initialDate,
-                false));
+                false,
+                TestGlobals.DataProvider,
+                null));
         }
 
         [Test]
@@ -74,7 +77,9 @@ namespace QuantConnect.Tests.Engine.DataFeeds
                 _dataCacheProvider,
                 config,
                 _initialDate,
-                false);
+                false,
+                TestGlobals.DataProvider,
+                null);
             var source = (new TradeBar()).GetSource(config, _initialDate, false);
             _dataCacheProvider.Data = "20000101 00:00,2,2,2,2,2";
             var dataBars = reader.Read(source).First();
@@ -128,6 +133,10 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             }
             public void Store(string key, byte[] data)
             {
+            }
+            public List<string> GetZipEntries(string zipFile)
+            {
+                throw new NotImplementedException();
             }
             public void Dispose()
             {

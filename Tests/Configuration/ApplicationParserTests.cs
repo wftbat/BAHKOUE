@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-using Microsoft.Extensions.CommandLineUtils;
+using McMaster.Extensions.CommandLineUtils;
 using NUnit.Framework;
 using QuantConnect.Configuration;
 using System;
@@ -67,7 +67,7 @@ namespace QuantConnect.Tests.Configuration
         {
             var args = $"--force-exchange-always-open false";
 
-            Assert.Throws<CommandParsingException>(
+            Assert.Throws<UnrecognizedCommandParsingException>(
                 () =>
                 {
                     var options = ApplicationParser.Parse(
@@ -78,6 +78,26 @@ namespace QuantConnect.Tests.Configuration
                         Options);
                 }
             );
+        }
+
+        [Test]
+        public void PaserNoValueArg()
+        {
+            var args = new[] { "--force-exchange-always-open" };
+
+            var options = ApplicationParser.Parse(
+                "Test AppName",
+                "Test Description",
+                "Test Help Text",
+                args,
+                Options);
+
+            Assert.AreEqual(1, options.Count);
+            foreach (var option in options)
+            {
+                Assert.IsInstanceOf<bool>(option.Value);
+                Assert.IsTrue((bool) option.Value);
+            }
         }
 
         [TestCase("algorithm-id", "\"AlgorithmId\"")]

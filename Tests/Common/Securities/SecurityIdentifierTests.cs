@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -22,8 +22,9 @@ using System.Linq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using QuantConnect.Algorithm.CSharp;
-using QuantConnect.Data.Auxiliary;
 using QuantConnect.Lean.Engine.DataFeeds;
+using QuantConnect.Logging;
+using QuantConnect.Util;
 
 namespace QuantConnect.Tests.Common.Securities
 {
@@ -40,6 +41,17 @@ namespace QuantConnect.Tests.Common.Securities
         // this is euro-dollar futures contract (for tests)
         private readonly SecurityIdentifier ED_Dec_2020 = SecurityIdentifier.GenerateFuture(new DateTime(2020, 12, 15), "ED", Market.USA);
 
+        [TestCase("SPY", "SPY", "20230403")]
+        [TestCase("GOOG", "GOOG", "20140403")]
+        [TestCase("GOOG", "GOOCV", "20140402")]
+        public void Ticker(string symbol, string expectedTicker, string date)
+        {
+            var equity = Symbol.Create(symbol, SecurityType.Equity, Market.USA);
+            var ticker = SecurityIdentifier.Ticker(equity, Time.ParseDate(date));
+
+            Assert.AreEqual(expectedTicker, ticker);
+        }
+
         [Test]
         public void GenerateEquityProperlyResolvesFirstDate()
         {
@@ -48,12 +60,19 @@ namespace QuantConnect.Tests.Common.Securities
         }
 
         [Test]
+        public void GenerateFailsOnInvalidDate()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                SecurityIdentifier.GenerateEquity(Time.BeginningOfTime.AddDays(-1), "SPY", Market.USA));
+        }
+
+        [Test]
         public void GeneratesIdentifiersDeterministically()
         {
             var sid1 = SPY;
             var sid2 = SPY;
             Assert.AreEqual(sid1, sid2);
-            Console.WriteLine(sid1);
+            Log.Trace(sid1.ToString());
         }
 
         [Test]
@@ -72,7 +91,7 @@ namespace QuantConnect.Tests.Common.Securities
             Assert.IsTrue(spyPut.HasUnderlying);
             Assert.AreEqual(SPY, spyPut.Underlying);
 
-            Console.WriteLine(SPY_Put_19550);
+            Log.Trace(SPY_Put_19550.ToString());
         }
 
         [Test]
@@ -86,7 +105,7 @@ namespace QuantConnect.Tests.Common.Securities
             Assert.AreEqual(SecurityType.Equity, sid1.SecurityType);
             Assert.AreEqual("SPY", sid1.Symbol);
 
-            Console.WriteLine(sid1);
+            Log.Trace(sid1.ToString());
         }
 
         [Test]
@@ -100,8 +119,9 @@ namespace QuantConnect.Tests.Common.Securities
             Assert.AreEqual(SecurityType.Forex, eurusd.SecurityType);
             Assert.AreEqual("EURUSD", eurusd.Symbol);
 
-            Console.WriteLine(eurusd);
+            Log.Trace(eurusd.ToString());
         }
+
         [Test]
         public void FuturesSecurityIdReturnsProperties()
         {
@@ -111,7 +131,7 @@ namespace QuantConnect.Tests.Common.Securities
             Assert.AreEqual(SecurityType.Future, ED_Dec_2020.SecurityType);
             Assert.AreEqual("ED", ED_Dec_2020.Symbol);
 
-            Console.WriteLine(ED_Dec_2020);
+            Log.Trace(ED_Dec_2020.ToString());
         }
 
         [Test]
@@ -119,14 +139,14 @@ namespace QuantConnect.Tests.Common.Securities
         {
             var sid1 = SecurityIdentifier.GenerateBase(null, "123456789012", Market.USA);
             Assert.AreEqual("123456789012", sid1.Symbol);
-            Console.WriteLine(sid1);
+            Log.Trace(sid1.ToString());
         }
 
         [Test]
         public void ParsedToStringEqualsValue()
         {
             var value = SPY_Put_19550.ToString();
-            Console.WriteLine(value);
+            Log.Trace(value);
             var sid2 = SecurityIdentifier.Parse(value);
             Assert.AreEqual(SPY_Put_19550, sid2);
         }
@@ -310,12 +330,13 @@ namespace QuantConnect.Tests.Common.Securities
             Assert.AreEqual(sid.ToString(), value);
         }
 
-        [Test]
-        public void TryParseFailsInvalidProperties()
+        [TestCase("SPY WhatEver")]
+        [TestCase("Sharpe ratio")]
+        public void TryParseFailsInvalidProperties(string value)
         {
-            const string value = "SPY WhatEver";
-            SecurityIdentifier sid;
-            Assert.IsFalse(SecurityIdentifier.TryParse(value, out sid));
+            Assert.IsFalse(SecurityIdentifier.TryParse(value, out var _));
+            // On the second call, we test the cache to increase speed and remove redundant logging
+            Assert.IsFalse(SecurityIdentifier.TryParse(value, out var _));
         }
 
         [Test, Category("TravisExclude")]
@@ -330,7 +351,7 @@ namespace QuantConnect.Tests.Common.Securities
                 SecurityIdentifier.TryParse(value, out sid);
             }
             stopwatch.Stop();
-            Console.WriteLine("Elapsed: " + stopwatch.Elapsed);
+            Log.Trace("Elapsed: " + stopwatch.Elapsed);
 
             Assert.Less(stopwatch.Elapsed, TimeSpan.FromSeconds(2));
         }
@@ -356,7 +377,7 @@ namespace QuantConnect.Tests.Common.Securities
         public void GenerateEquityWithTickerUsingMapFile()
         {
             var expectedFirstDate = new DateTime(1998, 1, 2);
-            var sid = SecurityIdentifier.GenerateEquity("TWX", Market.USA, mapSymbol: true, mapFileProvider: new LocalDiskMapFileProvider());
+            var sid = SecurityIdentifier.GenerateEquity("TWX", Market.USA, mapSymbol: true, mapFileProvider: TestGlobals.MapFileProvider);
 
             Assert.AreEqual(sid.Date, expectedFirstDate);
             Assert.AreEqual(sid.Symbol, "AOL");
@@ -531,7 +552,7 @@ namespace QuantConnect.Tests.Common.Securities
         [Test, Ignore("Requires complete option data to validate chain")]
         public void ValidateAAPLOptionChainSecurityIdentifiers()
         {
-            var chainProvider = new BacktestingOptionChainProvider();
+            var chainProvider = new BacktestingOptionChainProvider(TestGlobals.DataCacheProvider, TestGlobals.MapFileProvider);
             var aapl = Symbol.Create("AAPL", SecurityType.Equity, Market.USA);
             var chains = new HashSet<Symbol>();
             var expectedChains = File.ReadAllLines("TestData/aapl_chain.csv")
@@ -570,6 +591,20 @@ namespace QuantConnect.Tests.Common.Securities
 
             Assert.AreEqual(0, fails.Count, $"The following option Symbols were not found in the expected chain:    \n{string.Join("\n", fails.Select(x => x.ID.ToString()))}");
             Assert.IsTrue(expectedChains.All(kvp => kvp.Value), $"The following option Symbols were not loaded:    \n{string.Join("\n", expectedChains.Where(kvp => !kvp.Value).Select(x => x.Key))}");
+        }
+
+        [Test]
+        public void SortsAccordingToStringRepresentation()
+        {
+            var sids = Symbols.All.ToList(s => s.ID);
+            var expected = sids
+                .Select(sid => new {symbol = sid, str = sid.ToString()})
+                .OrderBy(item => item.str)
+                .ToList(item => item.symbol);
+
+            sids.Sort();
+
+            CollectionAssert.AreEqual(expected, sids);
         }
 
         class Container

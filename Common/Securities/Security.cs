@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -14,9 +14,12 @@
 */
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Dynamic;
+using System.Reflection;
+using System.Globalization;
+
 using QuantConnect.Data;
 using QuantConnect.Orders.Fees;
 using QuantConnect.Orders.Fills;
@@ -30,6 +33,7 @@ using Python.Runtime;
 using QuantConnect.Data.Fundamental;
 using QuantConnect.Data.UniverseSelection;
 using QuantConnect.Interfaces;
+using QuantConnect.Data.Shortable;
 
 namespace QuantConnect.Securities
 {
@@ -40,13 +44,21 @@ namespace QuantConnect.Securities
     /// Security object is intended to hold properties of the specific security asset. These properties can include trade start-stop dates,
     /// price, market hours, resolution of the security, the holdings information for this security and the specific fill model.
     /// </remarks>
-    public class Security : ISecurityPrice
+    public class Security : DynamicObject, ISecurityPrice
     {
-        private readonly ICurrencyConverter _currencyConverter;
-
         private LocalTimeKeeper _localTimeKeeper;
-        // using concurrent bag to avoid list enumeration threading issues
-        protected readonly ConcurrentBag<SubscriptionDataConfig> SubscriptionsBag;
+
+        /// <summary>
+        /// Collection of SubscriptionDataConfigs for this security.
+        /// Uses concurrent bag to avoid list enumeration threading issues
+        /// </summary>
+        /// <remarks>Just use a list + lock, not concurrent bag, avoid garbage it creates for features we don't need here. See https://github.com/dotnet/runtime/issues/23103</remarks>
+        private readonly List<SubscriptionDataConfig> _subscriptionsBag;
+
+        /// <summary>
+        /// This securities <see cref="IShortableProvider"/>
+        /// </summary>
+        public IShortableProvider ShortableProvider { get; private set; }
 
         /// <summary>
         /// A null security leverage value
@@ -58,7 +70,16 @@ namespace QuantConnect.Securities
         /// <summary>
         /// Gets all the subscriptions for this security
         /// </summary>
-        public IEnumerable<SubscriptionDataConfig> Subscriptions => SubscriptionsBag;
+        public IEnumerable<SubscriptionDataConfig> Subscriptions
+        {
+            get
+            {
+                lock (_subscriptionsBag)
+                {
+                    return _subscriptionsBag.ToList();
+                }
+            }
+        }
 
         /// <summary>
         /// <see cref="Symbol"/> for the asset.
@@ -118,7 +139,16 @@ namespace QuantConnect.Securities
         /// Gets the subscription configuration for this security
         /// </summary>
         [Obsolete("This property returns only the first subscription. Use the 'Subscriptions' property for all of this security's subscriptions.")]
-        public SubscriptionDataConfig SubscriptionDataConfig => SubscriptionsBag.FirstOrDefault();
+        public SubscriptionDataConfig SubscriptionDataConfig
+        {
+            get
+            {
+                lock (_subscriptionsBag)
+                {
+                    return _subscriptionsBag.FirstOrDefault();
+                }
+            }
+        }
 
         /// <summary>
         /// There has been at least one datapoint since our algorithm started running for us to determine price.
@@ -128,7 +158,7 @@ namespace QuantConnect.Securities
         /// <summary>
         /// Gets or sets whether or not this security should be considered tradable
         /// </summary>
-        public bool IsTradable
+        public virtual bool IsTradable
         {
             get; set;
         }
@@ -225,6 +255,15 @@ namespace QuantConnect.Securities
         }
 
         /// <summary>
+        /// Gets or sets the margin interest rate model
+        /// </summary>
+        public IMarginInterestRateModel MarginInterestRateModel
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the settlement model used for this security
         /// </summary>
         public ISettlementModel SettlementModel
@@ -302,7 +341,8 @@ namespace QuantConnect.Securities
                 new SecurityDataFilter(),
                 new SecurityPriceVariationModel(),
                 currencyConverter,
-                registeredTypesProvider
+                registeredTypesProvider,
+                Securities.MarginInterestRateModel.Null
                 )
         {
         }
@@ -333,7 +373,8 @@ namespace QuantConnect.Securities
                 new SecurityDataFilter(),
                 new SecurityPriceVariationModel(),
                 currencyConverter,
-                registeredTypesProvider
+                registeredTypesProvider,
+                Securities.MarginInterestRateModel.Null
                 )
         {
         }
@@ -356,23 +397,22 @@ namespace QuantConnect.Securities
             ISecurityDataFilter dataFilter,
             IPriceVariationModel priceVariationModel,
             ICurrencyConverter currencyConverter,
-            IRegisteredSecurityDataTypesProvider registeredTypesProvider
+            IRegisteredSecurityDataTypesProvider registeredTypesProvider,
+            IMarginInterestRateModel marginInterestRateModel
             )
         {
             if (symbolProperties == null)
             {
-                throw new ArgumentNullException(nameof(symbolProperties), "Security requires a valid SymbolProperties instance.");
+                throw new ArgumentNullException(nameof(symbolProperties), Messages.Security.ValidSymbolPropertiesInstanceRequired);
             }
 
             if (symbolProperties.QuoteCurrency != quoteCurrency.Symbol)
             {
-                throw new ArgumentException("symbolProperties.QuoteCurrency must match the quoteCurrency.Symbol");
+                throw new ArgumentException(Messages.Security.UnmatchingQuoteCurrencies);
             }
 
-            this._currencyConverter = currencyConverter;
-
             Symbol = symbol;
-            SubscriptionsBag = new ConcurrentBag<SubscriptionDataConfig>();
+            _subscriptionsBag = new ();
             QuoteCurrency = quoteCurrency;
             SymbolProperties = symbolProperties;
             IsTradable = true;
@@ -387,8 +427,10 @@ namespace QuantConnect.Securities
             SlippageModel = slippageModel;
             SettlementModel = settlementModel;
             VolatilityModel = volatilityModel;
+            MarginInterestRateModel = marginInterestRateModel;
             Holdings = new SecurityHolding(this, currencyConverter);
             Data = new DynamicSecurityData(registeredTypesProvider, Cache);
+            ShortableProvider = new NullShortableProvider();
 
             UpdateSubscriptionProperties();
         }
@@ -412,7 +454,8 @@ namespace QuantConnect.Securities
             ISecurityDataFilter dataFilter,
             IPriceVariationModel priceVariationModel,
             ICurrencyConverter currencyConverter,
-            IRegisteredSecurityDataTypesProvider registeredTypesProvider
+            IRegisteredSecurityDataTypesProvider registeredTypesProvider,
+            IMarginInterestRateModel marginInterestRateModel
             )
             : this(config.Symbol,
                 quoteCurrency,
@@ -429,17 +472,18 @@ namespace QuantConnect.Securities
                 dataFilter,
                 priceVariationModel,
                 currencyConverter,
-                registeredTypesProvider
+                registeredTypesProvider,
+                marginInterestRateModel
                 )
         {
-            SubscriptionsBag.Add(config);
+            _subscriptionsBag.Add(config);
             UpdateSubscriptionProperties();
         }
 
         /// <summary>
         /// Read only property that checks if we currently own stock in the company.
         /// </summary>
-        public virtual bool HoldStock => Holdings.AbsoluteQuantity > 0;
+        public virtual bool HoldStock => Holdings.HoldStock;
 
         /// <summary>
         /// Alias for HoldStock - Do we have any of this security
@@ -455,7 +499,7 @@ namespace QuantConnect.Securities
             {
                 if (_localTimeKeeper == null)
                 {
-                    throw new InvalidOperationException("Security.SetLocalTimeKeeper(LocalTimeKeeper) must be called in order to use the LocalTime property.");
+                    throw new InvalidOperationException(Messages.Security.SetLocalTimeKeeperMustBeCalledBeforeUsingLocalTime);
                 }
 
                 return _localTimeKeeper.LocalTime;
@@ -554,20 +598,17 @@ namespace QuantConnect.Securities
         }
 
         /// <summary>
-        /// Get the last price update set to the security.
+        /// Get the last price update set to the security if any else null
         /// </summary>
         /// <returns>BaseData object for this security</returns>
-        public BaseData GetLastData()
-        {
-            return Cache.GetData();
-        }
+        public BaseData GetLastData() => Cache.GetData();
 
         /// <summary>
         /// Sets the <see cref="LocalTimeKeeper"/> to be used for this <see cref="Security"/>.
         /// This is the source of this instance's time.
         /// </summary>
         /// <param name="localTimeKeeper">The source of this <see cref="Security"/>'s time.</param>
-        public void SetLocalTimeKeeper(LocalTimeKeeper localTimeKeeper)
+        public virtual void SetLocalTimeKeeper(LocalTimeKeeper localTimeKeeper)
         {
             _localTimeKeeper = localTimeKeeper;
             Exchange.SetLocalDateTimeFrontier(localTimeKeeper.LocalTime);
@@ -589,7 +630,7 @@ namespace QuantConnect.Securities
             if (data == null) return;
             Cache.AddData(data);
 
-            UpdateConsumersMarketPrice(data);
+            UpdateMarketPrice(data);
         }
 
         /// <summary>
@@ -604,7 +645,7 @@ namespace QuantConnect.Securities
         {
             Cache.AddDataList(data, dataType, containsFillForwardData);
 
-            UpdateConsumersMarketPrice(data[data.Count - 1]);
+            UpdateMarketPrice(data[data.Count - 1]);
         }
 
         /// <summary>
@@ -628,9 +669,10 @@ namespace QuantConnect.Securities
         /// <param name="leverage">Leverage for this asset</param>
         public void SetLeverage(decimal leverage)
         {
-            if (Symbol.ID.SecurityType == SecurityType.Future ||
-                Symbol.ID.SecurityType == SecurityType.Option)
+            if (Symbol.ID.SecurityType == SecurityType.Future || Symbol.ID.SecurityType.IsOption())
+            {
                 return;
+            }
 
             BuyingPowerModel.SetLeverage(this, leverage);
         }
@@ -642,11 +684,14 @@ namespace QuantConnect.Securities
             " 'SubscriptionManager' and the 'SetDataNormalizationMode()' extension method")]
         public virtual void SetDataNormalizationMode(DataNormalizationMode mode)
         {
-            foreach (var subscription in SubscriptionsBag)
+            lock (_subscriptionsBag)
             {
-                subscription.DataNormalizationMode = mode;
+                foreach (var subscription in _subscriptionsBag)
+                {
+                    subscription.DataNormalizationMode = mode;
+                }
+                UpdateSubscriptionProperties();
             }
-            UpdateSubscriptionProperties();
         }
 
         /// <summary>
@@ -656,10 +701,13 @@ namespace QuantConnect.Securities
         /// </summary>
         public void RefreshDataNormalizationModeProperty()
         {
-            DataNormalizationMode = SubscriptionsBag
-                .Select(x => x.DataNormalizationMode)
-                .DefaultIfEmpty(DataNormalizationMode.Adjusted)
-                .FirstOrDefault();
+            lock (_subscriptionsBag)
+            {
+                DataNormalizationMode = _subscriptionsBag
+                    .Select(x => x.DataNormalizationMode)
+                    .DefaultIfEmpty(DataNormalizationMode.Adjusted)
+                    .FirstOrDefault();
+            }
         }
 
         /// <summary>
@@ -753,6 +801,24 @@ namespace QuantConnect.Securities
         }
 
         /// <summary>
+        /// Sets the margin interests rate model
+        /// </summary>
+        /// <param name="marginInterestRateModel">Model that represents a security's model of margin interest rate</param>
+        public void SetMarginInterestRateModel(IMarginInterestRateModel marginInterestRateModel)
+        {
+            MarginInterestRateModel = marginInterestRateModel;
+        }
+
+        /// <summary>
+        /// Sets the margin interests rate model
+        /// </summary>
+        /// <param name="pyObject">Model that represents a security's model of margin interest rate</param>
+        public void SetMarginInterestRateModel(PyObject pyObject)
+        {
+            SetMarginInterestRateModel(new MarginInterestRateModelPythonWrapper(pyObject));
+        }
+
+        /// <summary>
         /// Sets the margin model
         /// </summary>
         /// <param name="marginModel">Model that represents a security's model of buying power</param>
@@ -769,6 +835,202 @@ namespace QuantConnect.Securities
         {
             SetMarginModel(new BuyingPowerModelPythonWrapper(pyObject));
         }
+
+        /// <summary>
+        /// Set Python Shortable Provider for this <see cref="Security"/>
+        /// </summary>
+        /// <param name="pyObject">Python class that represents a custom shortable provider</param>
+        public void SetShortableProvider(PyObject pyObject)
+        {
+            if (pyObject.TryConvert<IShortableProvider>(out var shortableProvider))
+            {
+                SetShortableProvider(shortableProvider);
+            }
+            else if (Extensions.TryConvert<IShortableProvider>(pyObject, out _, allowPythonDerivative: true))
+            {
+                SetShortableProvider(new ShortableProviderPythonWrapper(pyObject));
+            }
+            else
+            {
+                using (Py.GIL())
+                {
+                    throw new Exception($"SetShortableProvider: {pyObject.Repr()} is not a valid argument");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Set Shortable Provider for this <see cref="Security"/>
+        /// </summary>
+        /// <param name="shortableProvider">Provider to use</param>
+        public void SetShortableProvider(IShortableProvider shortableProvider)
+        {
+            ShortableProvider = shortableProvider;
+        }
+
+        /// <summary>
+        /// Set Security Data Filter
+        /// </summary>
+        /// <param name="pyObject">Python class that represents a custom Security Data Filter</param>
+        /// <exception cref="ArgumentException"></exception>
+        public void SetDataFilter(PyObject pyObject)
+        {
+            if (pyObject.TryConvert<ISecurityDataFilter>(out var dataFilter))
+            {
+                SetDataFilter(dataFilter);
+            }
+            else if (Extensions.TryConvert<ISecurityDataFilter>(pyObject, out _, allowPythonDerivative: true))
+            {
+                SetDataFilter(new SecurityDataFilterPythonWrapper(pyObject));
+            }
+            else
+            {
+                using (Py.GIL())
+                {
+                    throw new ArgumentException($"SetDataFilter: {pyObject.Repr()} is not a valid argument");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Set Security Data Filter
+        /// </summary>
+        /// <param name="dataFilter">Security Data Filter</param>
+        public void SetDataFilter(ISecurityDataFilter dataFilter)
+        {
+            DataFilter = dataFilter;
+        }
+
+        #region DynamicObject Overrides and Helper Methods
+
+        /// <summary>
+        /// This is a <see cref="DynamicObject"/> override. Not meant for external use.
+        /// </summary>
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            return Cache.Properties.TryGetValue(binder.Name, out result);
+        }
+
+        /// <summary>
+        /// This is a <see cref="DynamicObject"/> override. Not meant for external use.
+        /// </summary>
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            Cache.Properties[binder.Name] = value;
+            return true;
+        }
+
+        /// <summary>
+        /// This is a <see cref="DynamicObject"/> override. Not meant for external use.
+        /// </summary>
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+        {
+            try
+            {
+                result = Cache.Properties.GetType().InvokeMember(binder.Name, BindingFlags.InvokeMethod, null, Cache.Properties, args,
+                    CultureInfo.InvariantCulture);
+                return true;
+            }
+            catch
+            {
+                result = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified custom property.
+        /// This allows us to use the security object as a dynamic object for quick storage.
+        /// </summary>
+        /// <param name="key">The property key</param>
+        /// <param name="value">The property value</param>
+        public void Add(string key, object value)
+        {
+            Cache.Properties[key] = value;
+        }
+
+        /// <summary>
+        /// Gets the specified custom property
+        /// </summary>
+        /// <param name="key">The property key</param>
+        /// <param name="value">The property value</param>
+        /// <returns>True if the property is found.</returns>
+        /// <exception cref="InvalidCastException">If the property is found but its value cannot be casted to the speficied type</exception>
+        public bool TryGet<T>(string key, out T value)
+        {
+            if (Cache.Properties.TryGetValue(key, out var obj))
+            {
+                value = CastDynamicPropertyValue<T>(obj);
+                return true;
+            }
+            value = default;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the specified custom property
+        /// </summary>
+        /// <param name="key">The property key</param>
+        /// <returns>The property value is found</returns>
+        /// <exception cref="KeyNotFoundException">If the property is not found</exception>
+        public T Get<T>(string key)
+        {
+            return CastDynamicPropertyValue<T>(Cache.Properties[key]);
+        }
+
+        /// <summary>
+        /// Removes a custom property.
+        /// </summary>
+        /// <param name="key">The property key</param>
+        /// <returns>True if the property is successfully removed</returns>
+        public bool Remove(string key)
+        {
+            return Cache.Properties.Remove(key);
+        }
+
+        /// <summary>
+        /// Removes a custom property.
+        /// </summary>
+        /// <param name="key">The property key</param>
+        /// <param name="value">The removed property value</param>
+        /// <returns>True if the property is successfully removed</returns>
+        public bool Remove<T>(string key, out T value)
+        {
+            value = default;
+            var result = Cache.Properties.Remove(key, out object objectValue);
+            if (result)
+            {
+                value = CastDynamicPropertyValue<T>(objectValue);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Removes every custom property that had been set.
+        /// </summary>
+        public void Clear()
+        {
+            Cache.Properties.Clear();
+        }
+
+        /// <summary>
+        /// Gets or sets the specified custom property through the indexer.
+        /// This is a wrapper around the <see cref="Get{T}(string)"/> and <see cref="Add(string,object)"/> methods.
+        /// </summary>
+        /// <param name="key">The property key</param>
+        public object this[string key]
+        {
+            get
+            {
+                return Get<object>(key);
+            }
+            set
+            {
+                Add(key, value);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -788,10 +1050,19 @@ namespace QuantConnect.Securities
         /// <param name="subscription">The subscription configuration to add. The Symbol and ExchangeTimeZone properties must match the existing Security object</param>
         internal void AddData(SubscriptionDataConfig subscription)
         {
-            if (subscription.Symbol != Symbol) throw new ArgumentException("Symbols must match.", "subscription.Symbol");
-            if (!subscription.ExchangeTimeZone.Equals(Exchange.TimeZone)) throw new ArgumentException("ExchangeTimeZones must match.", "subscription.ExchangeTimeZone");
-            SubscriptionsBag.Add(subscription);
-            UpdateSubscriptionProperties();
+            lock (_subscriptionsBag)
+            {
+                if (subscription.Symbol != Symbol)
+                {
+                    throw new ArgumentException(Messages.Security.UnmatchingSymbols, $"{nameof(subscription)}.{nameof(subscription.Symbol)}");
+                }
+                if (!subscription.ExchangeTimeZone.Equals(Exchange.TimeZone))
+                {
+                    throw new ArgumentException(Messages.Security.UnmatchingExchangeTimeZones, $"{nameof(subscription)}.{nameof(subscription.ExchangeTimeZone)}");
+                }
+                _subscriptionsBag.Add(subscription);
+                UpdateSubscriptionProperties();
+            }
         }
 
         /// <summary>
@@ -800,28 +1071,78 @@ namespace QuantConnect.Securities
         /// <param name="subscriptions">The subscription configuration to add. The Symbol and ExchangeTimeZone properties must match the existing Security object</param>
         internal void AddData(SubscriptionDataConfigList subscriptions)
         {
-            foreach (var subscription in subscriptions)
+            lock (_subscriptionsBag)
             {
-                if (subscription.Symbol != Symbol) throw new ArgumentException("Symbols must match.", "subscription.Symbol");
-                if (!subscription.ExchangeTimeZone.Equals(Exchange.TimeZone)) throw new ArgumentException("ExchangeTimeZones must match.", "subscription.ExchangeTimeZone");
-                SubscriptionsBag.Add(subscription);
+                foreach (var subscription in subscriptions)
+                {
+                    if (subscription.Symbol != Symbol)
+                    {
+                        throw new ArgumentException(Messages.Security.UnmatchingSymbols, $"{nameof(subscription)}.{nameof(subscription.Symbol)}");
+                    }
+                    if (!subscription.ExchangeTimeZone.Equals(Exchange.TimeZone))
+                    {
+                         throw new ArgumentException(Messages.Security.UnmatchingExchangeTimeZones, $"{nameof(subscription)}.{nameof(subscription.ExchangeTimeZone)}");
+                    }
+                    _subscriptionsBag.Add(subscription);
+                }
+                UpdateSubscriptionProperties();
             }
-            UpdateSubscriptionProperties();
         }
 
-        private void UpdateConsumersMarketPrice(BaseData data)
+        /// <summary>
+        /// Update market price of this Security
+        /// </summary>
+        /// <param name="data">Data to pull price from</param>
+        protected virtual void UpdateConsumersMarketPrice(BaseData data)
         {
             if (data is OpenInterest || data.Price == 0m) return;
             Holdings.UpdateMarketPrice(Price);
             VolatilityModel.Update(this, data);
         }
 
+        /// <summary>
+        /// Caller should hold the lock on '_subscriptionsBag'
+        /// </summary>
         private void UpdateSubscriptionProperties()
         {
-            Resolution = SubscriptionsBag.Select(x => x.Resolution).DefaultIfEmpty(Resolution.Daily).Min();
-            IsFillDataForward = SubscriptionsBag.Any(x => x.FillDataForward);
-            IsExtendedMarketHours = SubscriptionsBag.Any(x => x.ExtendedMarketHours);
+            Resolution = _subscriptionsBag.Select(x => x.Resolution).DefaultIfEmpty(Resolution.Daily).Min();
+            IsFillDataForward = _subscriptionsBag.Any(x => x.FillDataForward);
+            IsExtendedMarketHours = _subscriptionsBag.Any(x => x.ExtendedMarketHours);
             RefreshDataNormalizationModeProperty();
+        }
+
+        /// <summary>
+        /// Updates consumers market price. It will do nothing if the passed data type is auxiliary.
+        /// </summary>
+        private void UpdateMarketPrice(BaseData data)
+        {
+            if (data.DataType != MarketDataType.Auxiliary)
+            {
+                UpdateConsumersMarketPrice(data);
+            }
+        }
+
+        /// <summary>
+        /// Casts a dynamic property value to the specified type.
+        /// Useful for cases where the property value is a PyObject and we want to cast it to the underlying type.
+        /// </summary>
+        private static T CastDynamicPropertyValue<T>(object obj)
+        {
+            T value;
+            var pyObj = obj as PyObject;
+            if (pyObj != null)
+            {
+                using (Py.GIL())
+                {
+                    value = pyObj.As<T>();
+                }
+            }
+            else
+            {
+                value = (T)obj;
+            }
+
+            return value;
         }
     }
 }

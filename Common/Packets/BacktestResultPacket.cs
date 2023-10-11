@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -15,11 +15,11 @@
 */
 
 using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
-using QuantConnect.Logging;
 using QuantConnect.Orders;
+using QuantConnect.Logging;
 using QuantConnect.Statistics;
+using System.Collections.Generic;
 
 namespace QuantConnect.Packets
 {
@@ -51,6 +51,12 @@ namespace QuantConnect.Packets
         /// </summary>
         [JsonProperty(PropertyName = "sBacktestID")]
         public string BacktestId = "";
+
+        /// <summary>
+        /// OptimizationId for this result packet if any
+        /// </summary>
+        [JsonProperty(PropertyName = "sOptimizationID")]
+        public string OptimizationId;
 
         /// <summary>
         /// Compile Id for the algorithm which generated this result packet.
@@ -147,6 +153,7 @@ namespace QuantConnect.Packets
                 Results             = packet.Results;
                 ProcessingTime      = packet.ProcessingTime;
                 TradeableDates      = packet.TradeableDates;
+                OptimizationId      = packet.OptimizationId;
             }
             catch (Exception err)
             {
@@ -175,6 +182,7 @@ namespace QuantConnect.Packets
                 CompileId = job.CompileId;
                 Channel = job.Channel;
                 BacktestId = job.BacktestId;
+                OptimizationId = job.OptimizationId;
                 Results = results;
                 Name = job.Name;
                 UserId = job.UserId;
@@ -196,8 +204,8 @@ namespace QuantConnect.Packets
         {
             return new BacktestResultPacket(job, new BacktestResult(new BacktestResultParameters(
                 new Dictionary<string, Chart>(), new Dictionary<int, Order>(), new Dictionary<DateTime, decimal>(),
-                new Dictionary<string, string>(), new Dictionary<string, string>(), new Dictionary<string, AlgorithmPerformance>(),
-                new List<OrderEvent>(), new AlgorithmPerformance(), new AlphaRuntimeStatistics()
+                new Dictionary<string, string>(), new SortedDictionary<string, string>(), new Dictionary<string, AlgorithmPerformance>(),
+                new List<OrderEvent>(), new AlgorithmPerformance(), new AlgorithmConfiguration(), new Dictionary<string, string>()
             )), DateTime.UtcNow, DateTime.UtcNow);
         }
     } // End Queue Packet:
@@ -239,7 +247,8 @@ namespace QuantConnect.Packets
             RollingWindow = parameters.RollingWindow;
             OrderEvents = parameters.OrderEvents;
             TotalPerformance = parameters.TotalPerformance;
-            AlphaRuntimeStatistics = parameters.AlphaRuntimeStatistics;
+            AlgorithmConfiguration = parameters.AlgorithmConfiguration;
+            State = parameters.State;
         }
     }
 } // End of Namespace:

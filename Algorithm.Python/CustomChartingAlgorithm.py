@@ -1,4 +1,4 @@
-﻿# QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
+# QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
 # Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,18 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from clr import AddReference
-AddReference("System")
-AddReference("QuantConnect.Algorithm")
-AddReference("QuantConnect.Common")
-
-from System import *
-from QuantConnect import *
-from QuantConnect.Algorithm import *
-
-import numpy as np
-import decimal as d
-from datetime import timedelta, datetime
+from AlgorithmImports import *
 
 ### <summary>
 ### Algorithm demonstrating custom charting support in QuantConnect.
@@ -39,7 +28,8 @@ class CustomChartingAlgorithm(QCAlgorithm):
         self.SetStartDate(2016,1,1)
         self.SetEndDate(2017,1,1)
         self.SetCash(100000)
-        self.AddEquity("SPY", Resolution.Daily)
+
+        spy = self.AddEquity("SPY", Resolution.Daily).Symbol
 
         # In your initialize method:
         # Chart - Master Container for the Chart:
@@ -55,6 +45,14 @@ class CustomChartingAlgorithm(QCAlgorithm):
         avgCross.AddSeries(Series("FastMA", SeriesType.Line, 0))
         avgCross.AddSeries(Series("SlowMA", SeriesType.Line, 0))
         self.AddChart(avgCross)
+
+        # There's support for candlestick charts built-in:
+        weeklySpyPlot = Chart("Weekly SPY")
+        spyCandlesticks = CandlestickSeries("SPY")
+        weeklySpyPlot.AddSeries(spyCandlesticks)
+        self.AddChart(weeklySpyPlot)
+
+        self.Consolidate(spy, Calendar.Weekly, lambda bar: self.Plot("Weekly SPY", "SPY", bar))
 
         self.fastMA = 0
         self.slowMA = 0
@@ -85,6 +83,6 @@ class CustomChartingAlgorithm(QCAlgorithm):
             self.Plot("Trade Plot", "Sell", self.lastPrice)
             self.Liquidate()
 
-    def OnEndOfDay(self):
+    def OnEndOfDay(self, symbol):
        #Log the end of day prices:
        self.Plot("Trade Plot", "Price", self.lastPrice)

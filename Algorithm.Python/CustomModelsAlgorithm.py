@@ -1,4 +1,4 @@
-﻿# QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
+# QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
 # Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,19 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from clr import AddReference
-AddReference("System")
-AddReference("QuantConnect.Algorithm")
-AddReference("QuantConnect.Common")
-
-from System import *
-from QuantConnect import *
-from QuantConnect.Algorithm import *
-from QuantConnect.Orders import *
-from QuantConnect.Orders.Fees import *
-from QuantConnect.Securities import *
-from QuantConnect.Orders.Fills import *
-import numpy as np
+from AlgorithmImports import *
 import random
 
 ### <summary>
@@ -70,6 +58,7 @@ class CustomModelsAlgorithm(QCAlgorithm):
 # If we want to use methods from other models, you need to inherit from one of them
 class CustomFillModel(ImmediateFillModel):
     def __init__(self, algorithm):
+        super().__init__()
         self.algorithm = algorithm
         self.absoluteRemainingByOrderId = {}
         self.random = Random(387510346)
@@ -97,6 +86,7 @@ class CustomFillModel(ImmediateFillModel):
 
 class CustomFeeModel(FeeModel):
     def __init__(self, algorithm):
+        super().__init__()
         self.algorithm = algorithm
 
     def GetOrderFee(self, parameters):
@@ -119,6 +109,7 @@ class CustomSlippageModel:
 
 class CustomBuyingPowerModel(BuyingPowerModel):
     def __init__(self, algorithm):
+        super().__init__()
         self.algorithm = algorithm
 
     def HasSufficientBuyingPowerForOrder(self, parameters):
@@ -126,3 +117,66 @@ class CustomBuyingPowerModel(BuyingPowerModel):
         hasSufficientBuyingPowerForOrderResult = HasSufficientBuyingPowerForOrderResult(True)
         self.algorithm.Log(f"CustomBuyingPowerModel: {hasSufficientBuyingPowerForOrderResult.IsSufficient}")
         return hasSufficientBuyingPowerForOrderResult
+
+# The simple fill model shows how to implement a simpler version of 
+# the most popular order fills: Market, Stop Market and Limit
+class SimpleCustomFillModel(FillModel):
+    def __init__(self):
+        super().__init__()
+
+    def _create_order_event(self, asset, order):
+        utcTime = Extensions.ConvertToUtc(asset.LocalTime, asset.Exchange.TimeZone)
+        return OrderEvent(order, utcTime, OrderFee.Zero)
+
+    def _set_order_event_to_filled(self, fill, fill_price, fill_quantity):
+        fill.Status = OrderStatus.Filled
+        fill.FillQuantity = fill_quantity
+        fill.FillPrice = fill_price
+        return fill
+
+    def _get_trade_bar(self, asset, orderDirection):
+        trade_bar = asset.Cache.GetData[TradeBar]()
+        if trade_bar: return trade_bar
+
+        # Tick-resolution data doesn't have TradeBar, use the asset price
+        price = asset.Price
+        return TradeBar(asset.LocalTime, asset.Symbol, price, price, price, price, 0)
+
+    def MarketFill(self, asset, order):
+        fill = self._create_order_event(asset, order)
+        if order.Status == OrderStatus.Canceled: return fill
+
+        return self._set_order_event_to_filled(fill, 
+            asset.Cache.AskPrice \
+                if order.Direction == OrderDirection.Buy else asset.Cache.BidPrice,
+            order.Quantity)
+
+    def StopMarketFill(self, asset, order):
+        fill = self._create_order_event(asset, order)
+        if order.Status == OrderStatus.Canceled: return fill
+        
+        stop_price = order.StopPrice
+        trade_bar = self._get_trade_bar(asset, order.Direction)
+        
+        if order.Direction == OrderDirection.Sell and trade_bar.Low < stop_price:
+            return self._set_order_event_to_filled(fill, stop_price, order.Quantity)
+
+        if order.Direction == OrderDirection.Buy and trade_bar.High > stop_price:
+            return self._set_order_event_to_filled(fill, stop_price, order.Quantity)
+
+        return fill
+
+    def LimitFill(self, asset, order):
+        fill = self._create_order_event(asset, order)
+        if order.Status == OrderStatus.Canceled: return fill
+
+        limit_price = order.LimitPrice
+        trade_bar = self._get_trade_bar(asset, order.Direction)
+
+        if order.Direction == OrderDirection.Sell and trade_bar.High > limit_price:
+            return self._set_order_event_to_filled(fill, limit_price, order.Quantity)
+
+        if order.Direction == OrderDirection.Buy and trade_bar.Low < limit_price:
+            return self._set_order_event_to_filled(fill, limit_price, order.Quantity)
+
+        return fill

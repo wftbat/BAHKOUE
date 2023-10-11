@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -26,6 +26,7 @@ using QuantConnect.ToolBox;
 using QuantConnect.Util;
 using QuantConnect.Lean.Engine.DataFeeds;
 using QuantConnect.Data.Consolidators;
+using QuantConnect.Data.Market;
 
 namespace QuantConnect.Tests.ToolBox
 {
@@ -36,7 +37,101 @@ namespace QuantConnect.Tests.ToolBox
         DateTime _fromDate = new DateTime(2013, 10, 7);
         DateTime _toDate = new DateTime(2013, 10, 11);
 
+        [Test, Parallelizable(ParallelScope.Self)]
+        public void LoadsEquity_Daily_SingleEntryZip()
+        {
+            var dataPath = LeanData.GenerateZipFilePath(Globals.DataFolder, Symbols.AAPL, DateTime.UtcNow, Resolution.Daily, TickType.Trade);
+            var leanDataReader = new LeanDataReader(dataPath);
+            var data = leanDataReader.Parse().ToList();
+
+            Assert.AreEqual(5849, data.Count);
+            Assert.IsTrue(data.All(baseData => baseData.Symbol == Symbols.AAPL && baseData is TradeBar));
+        }
+
         #region futures
+
+        [Test, Parallelizable(ParallelScope.Self)]
+        public void ReadsEntireZipFileEntries_OpenInterest()
+        {
+            var baseFuture = Symbol.CreateFuture(Futures.Indices.SP500EMini, Market.CME, SecurityIdentifier.DefaultDate);
+            var filePath = LeanData.GenerateZipFilePath(Globals.DataFolder, baseFuture, new DateTime(2013, 10, 06), Resolution.Minute, TickType.OpenInterest);
+            var leanDataReader = new LeanDataReader(filePath);
+
+            var data = leanDataReader.Parse()
+                .ToList()
+                .GroupBy(baseData => baseData.Symbol)
+                .Select(grp => grp.ToList())
+                .OrderBy(list => list[0].Symbol)
+                .ToList();
+
+            Assert.AreEqual(5, data.Count);
+            Assert.IsTrue(data.All(kvp => kvp.Count == 1));
+
+            foreach (var dataForSymbol in data)
+            {
+                Assert.IsTrue(dataForSymbol[0] is OpenInterest);
+                Assert.IsFalse(dataForSymbol[0].Symbol.IsCanonical());
+                Assert.AreEqual(Futures.Indices.SP500EMini, dataForSymbol[0].Symbol.ID.Symbol);
+                Assert.AreNotEqual(0, dataForSymbol[0]);
+            }
+        }
+
+        [Test, Parallelizable(ParallelScope.Self)]
+        public void ReadsEntireZipFileEntries_Trade()
+        {
+            var baseFuture = Symbol.CreateFuture(Futures.Indices.SP500EMini, Market.CME, SecurityIdentifier.DefaultDate);
+            var filePath = LeanData.GenerateZipFilePath(Globals.DataFolder, baseFuture, new DateTime(2013, 10, 06), Resolution.Minute, TickType.Trade);
+            var leanDataReader = new LeanDataReader(filePath);
+
+            var data = leanDataReader.Parse()
+                .ToList()
+                .GroupBy(baseData => baseData.Symbol)
+                .Select(grp => grp.ToList())
+                .OrderBy(list => list[0].Symbol)
+                .ToList();
+
+            Assert.AreEqual(2, data.Count);
+
+            foreach (var dataForSymbol in data)
+            {
+                Assert.IsTrue(dataForSymbol[0] is TradeBar);
+                Assert.IsFalse(dataForSymbol[0].Symbol.IsCanonical());
+                Assert.AreEqual(Futures.Indices.SP500EMini, dataForSymbol[0].Symbol.ID.Symbol);
+            }
+
+            Assert.AreEqual(118, data[0].Count);
+            Assert.AreEqual(10, data[1].Count);
+        }
+
+        [Test, Parallelizable(ParallelScope.Self)]
+        public void ReadsEntireZipFileEntries_Quote()
+        {
+            var baseFuture = Symbol.CreateFuture(Futures.Indices.SP500EMini, Market.CME, SecurityIdentifier.DefaultDate);
+            var filePath = LeanData.GenerateZipFilePath(Globals.DataFolder, baseFuture, new DateTime(2013, 10, 06), Resolution.Minute, TickType.Quote);
+            var leanDataReader = new LeanDataReader(filePath);
+
+            var data = leanDataReader.Parse()
+                .ToList()
+                .GroupBy(baseData => baseData.Symbol)
+                .Select(grp => grp.ToList())
+                .OrderBy(list => list[0].Symbol)
+                .ToList();
+
+            Assert.AreEqual(5, data.Count);
+
+            foreach (var dataForSymbol in data)
+            {
+                Assert.IsTrue(dataForSymbol[0] is QuoteBar);
+                Assert.IsFalse(dataForSymbol[0].Symbol.IsCanonical());
+                Assert.AreEqual(Futures.Indices.SP500EMini, dataForSymbol[0].Symbol.ID.Symbol);
+            }
+
+            Assert.AreEqual(10, data[0].Count);
+            Assert.AreEqual(13, data[1].Count);
+            Assert.AreEqual(52, data[2].Count);
+            Assert.AreEqual(155, data[3].Count);
+            Assert.AreEqual(100, data[4].Count);
+        }
 
         [Test]
         public void ReadFutureChainData()
@@ -84,11 +179,12 @@ namespace QuantConnect.Tests.ToolBox
             //load future chain first
             var config = new SubscriptionDataConfig(typeof(ZipEntryName), baseFuture, res,
                                                     TimeZones.NewYork, TimeZones.NewYork, false, false, false, false, tickType);
+            using var cacheProvider = new ZipDataCacheProvider(TestGlobals.DataProvider);
+            var factory = new ZipEntryNameSubscriptionDataSourceReader(cacheProvider, config, date, false);
 
-            var factory = new ZipEntryNameSubscriptionDataSourceReader(config, date, false);
-
-            return factory.Read(new SubscriptionDataSource(filePath, SubscriptionTransportMedium.LocalFile, FileFormat.ZipEntryName))
+            var result = factory.Read(new SubscriptionDataSource(filePath, SubscriptionTransportMedium.LocalFile, FileFormat.ZipEntryName))
                           .Select(s => s.Symbol).ToList();
+            return result;
         }
 
         private string LoadFutureData(Symbol future, TickType tickType, Resolution res)
@@ -221,7 +317,7 @@ namespace QuantConnect.Tests.ToolBox
 
 
         [Test, TestCaseSource(nameof(OptionAndFuturesCases))]
-        public void ReadLeanFutureAndOptionDataFromFilePath(string composedFilePath, Symbol symbol,  int rowsInfile, double sumValue)
+        public void ReadLeanFutureAndOptionDataFromFilePath(string composedFilePath, Symbol symbol, int rowsInfile, double sumValue)
         {
             // Act
             var ldr = new LeanDataReader(composedFilePath);
@@ -319,6 +415,36 @@ namespace QuantConnect.Tests.ToolBox
                                                 "20151224_goog_minute_openinterest_american_call_3000000_20160115.csv"),
                 1,
                 38
+            },
+
+            new object[]
+            {
+                "../../../Data/option/usa/daily/aapl_2014_openinterest_american.zip#aapl_openinterest_american_call_1950000_20150117.csv",
+                LeanData.ReadSymbolFromZipEntry(Symbol.Create("AAPL", SecurityType.Option, Market.USA),
+                    Resolution.Daily,
+                    "aapl_openinterest_american_call_1950000_20150117.csv"),
+                2,
+                824
+            },
+
+            new object[]
+            {
+            "../../../Data/option/usa/daily/aapl_2014_trade_american.zip#aapl_trade_american_call_5400000_20141018.csv",
+            LeanData.ReadSymbolFromZipEntry(Symbol.Create("AAPL", SecurityType.Option, Market.USA),
+                Resolution.Daily,
+                "aapl_trade_american_call_5400000_20141018.csv"),
+            1,
+            109.9
+            },
+
+            new object[]
+            {
+                "../../../Data/option/usa/daily/aapl_2014_quote_american.zip#aapl_quote_american_call_307100_20150117.csv",
+                LeanData.ReadSymbolFromZipEntry(Symbol.Create("AAPL", SecurityType.Option, Market.USA),
+                    Resolution.Daily,
+                    "aapl_quote_american_call_307100_20150117.csv"),
+                1,
+                63.3
             }
         };
 
@@ -345,11 +471,11 @@ namespace QuantConnect.Tests.ToolBox
         public static object[] SpotMarketCases =
         {
             //TODO: generate Low resolution sample data for equities
-            new object[] {"equity", "usa", "daily", "aig", "aig.zip", 5580, 331752.9901},
-            new object[] {"equity", "usa", "minute", "aapl", "20140605_trade.zip", 658, 425067.37},
-            new object[] {"equity", "usa", "minute", "ibm", "20131010_quote.zip", 584, 107061.28},
-            new object[] {"equity", "usa", "second", "ibm", "20131010_trade.zip", 2878, 528701.39},
-            new object[] {"equity", "usa", "tick", "bac", "20131011_trade.zip", 108505, 1539443.26},
+            new object[] {"equity", "usa", "daily", "aig", "aig.zip", 5849, 340770.5801},
+            new object[] {"equity", "usa", "minute", "aapl", "20140605_trade.zip", 686, 443184.58},
+            new object[] {"equity", "usa", "minute", "ibm", "20131010_quote.zip", 584, 107061.125},
+            new object[] {"equity", "usa", "second", "ibm", "20131010_trade.zip", 5060, 929385.34},
+            new object[] {"equity", "usa", "tick", "bac", "20131011_trade.zip", 112177, 1591680.73},
             new object[] {"forex", "oanda", "minute", "eurusd", "20140502_quote.zip", 1222, 1693.578875},
             new object[] {"forex", "oanda", "second", "nzdusd", "20140514_quote.zip", 18061, 15638.724575},
             new object[] {"forex", "oanda", "tick", "eurusd", "20140507_quote.zip", 41367, 57598.54664},

@@ -40,8 +40,8 @@ namespace QuantConnect.Algorithm.CSharp
         private int _expectedContractIndex;
         private readonly List<Symbol> _expectedContracts = new List<Symbol>
         {
-            SymbolRepresentation.ParseOptionTickerOSI("GOOG  151224P00750000"),
             SymbolRepresentation.ParseOptionTickerOSI("GOOG  151224P00747500"),
+            SymbolRepresentation.ParseOptionTickerOSI("GOOG  151224P00750000"),
             SymbolRepresentation.ParseOptionTickerOSI("GOOG  151224P00752500")
         };
 
@@ -79,19 +79,19 @@ namespace QuantConnect.Algorithm.CSharp
                 // things like manually added, auto added, internal, and any other boolean state we need to track against a single security)
                 throw new Exception("The underlying equity data should NEVER be removed in this algorithm because it was manually added");
             }
-            if (_expectedSecurities.AreDifferent(LinqExtensions.ToHashSet(Securities.Keys)))
+            if (_expectedSecurities.AreDifferent(Securities.Keys.ToHashSet()))
             {
                 var expected = string.Join(Environment.NewLine, _expectedSecurities.OrderBy(s => s.ToString()));
                 var actual = string.Join(Environment.NewLine, Securities.Keys.OrderBy(s => s.ToString()));
                 throw new Exception($"{Time}:: Detected differences in expected and actual securities{Environment.NewLine}Expected:{Environment.NewLine}{expected}{Environment.NewLine}Actual:{Environment.NewLine}{actual}");
             }
-            if (_expectedUniverses.AreDifferent(LinqExtensions.ToHashSet(UniverseManager.Keys)))
+            if (_expectedUniverses.AreDifferent(UniverseManager.Keys.ToHashSet()))
             {
                 var expected = string.Join(Environment.NewLine, _expectedUniverses.OrderBy(s => s.ToString()));
                 var actual = string.Join(Environment.NewLine, UniverseManager.Keys.OrderBy(s => s.ToString()));
                 throw new Exception($"{Time}:: Detected differences in expected and actual universes{Environment.NewLine}Expected:{Environment.NewLine}{expected}{Environment.NewLine}Actual:{Environment.NewLine}{actual}");
             }
-            if (_expectedData.AreDifferent(LinqExtensions.ToHashSet(data.Keys)))
+            if (_expectedData.AreDifferent(data.Keys.ToHashSet()))
             {
                 var expected = string.Join(Environment.NewLine, _expectedData.OrderBy(s => s.ToString()));
                 var actual = string.Join(Environment.NewLine, data.Keys.OrderBy(s => s.ToString()));
@@ -109,6 +109,11 @@ namespace QuantConnect.Algorithm.CSharp
                 var googOptionChain = AddOption(UnderlyingTicker);
                 googOptionChain.SetFilter(u =>
                 {
+                    // we added the universe at 10, the universe selection data should not be from before
+                    if (u.Underlying.EndTime.Hour < 10)
+                    {
+                        throw new Exception($"Unexpected underlying data point {u.Underlying.EndTime} {u.Underlying}");
+                    }
                     // find first put above market price
                     return u.IncludeWeeklys()
                         .Strikes(+1, +1)
@@ -183,7 +188,7 @@ namespace QuantConnect.Algorithm.CSharp
                 if (changes.RemovedSecurities
                     .Where(x => x.Symbol.SecurityType == SecurityType.Option)
                     .ToHashSet(s => s.Symbol)
-                    .AreDifferent(LinqExtensions.ToHashSet(_expectedContracts)))
+                    .AreDifferent(_expectedContracts.ToHashSet()))
                 {
                     throw new Exception("Expected removed securities to equal expected contracts added");
                 }
@@ -204,6 +209,16 @@ namespace QuantConnect.Algorithm.CSharp
         /// This is used by the regression test system to indicate which languages this algorithm is written in.
         /// </summary>
         public Language[] Languages { get; } = { Language.CSharp };
+
+        /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 200618;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 0;
 
         /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
@@ -230,26 +245,10 @@ namespace QuantConnect.Algorithm.CSharp
             {"Tracking Error", "0"},
             {"Treynor Ratio", "0"},
             {"Total Fees", "$6.00"},
-            {"Fitness Score", "0"},
-            {"Kelly Criterion Estimate", "0"},
-            {"Kelly Criterion Probability Value", "0"},
-            {"Sortino Ratio", "0"},
-            {"Return Over Maximum Drawdown", "0"},
-            {"Portfolio Turnover", "0"},
-            {"Total Insights Generated", "0"},
-            {"Total Insights Closed", "0"},
-            {"Total Insights Analysis Completed", "0"},
-            {"Long Insight Count", "0"},
-            {"Short Insight Count", "0"},
-            {"Long/Short Ratio", "100%"},
-            {"Estimated Monthly Alpha Value", "$0"},
-            {"Total Accumulated Estimated Alpha Value", "$0"},
-            {"Mean Population Estimated Insight Value", "$0"},
-            {"Mean Population Direction", "0%"},
-            {"Mean Population Magnitude", "0%"},
-            {"Rolling Averaged Population Direction", "0%"},
-            {"Rolling Averaged Population Magnitude", "0%"},
-            {"OrderListHash", "731140098"}
+            {"Estimated Strategy Capacity", "$2000.00"},
+            {"Lowest Capacity Asset", "GOOCV 305RBR0BSWIX2|GOOCV VP83T1ZUHROL"},
+            {"Portfolio Turnover", "1.19%"},
+            {"OrderListHash", "550a99c482106defd8ba15f48183768e"}
         };
     }
 }

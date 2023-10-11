@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
@@ -43,13 +43,17 @@ namespace QuantConnect.Messaging
         /// <summary>
         /// Initialize the Messaging System Plugin. 
         /// </summary>
-        public void Initialize()
+        /// <param name="initializeParameters">The parameters required for initialization</param>
+        public void Initialize(MessagingHandlerInitializeParameters initializeParameters)
         {
             _queue = new Queue<Packet>();
 
             ConsumerReadyEvent += () => { _loaded = true; };
         }
 
+        /// <summary>
+        /// Set Loaded to true
+        /// </summary>
         public void LoadingComplete()
         {
             _loaded = true;
@@ -64,11 +68,14 @@ namespace QuantConnect.Messaging
             _job = job;
         }
 
+#pragma warning disable 1591
         public delegate void DebugEventRaised(DebugPacket packet);
         public event DebugEventRaised DebugEvent;
 
         public delegate void SystemDebugEventRaised(SystemDebugPacket packet);
+#pragma warning disable 0067 // SystemDebugEvent is not used currently; ignore the warning
         public event SystemDebugEventRaised SystemDebugEvent;
+#pragma warning restore 0067
 
         public delegate void LogEventRaised(LogPacket packet);
         public event LogEventRaised LogEvent;
@@ -84,6 +91,7 @@ namespace QuantConnect.Messaging
 
         public delegate void ConsumerReadyEventRaised();
         public event ConsumerReadyEventRaised ConsumerReadyEvent;
+#pragma warning restore 1591
 
         /// <summary>
         /// Send any message with a base type of Packet.
@@ -98,9 +106,9 @@ namespace QuantConnect.Messaging
             }
 
             //Catch up if this is the first time
-            while (_queue.Count > 0)
+            while (_queue.TryDequeue(out var item))
             {
-                ProcessPacket(_queue.Dequeue());
+                ProcessPacket(item);
             }
 
             //Finally process this new packet
@@ -114,7 +122,7 @@ namespace QuantConnect.Messaging
         public void SendNotification(Notification notification)
         {
             var type = notification.GetType();
-            if (type == typeof (NotificationEmail) || type == typeof (NotificationWeb) || type == typeof (NotificationSms))
+            if (type == typeof (NotificationEmail) || type == typeof (NotificationWeb) || type == typeof (NotificationSms) || type == typeof (NotificationTelegram))
             {
                 Log.Error("Messaging.SendNotification(): Send not implemented for notification of type: " + type.Name);
                 return;
@@ -127,9 +135,9 @@ namespace QuantConnect.Messaging
         /// </summary>
         public void SendEnqueuedPackets()
         {
-            while (_queue.Count > 0 && _loaded)
+            while (_loaded && _queue.TryDequeue(out var item))
             {
-                ProcessPacket(_queue.Dequeue());
+                ProcessPacket(item);
             }
         }
 

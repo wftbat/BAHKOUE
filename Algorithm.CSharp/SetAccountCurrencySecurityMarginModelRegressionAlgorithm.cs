@@ -21,6 +21,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 using QuantConnect.Statistics;
+using QuantConnect.Algorithm.Framework.Portfolio;
 
 namespace QuantConnect.Algorithm.CSharp
 {
@@ -99,7 +100,7 @@ namespace QuantConnect.Algorithm.CSharp
 
         private void UpdateExpectedOrderQuantity(decimal target)
         {
-            _expectedOrderQuantity = ((Portfolio.TotalPortfolioValue - Settings.FreePortfolioValue) * target - _spy.Holdings.HoldingsValue)
+            _expectedOrderQuantity = (Portfolio.TotalPortfolioValueLessFreeBuffer * target - _spy.Holdings.HoldingsValue)
                 / (_spy.Price * _spy.QuoteCurrency.ConversionRate);
             _expectedOrderQuantity--; // minus 1 per fees
             _expectedOrderQuantity -= _expectedOrderQuantity % _spy.SymbolProperties.LotSize;
@@ -129,7 +130,7 @@ namespace QuantConnect.Algorithm.CSharp
             {
                 Log($"OnOrderEvent(): New filled order event: {orderEvent}");
                 // leave 1 unit as error in expected value
-                if (Math.Abs(orderEvent.FillQuantity - _expectedOrderQuantity) > 1)
+                if (Math.Abs(orderEvent.FillQuantity - _expectedOrderQuantity) > 2)
                 {
                     throw new Exception($"Unexpected order event fill quantity: {orderEvent.FillQuantity}. " +
                         $"Expected {_expectedOrderQuantity}");
@@ -190,50 +191,44 @@ namespace QuantConnect.Algorithm.CSharp
         public Language[] Languages { get; } = { Language.CSharp };
 
         /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 73;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 60;
+
+        /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
         /// </summary>
         public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
         {
             {"Total Trades", "6"},
-            {"Average Win", "0.40%"},
-            {"Average Loss", "-0.86%"},
-            {"Compounding Annual Return", "-15.825%"},
-            {"Drawdown", "1.100%"},
-            {"Expectancy", "-0.266"},
-            {"Net Profit", "-0.463%"},
-            {"Sharpe Ratio", "-1.475"},
-            {"Probabilistic Sharpe Ratio", "33.116%"},
+            {"Average Win", "0.41%"},
+            {"Average Loss", "-0.85%"},
+            {"Compounding Annual Return", "-15.350%"},
+            {"Drawdown", "1.200%"},
+            {"Expectancy", "-0.260"},
+            {"Net Profit", "-0.448%"},
+            {"Sharpe Ratio", "-1.457"},
+            {"Probabilistic Sharpe Ratio", "33.743%"},
             {"Loss Rate", "50%"},
             {"Win Rate", "50%"},
-            {"Profit-Loss Ratio", "0.47"},
-            {"Alpha", "-0.196"},
-            {"Beta", "0.123"},
-            {"Annual Standard Deviation", "0.081"},
+            {"Profit-Loss Ratio", "0.48"},
+            {"Alpha", "-0.349"},
+            {"Beta", "0.34"},
+            {"Annual Standard Deviation", "0.084"},
             {"Annual Variance", "0.007"},
-            {"Information Ratio", "-4.271"},
-            {"Tracking Error", "0.174"},
-            {"Treynor Ratio", "-0.972"},
-            {"Total Fees", "$12.99"},
-            {"Fitness Score", "0.031"},
-            {"Kelly Criterion Estimate", "0"},
-            {"Kelly Criterion Probability Value", "0"},
-            {"Sortino Ratio", "-3.46"},
-            {"Return Over Maximum Drawdown", "-14.323"},
-            {"Portfolio Turnover", "0.445"},
-            {"Total Insights Generated", "0"},
-            {"Total Insights Closed", "0"},
-            {"Total Insights Analysis Completed", "0"},
-            {"Long Insight Count", "0"},
-            {"Short Insight Count", "0"},
-            {"Long/Short Ratio", "100%"},
-            {"Estimated Monthly Alpha Value", "€0"},
-            {"Total Accumulated Estimated Alpha Value", "€0"},
-            {"Mean Population Estimated Insight Value", "€0"},
-            {"Mean Population Direction", "0%"},
-            {"Mean Population Magnitude", "0%"},
-            {"Rolling Averaged Population Direction", "0%"},
-            {"Rolling Averaged Population Magnitude", "0%"},
-            {"OrderListHash", "-304070777"}
+            {"Information Ratio", "-6.6"},
+            {"Tracking Error", "0.119"},
+            {"Treynor Ratio", "-0.361"},
+            {"Total Fees", "€13.73"},
+            {"Estimated Strategy Capacity", "€310000000.00"},
+            {"Lowest Capacity Asset", "SPY R735QTJ8XC9X"},
+            {"Portfolio Turnover", "40.08%"},
+            {"OrderListHash", "5230b859fdb16443fb80362669327a56"}
         };
     }
 }

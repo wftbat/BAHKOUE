@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -23,7 +23,7 @@ namespace QuantConnect.Packets
     /// <summary>
     /// Algorithm Node Packet is a work task for the Lean Engine
     /// </summary>
-    public class AlgorithmNodePacket : Packet
+    public class AlgorithmNodePacket : PythonEnvironmentPacket
     {
         /// <summary>
         /// Default constructor for the algorithm node:
@@ -32,6 +32,12 @@ namespace QuantConnect.Packets
         public AlgorithmNodePacket(PacketType type)
             : base(type)
         { }
+
+        /// <summary>
+        /// The host name to use if any
+        /// </summary>
+        [JsonProperty(PropertyName = "sHostName")]
+        public string HostName;
 
         /// <summary>
         /// User Id placing request
@@ -43,11 +49,21 @@ namespace QuantConnect.Packets
         [JsonProperty(PropertyName = "sUserToken")]
         public string UserToken = "";
 
+        /// User Organization Id
+        [JsonProperty(PropertyName = "sOrganizationID")]
+        public string OrganizationId = "";
+
         /// <summary>
         /// Project Id of the request
         /// </summary>
         [JsonProperty(PropertyName = "iProjectID")]
         public int ProjectId = 0;
+
+        /// <summary>
+        /// Project name of the request
+        /// </summary>
+        [JsonProperty(PropertyName = "sProjectName")]
+        public string ProjectName;
 
         /// <summary>
         /// Algorithm Id - BacktestId or DeployId - Common Id property between packets.
@@ -70,12 +86,6 @@ namespace QuantConnect.Packets
         /// </summary>
         [JsonProperty(PropertyName = "sSessionID")]
         public string SessionId = "";
-
-        /// <summary>
-        /// User subscriptions state - free or paid.
-        /// </summary>
-        [JsonProperty(PropertyName = "sUserPlan")]
-        public UserPlan UserPlan = UserPlan.Free;
 
         /// <summary>
         /// Language flag: Currently represents IL code or Dynamic Scripted Types.
@@ -145,6 +155,18 @@ namespace QuantConnect.Packets
         /// </summary>
         [JsonProperty(PropertyName = "sHistoryProvider")]
         public string HistoryProvider = "";
+
+        /// <summary>
+        /// Algorithm running mode.
+        /// </summary>
+        [JsonIgnore]
+        public virtual AlgorithmMode AlgorithmMode { get; } = AlgorithmMode.Backtesting;
+
+        /// <summary>
+        /// Deployment target, either local or cloud.
+        /// </summary>
+        [JsonIgnore]
+        public DeploymentTarget DeploymentTarget;
 
         /// <summary>
         /// Gets a unique name for the algorithm defined by this packet

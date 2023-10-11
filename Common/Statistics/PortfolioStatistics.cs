@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MathNet.Numerics.Statistics;
 using Newtonsoft.Json;
+using QuantConnect.Data;
 using QuantConnect.Util;
 
 namespace QuantConnect.Statistics
@@ -27,7 +28,7 @@ namespace QuantConnect.Statistics
     /// </summary>
     public class PortfolioStatistics
     {
-        private const decimal RiskFreeRate = 0;
+        private static Lazy<InterestRateProvider> _interestRateProvider = new Lazy<InterestRateProvider>();
 
         /// <summary>
         /// The average rate of return for winning trades
@@ -146,24 +147,43 @@ namespace QuantConnect.Statistics
         [JsonConverter(typeof(JsonRoundingConverter))]
         public decimal TreynorRatio { get; set; }
 
+        /// <summary>
+        /// The average Portfolio Turnover
+        /// </summary>
+        [JsonConverter(typeof(JsonRoundingConverter))]
+        public decimal PortfolioTurnover { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PortfolioStatistics"/> class
         /// </summary>
         /// <param name="profitLoss">Trade record of profits and losses</param>
         /// <param name="equity">The list of daily equity values</param>
+        /// <param name="portfolioTurnover">The algorithm portfolio turnover</param>
         /// <param name="listPerformance">The list of algorithm performance values</param>
         /// <param name="listBenchmark">The list of benchmark values</param>
         /// <param name="startingCapital">The algorithm starting capital</param>
         /// <param name="tradingDaysPerYear">The number of trading days per year</param>
+        /// <param name="winCount">
+        /// The number of wins, including ITM options with profitLoss less than 0.
+        /// If this and <paramref name="lossCount"/> are null, they will be calculated from <paramref name="profitLoss"/>
+        /// </param>
+        /// <param name="lossCount">The number of losses</param>
         public PortfolioStatistics(
             SortedDictionary<DateTime, decimal> profitLoss,
             SortedDictionary<DateTime, decimal> equity,
+            SortedDictionary<DateTime, decimal> portfolioTurnover,
             List<double> listPerformance,
             List<double> listBenchmark,
             decimal startingCapital,
-            int tradingDaysPerYear = 252)
+            int tradingDaysPerYear = 252,
+            int? winCount = null,
+            int? lossCount = null)
         {
+            if (portfolioTurnover.Count > 0)
+            {
+                PortfolioTurnover = portfolioTurnover.Select(kvp => kvp.Value).Average();
+            }
+
             if (startingCapital == 0
                 // minimum amount of samples to calculate variance
                 || listBenchmark.Count < 2
@@ -199,8 +219,17 @@ namespace QuantConnect.Statistics
             AverageLossRate = totalLosses == 0 ? 0 : totalLoss / totalLosses;
             ProfitLossRatio = AverageLossRate == 0 ? 0 : AverageWinRate / Math.Abs(AverageLossRate);
 
-            WinRate = profitLoss.Count == 0 ? 0 : (decimal) totalWins / profitLoss.Count;
-            LossRate = profitLoss.Count == 0 ? 0 : (decimal) totalLosses / profitLoss.Count;
+            // Set the actual total wins and losses count.
+            // Some options assignments (ITM) count as wins even though they are losses.
+            if (winCount.HasValue && lossCount.HasValue)
+            {
+                totalWins = winCount.Value;
+                totalLosses = lossCount.Value;
+            }
+
+            var totalTrades = totalWins + totalLosses;
+            WinRate = totalTrades == 0 ? 0 : (decimal) totalWins / totalTrades;
+            LossRate = totalTrades == 0 ? 0 : (decimal) totalLosses / totalTrades;
             Expectancy = WinRate * ProfitLossRatio - LossRate;
 
             if (startingCapital != 0)
@@ -218,18 +247,20 @@ namespace QuantConnect.Statistics
 
             var benchmarkAnnualPerformance = GetAnnualPerformance(listBenchmark, tradingDaysPerYear);
             var annualPerformance = GetAnnualPerformance(listPerformance, tradingDaysPerYear);
-            SharpeRatio = AnnualStandardDeviation == 0 ? 0 : (annualPerformance - RiskFreeRate) / AnnualStandardDeviation;
+
+            var riskFreeRate = GetAverageRiskFreeRate(equity.Select(x => x.Key));
+            SharpeRatio = AnnualStandardDeviation == 0 ? 0 : (annualPerformance - riskFreeRate) / AnnualStandardDeviation;
 
             var benchmarkVariance = listBenchmark.Variance();
             Beta = benchmarkVariance.IsNaNOrZero() ? 0 : (decimal) (listPerformance.Covariance(listBenchmark) / benchmarkVariance);
 
-            Alpha = Beta == 0 ? 0 : annualPerformance - (RiskFreeRate + Beta * (benchmarkAnnualPerformance - RiskFreeRate));
+            Alpha = Beta == 0 ? 0 : annualPerformance - (riskFreeRate + Beta * (benchmarkAnnualPerformance - riskFreeRate));
 
             TrackingError = (decimal)Statistics.TrackingError(listPerformance, listBenchmark, (double)tradingDaysPerYear);
 
             InformationRatio = TrackingError == 0 ? 0 : (annualPerformance - benchmarkAnnualPerformance) / TrackingError;
 
-            TreynorRatio = Beta == 0 ? 0 : (annualPerformance - RiskFreeRate) / Beta;
+            TreynorRatio = Beta == 0 ? 0 : (annualPerformance - riskFreeRate) / Beta;
 
             // deannualize a 1 sharpe ratio
             var benchmarkSharpeRatio = 1.0d / Math.Sqrt(252);
@@ -244,11 +275,24 @@ namespace QuantConnect.Statistics
         }
 
         /// <summary>
-        /// Gets the current defined risk free annual return rate
+        /// Gets the average risk free annual return rate
         /// </summary>
-        public static decimal GetRiskFreeRate()
+        /// <param name="startDate">Start date to calculate the average</param>
+        /// <param name="endDate">End date to calculate the average</param>
+        public static decimal GetRiskFreeRate(DateTime startDate, DateTime endDate)
         {
-            return RiskFreeRate;
+            return GetAverageRiskFreeRate(Time.EachDay(startDate, endDate));
+        }
+
+        /// <summary>
+        /// Gets the average Risk Free Rate from the interest rate of the given dates
+        /// </summary>
+        /// <param name="dates">Collection of dates from which the interest rates will be computed
+        /// and then the average of them</param>
+        public static decimal GetAverageRiskFreeRate(IEnumerable<DateTime> dates)
+        {
+            var interestRates = dates.Select(x => _interestRateProvider.Value.GetInterestRate(x)).DefaultIfEmpty(0);
+            return interestRates.Average();
         }
 
         /// <summary>
@@ -278,11 +322,11 @@ namespace QuantConnect.Statistics
         /// </summary>
         /// <param name="performance">Dictionary collection of double performance values</param>
         /// <param name="tradingDaysPerYear">Trading days per year for the assets in portfolio</param>
-        /// <remarks>May be unaccurate for forex algorithms with more trading days in a year</remarks>
+        /// <remarks>May be inaccurate for forex algorithms with more trading days in a year</remarks>
         /// <returns>Double annual performance percentage</returns>
         private static decimal GetAnnualPerformance(List<double> performance, int tradingDaysPerYear = 252)
         {
-            return (decimal)Statistics.AnnualPerformance(performance, (double)tradingDaysPerYear);
+            return Statistics.AnnualPerformance(performance, tradingDaysPerYear).SafeDecimalCast();
         }
 
         /// <summary>
@@ -296,6 +340,6 @@ namespace QuantConnect.Statistics
         {
             var variance = performance.Variance();
             return variance.IsNaNOrZero() ? 0 : (decimal)variance * tradingDaysPerYear;
-        }        
+        }
     }
 }

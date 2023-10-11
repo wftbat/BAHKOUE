@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -15,13 +15,17 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using NodaTime;
 using NUnit.Framework;
 using QuantConnect.Data;
 using QuantConnect.Data.Auxiliary;
 using QuantConnect.Data.Market;
+using QuantConnect.Data.UniverseSelection;
 using QuantConnect.Interfaces;
 using QuantConnect.Lean.Engine.DataFeeds;
+using QuantConnect.Securities;
 using QuantConnect.Util;
 
 namespace QuantConnect.Tests.Engine.DataFeeds
@@ -46,27 +50,24 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             var start = new DateTime(2019, 12, 9);
             var end = new DateTime(2019, 12, 12);
 
-            var mapFileProvider = new LocalDiskMapFileProvider();
-            var mapFileResolver = new MapFileResolver(mapFileProvider.Get(Market.USA));
-
-            var dataReader = new SubscriptionDataReader(
-                new SubscriptionDataConfig(typeof(TradeBar),
-                    Symbols.SPY,
-                    dataResolution,
-                    TimeZones.NewYork,
-                    TimeZones.NewYork,
-                    false,
-                    false,
-                    false),
-                start,
-                end,
-                mapFileResolver,
-                new LocalDiskFactorFileProvider(mapFileProvider),
-                LinqExtensions.Range(start, end, time => time + TimeSpan.FromDays(1)),
+            var symbol = Symbols.SPY;
+            var entry = MarketHoursDatabase.FromDataFolder().GetEntry(symbol.ID.Market, symbol, symbol.SecurityType);
+            var config = new SubscriptionDataConfig(typeof(TradeBar),
+                symbol,
+                dataResolution,
+                TimeZones.NewYork,
+                TimeZones.NewYork,
                 false,
+                false,
+                false);
+            using var dataReader = new SubscriptionDataReader(config,
+                new HistoryRequest(config, entry.ExchangeHours, start, end),
+                TestGlobals.MapFileProvider,
+                TestGlobals.FactorFileProvider,
                 new TestDataCacheProvider
-                { Data = data }
-                );
+                { Data = data },
+                TestGlobals.DataProvider,
+                null);
 
             Assert.IsTrue(dataReader.MoveNext());
             Assert.AreEqual(shouldEmitSecondDataPoint, dataReader.MoveNext());
@@ -81,7 +82,10 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             public void Dispose()
             {
             }
-
+            public List<string> GetZipEntries(string zipFile)
+            {
+                throw new NotImplementedException();
+            }
             public bool IsDataEphemeral => true;
             public Stream Fetch(string key)
             {

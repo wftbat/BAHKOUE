@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -20,7 +20,6 @@ using NUnit.Framework;
 using QuantConnect.Brokerages;
 using QuantConnect.Data;
 using QuantConnect.Data.UniverseSelection;
-using QuantConnect.Lean.Engine.DataFeeds;
 using QuantConnect.Lean.Engine.DataFeeds.Enumerators.Factories;
 using QuantConnect.Logging;
 using QuantConnect.Securities;
@@ -48,11 +47,9 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
 
             var universeSettings = new UniverseSettings(Resolution.Daily, 2m, true, false, TimeSpan.FromDays(1));
             var securityInitializer = new BrokerageModelSecurityInitializer(new DefaultBrokerageModel(), SecuritySeeder.Null);
-            var universe = new CoarseFundamentalUniverse(universeSettings, securityInitializer, x => new List<Symbol>{ Symbols.AAPL });
+            var universe = new CoarseFundamentalUniverse(universeSettings, x => new List<Symbol>{ Symbols.AAPL });
 
-            var fileProvider = new DefaultDataProvider();
-
-            var factory = new BaseDataCollectionSubscriptionEnumeratorFactory();
+            var factory = new BaseDataCollectionSubscriptionEnumeratorFactory(null);
 
             GC.Collect();
             var ramUsageBeforeLoop = OS.TotalPhysicalMemoryUsed;
@@ -63,7 +60,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
             for (var i = 0; i < iterations; i++)
             {
                 var request = new SubscriptionRequest(true, universe, security, config, date, date);
-                using (var enumerator = factory.CreateEnumerator(request, fileProvider))
+                using (var enumerator = factory.CreateEnumerator(request, TestGlobals.DataProvider))
                 {
                     enumerator.MoveNext();
                 }
@@ -94,11 +91,9 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
 
             var universeSettings = new UniverseSettings(Resolution.Daily, 2m, true, false, TimeSpan.FromDays(1));
             var securityInitializer = new BrokerageModelSecurityInitializer(new DefaultBrokerageModel(), SecuritySeeder.Null);
-            var universe = new CoarseFundamentalUniverse(universeSettings, securityInitializer, x => new List<Symbol> { Symbols.AAPL });
+            var universe = new CoarseFundamentalUniverse(universeSettings, x => new List<Symbol> { Symbols.AAPL });
 
-            var fileProvider = new DefaultDataProvider();
-
-            var factory = new BaseDataCollectionSubscriptionEnumeratorFactory();
+            var factory = new BaseDataCollectionSubscriptionEnumeratorFactory(null);
 
             var dateStart = new DateTime(2014, 3, 26);
             var dateEnd = new DateTime(2014, 3, 27);
@@ -106,7 +101,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators.Factories
 
             var request = new SubscriptionRequest(true, universe, security, config, dateStart, dateEnd);
 
-            using (var enumerator = factory.CreateEnumerator(request, fileProvider))
+            using (var enumerator = factory.CreateEnumerator(request, TestGlobals.DataProvider))
             {
                 dateStart = dateStart.AddDays(-1);
                 for (var i = 0; i <= days; i++)

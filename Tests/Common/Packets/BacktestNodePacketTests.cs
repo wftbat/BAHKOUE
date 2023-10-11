@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -50,28 +50,27 @@ namespace QuantConnect.Tests.Common.Packets
                     { "Total Trades", "1" },
                     {"Average Win", "0%"},
                     { "Average Loss", "0%"},
-                    { "Compounding Annual Return", "17.560%"},
+                    { "Compounding Annual Return", "17.457%"},
                     { "Drawdown", "30.300%"},
                     { "Expectancy", "0"},
-                    { "Net Profit", "38.142%"},
-                    { "Sharpe Ratio", "0.682"},
+                    { "Net Profit", "37.900%"},
+                    { "Sharpe Ratio", "0.532"},
                     { "Loss Rate", "0%"},
                     { "Win Rate", "0%"},
                     { "Profit-Loss Ratio", "0"},
-                    { "Alpha", "0.209"},
-                    { "Beta", "-0.136"},
-                    { "Annual Standard Deviation", "0.272"},
-                    { "Annual Variance", "0.074"},
-                    { "Information Ratio", "0.018"},
-                    { "Tracking Error", "0.422"},
-                    { "Treynor Ratio", "-1.363"},
-                    { "Total Fees", "$6.62"} },
+                    { "Alpha", "-0.002"},
+                    { "Beta", "0.948"},
+                    { "Annual Standard Deviation", "0.246"},
+                    { "Annual Variance", "0.06"},
+                    { "Information Ratio", "-0.678"},
+                    { "Tracking Error", "0.013"},
+                    { "Treynor Ratio", "0.138"},
+                    { "Total Fees", "$7.00"} },
                 Language.CSharp,
                 AlgorithmStatus.Completed);
 
             AlgorithmRunner.RunLocalBacktest(parameter.Algorithm,
                 parameter.Statistics,
-                parameter.AlphaStatistics,
                 parameter.Language,
                 parameter.ExpectedFinalStatus,
                 startDate: new DateTime(2008, 10, 10),
@@ -86,28 +85,27 @@ namespace QuantConnect.Tests.Common.Packets
                     { "Total Trades", "3" },
                     {"Average Win", "0%"},
                     { "Average Loss", "0%"},
-                    { "Compounding Annual Return", "-40.620%"},
-                    { "Drawdown", "0.300%"},
+                    { "Compounding Annual Return", "0%"},
+                    { "Drawdown", "0%"},
                     { "Expectancy", "0"},
-                    { "Net Profit", "-0.285%"},
-                    { "Sharpe Ratio", "-9.435"},
+                    { "Net Profit", "0%"},
+                    { "Sharpe Ratio", "0"},
                     { "Loss Rate", "0%"},
                     { "Win Rate", "0%"},
                     { "Profit-Loss Ratio", "0"},
-                    { "Alpha", "-0.802"},
-                    { "Beta", "0.569"},
-                    { "Annual Standard Deviation", "0.032"},
-                    { "Annual Variance", "0.001"},
-                    { "Information Ratio", "-48.662"},
-                    { "Tracking Error", "0.024"},
-                    { "Treynor Ratio", "-0.531"},
+                    { "Alpha", "0"},
+                    { "Beta", "0"},
+                    { "Annual Standard Deviation", "0"},
+                    { "Annual Variance", "0"},
+                    { "Information Ratio", "0"},
+                    { "Tracking Error", "0"},
+                    { "Treynor Ratio", "0"},
                     { "Total Fees", "$3.00"} },
                 Language.CSharp,
                 AlgorithmStatus.Completed);
 
             AlgorithmRunner.RunLocalBacktest(parameter.Algorithm,
                 parameter.Statistics,
-                parameter.AlphaStatistics,
                 parameter.Language,
                 parameter.ExpectedFinalStatus,
                 startDate: new DateTime(2014, 03, 24),
@@ -178,29 +176,29 @@ namespace QuantConnect.Tests.Common.Packets
                     {"Total Trades", "1"},
                     {"Average Win", "0%"},
                     {"Average Loss", "0%"},
-                    {"Compounding Annual Return", "246.584%"},
-                    {"Drawdown", "1.100%"},
+                    {"Compounding Annual Return", "246.546%"},
+                    {"Drawdown", "1.200%"},
                     {"Expectancy", "0"},
                     {"Net Profit", "3.464%"},
-                    {"Sharpe Ratio", "10.117"},
+                    {"Sharpe Ratio", "19.094"},
+                    {"Probabilistic Sharpe Ratio", "97.754%"},
                     {"Loss Rate", "0%"},
                     {"Win Rate", "0%"},
                     {"Profit-Loss Ratio", "0"},
-                    {"Alpha", "1.939"},
-                    {"Beta", "-0.12"},
-                    {"Annual Standard Deviation", "0.161"},
-                    {"Annual Variance", "0.026"},
-                    {"Information Ratio", "-4.537"},
-                    {"Tracking Error", "0.221"},
-                    {"Treynor Ratio", "-13.579"},
-                    {"Total Fees", "$32.60"} // 10x times more than original BasicTemplateDailyAlgorithm
+                    {"Alpha", "-0.005"},
+                    {"Beta", "0.998"},
+                    {"Annual Standard Deviation", "0.138"},
+                    {"Annual Variance", "0.019"},
+                    {"Information Ratio", "-34.028"},
+                    {"Tracking Error", "0"},
+                    {"Treynor Ratio", "2.644"},
+                    {"Total Fees", "$34.45"} // 10x times more than original BasicTemplateDailyAlgorithm
                 },
                 Language.CSharp,
                 AlgorithmStatus.Completed);
 
             AlgorithmRunner.RunLocalBacktest(parameter.Algorithm,
                 parameter.Statistics,
-                parameter.AlphaStatistics,
                 parameter.Language,
                 parameter.ExpectedFinalStatus,
                 initialCash: 1000000); // 1M vs 100K that is set in BasicTemplateDailyAlgorithm (10x)
@@ -214,29 +212,29 @@ namespace QuantConnect.Tests.Common.Packets
                     {"Total Trades", "1"},
                     {"Average Win", "0%"},
                     {"Average Loss", "0%"},
-                    {"Compounding Annual Return", "214.981%"},
-                    {"Drawdown", "1.100%"},
+                    {"Compounding Annual Return", "214.949%"},
+                    {"Drawdown", "1.200%"},
                     {"Expectancy", "0"},
                     {"Net Profit", "3.464%"},
-                    {"Sharpe Ratio", "9.066"},
+                    {"Sharpe Ratio", "16.541"},
+                    {"Probabilistic Sharpe Ratio", "98.038%"},
                     {"Loss Rate", "0%"},
                     {"Win Rate", "0%"},
                     {"Profit-Loss Ratio", "0"},
-                    {"Alpha", "1.572"},
-                    {"Beta", "-0.086"},
-                    {"Annual Standard Deviation", "0.153"},
-                    {"Annual Variance", "0.023"},
-                    {"Information Ratio", "-3.867"},
-                    {"Tracking Error", "0.208"},
-                    {"Treynor Ratio", "-16.079"},
-                    {"Total Fees", "$32.60"} // 10x times more than original BasicTemplateDailyAlgorithm
+                    {"Alpha", "-0.004"},
+                    {"Beta", "0.998"},
+                    {"Annual Standard Deviation", "0.133"},
+                    {"Annual Variance", "0.018"},
+                    {"Information Ratio", "-28.017"},
+                    {"Tracking Error", "0"},
+                    {"Treynor Ratio", "2.201"},
+                    {"Total Fees", "$34.45"} // 10x times more than original BasicTemplateDailyAlgorithm
                 },
                 Language.CSharp,
                 AlgorithmStatus.Completed);
 
             AlgorithmRunner.RunLocalBacktest(parameter.Algorithm,
                 parameter.Statistics,
-                parameter.AlphaStatistics,
                 parameter.Language,
                 parameter.ExpectedFinalStatus,
                 initialCash: 1000000, // 1M vs 100K that is set in BasicTemplateDailyAlgorithm (10x)
@@ -246,7 +244,7 @@ namespace QuantConnect.Tests.Common.Packets
             Assert.AreEqual(Currencies.USD, TestInitialCashAmountSetupHandler.TestAlgorithm.AccountCurrency);
         }
 
-        internal class TestInitialCashAmountAlgorithm : BasicTemplateDailyAlgorithm
+        public class TestInitialCashAmountAlgorithm : BasicTemplateDailyAlgorithm
         {
             public override void Initialize()
             {
@@ -256,13 +254,13 @@ namespace QuantConnect.Tests.Common.Packets
             }
         }
 
-        internal class TestInitialCashAmountSetupHandler : AlgorithmRunner.RegressionSetupHandlerWrapper
+        public class TestInitialCashAmountSetupHandler : AlgorithmRunner.RegressionSetupHandlerWrapper
         {
             public static TestInitialCashAmountAlgorithm TestAlgorithm { get; set; }
 
             public override IAlgorithm CreateAlgorithmInstance(AlgorithmNodePacket algorithmNodePacket, string assemblyPath)
             {
-                 Algorithm = TestAlgorithm = new TestInitialCashAmountAlgorithm();
+                Algorithm = TestAlgorithm = new TestInitialCashAmountAlgorithm();
                 return Algorithm;
             }
         }

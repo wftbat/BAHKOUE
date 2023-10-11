@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -80,7 +80,7 @@ namespace QuantConnect.Tests.Common.Securities.Equity
         private Security GetSecurity(Symbol symbol, DataNormalizationMode mode)
         {
             var symbolProperties = SymbolPropertiesDatabase.FromDataFolder()
-                .GetSymbolProperties(symbol.ID.Market, symbol.Value, symbol.ID.SecurityType, Currencies.USD);
+                .GetSymbolProperties(symbol.ID.Market, symbol, symbol.ID.SecurityType, Currencies.USD);
 
             Security security;
             if (symbol.ID.SecurityType == SecurityType.Equity)
@@ -108,6 +108,7 @@ namespace QuantConnect.Tests.Common.Securities.Equity
                 security = new QuantConnect.Securities.Forex.Forex(
                     SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork),
                     new Cash(Currencies.USD, 0, 1m),
+                    new Cash(Currencies.EUR, 0, 1m),
                     new SubscriptionDataConfig(
                         typeof(TradeBar),
                         symbol,

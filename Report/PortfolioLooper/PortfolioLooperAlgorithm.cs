@@ -29,18 +29,41 @@ namespace QuantConnect.Report
     {
         private decimal _startingCash;
         private List<Order> _orders;
+        private AlgorithmConfiguration _algorithmConfiguration;
 
-        public PortfolioLooperAlgorithm(decimal startingCash, IEnumerable<Order> orders) : base()
+        /// <summary>
+        /// Initialize an instance of <see cref="PortfolioLooperAlgorithm"/>
+        /// </summary>
+        /// <param name="startingCash">Starting algorithm cash</param>
+        /// <param name="orders">Orders to use</param>
+        /// <param name="algorithmConfiguration">Optional parameter to override default algorithm configuration</param>
+        public PortfolioLooperAlgorithm(decimal startingCash, IEnumerable<Order> orders, AlgorithmConfiguration algorithmConfiguration = null) : base()
         {
             _startingCash = startingCash;
             _orders = orders.ToList();
+            _algorithmConfiguration = algorithmConfiguration;
         }
 
+        /// <summary>
+        /// Initializes all the proper Securities from the orders provided by the user
+        /// </summary>
+        /// <param name="orders">Orders to use</param>
         public void FromOrders(IEnumerable<Order> orders)
         {
             foreach (var symbol in orders.Select(x => x.Symbol).Distinct())
             {
-                var resolution = symbol.SecurityType == SecurityType.Option ? Resolution.Minute : Resolution.Daily;
+                Resolution resolution;
+                switch (symbol.SecurityType)
+                {
+                    case SecurityType.Option:
+                    case SecurityType.Future:
+                        resolution = Resolution.Minute;
+                        break;
+                    default:
+                        resolution = Resolution.Daily;
+                        break;
+                }
+
                 var configs = SubscriptionManager.SubscriptionDataConfigService.Add(symbol, resolution, false, false);
                 var security = Securities.CreateSecurity(symbol, configs, 0m);
                 if (symbol.SecurityType == SecurityType.Crypto)
@@ -56,8 +79,17 @@ namespace QuantConnect.Report
             }
         }
 
+        /// <summary>
+        /// Initialize this algorithm
+        /// </summary>
         public override void Initialize()
         {
+            if (_algorithmConfiguration != null)
+            {
+                SetAccountCurrency(_algorithmConfiguration.AccountCurrency);
+                SetBrokerageModel(_algorithmConfiguration.BrokerageName, _algorithmConfiguration.AccountType);
+            }
+
             SetCash(_startingCash);
 
             if (_orders.Count != 0)

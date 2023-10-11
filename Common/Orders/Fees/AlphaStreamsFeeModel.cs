@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using QuantConnect.Securities;
-using static QuantConnect.StringExtensions;
 
 namespace QuantConnect.Orders.Fees
 {
@@ -36,7 +35,9 @@ namespace QuantConnect.Orders.Fees
             {SecurityType.Forex, 0.000002m},
             // Commission plus clearing fee
             {SecurityType.Future, 0.4m + 0.1m},
+            {SecurityType.FutureOption, 0.4m + 0.1m},
             {SecurityType.Option, 0.4m + 0.1m},
+            {SecurityType.IndexOption, 0.4m + 0.1m},
             {SecurityType.Cfd, 0m}
         };
         private const decimal _makerFee = 0.001m;
@@ -62,11 +63,12 @@ namespace QuantConnect.Orders.Fees
 
             var market = security.Symbol.ID.Market;
             decimal feeRate;
-            
+
             switch (security.Type)
             {
                 case SecurityType.Option:
                 case SecurityType.Future:
+                case SecurityType.FutureOption:
                 case SecurityType.Cfd:
                     _feeRates.TryGetValue(security.Type, out feeRate);
                     return new OrderFee(new CashAmount(feeRate * order.AbsoluteQuantity, Currencies.USD));
@@ -107,7 +109,7 @@ namespace QuantConnect.Orders.Fees
                     EquityFee equityFee;
                     if (!_equityFee.TryGetValue(market, out equityFee))
                     {
-                        throw new KeyNotFoundException($"AlphaStreamsFeeModel(): unexpected equity Market {market}");
+                        throw new KeyNotFoundException(Messages.AlphaStreamsFeeModel.UnexpectedEquityMarket(market));
                     }
                     var tradeValue = Math.Abs(order.GetValue(security));
 
@@ -125,12 +127,12 @@ namespace QuantConnect.Orders.Fees
                     {
                         tradeFee = maximumPerOrder;
                     }
-                    
+
                     return new OrderFee(new CashAmount(Math.Abs(tradeFee), equityFee.Currency));
-                    
+
                 default:
                     // unsupported security type
-                    throw new ArgumentException(Invariant($"Unsupported security type: {security.Type}"));
+                    throw new ArgumentException(Messages.FeeModel.UnsupportedSecurityType(security));
             }
         }
 

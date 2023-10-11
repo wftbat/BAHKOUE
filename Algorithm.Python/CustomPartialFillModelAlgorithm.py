@@ -1,4 +1,4 @@
-﻿# QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
+# QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
 # Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,15 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from clr import AddReference
-AddReference("QuantConnect.Algorithm")
-AddReference("QuantConnect.Common")
-
-from QuantConnect import *
-from QuantConnect.Algorithm import QCAlgorithm
-from QuantConnect.Orders import OrderStatus
-from QuantConnect.Orders.Fills import FillModel
-import numpy as np
+from AlgorithmImports import *
 
 ### <summary>
 ### Basic template algorithm that implements a fill model with partial fills
@@ -29,8 +21,8 @@ class CustomPartialFillModelAlgorithm(QCAlgorithm):
     '''Basic template algorithm that implements a fill model with partial fills'''
 
     def Initialize(self):
-        self.SetStartDate(2019,1,1)
-        self.SetEndDate(2019,3,1)
+        self.SetStartDate(2019, 1, 1)
+        self.SetEndDate(2019, 3, 1)
 
         equity = self.AddEquity("SPY", Resolution.Hour)
         self.spy = equity.Symbol
@@ -45,7 +37,7 @@ class CustomPartialFillModelAlgorithm(QCAlgorithm):
         if len(open_orders) != 0: return
 
         if self.Time.day > 10 and self.holdings.Quantity <= 0:
-            self.MarketOrder(self.spy, 100, True)
+            self.MarketOrder(self.spy, 105, True)
 
         elif self.Time.day > 20 and self.holdings.Quantity >= 0:
             self.MarketOrder(self.spy, -100, True)
@@ -64,16 +56,17 @@ class CustomPartialFillModel(FillModel):
         # Create the object
         fill = super().MarketFill(asset, order)
 
-        # Set this fill amount
+        # Set the fill amount
         fill.FillQuantity = np.sign(order.Quantity) * 10
 
-        if absoluteRemaining == fill.FillQuantity:
+        if (min(abs(fill.FillQuantity), absoluteRemaining) == absoluteRemaining):
+            fill.FillQuantity = np.sign(order.Quantity) * absoluteRemaining
             fill.Status = OrderStatus.Filled
             self.absoluteRemainingByOrderId.pop(order.Id, None)
         else:
             fill.Status = OrderStatus.PartiallyFilled
-            self.absoluteRemainingByOrderId[order.Id] = absoluteRemaining - fill.FillQuantity
+            self.absoluteRemainingByOrderId[order.Id] = absoluteRemaining - abs(fill.FillQuantity)
             price = fill.FillPrice
-            self.algorithm.Debug(f"{self.algorithm.Time} - Partial Fill - Remaining {absoluteRemaining} Price - {price}")
+            # self.algorithm.Debug(f"{self.algorithm.Time} - Partial Fill - Remaining {self.absoluteRemainingByOrderId[order.Id]} Price - {price}")
 
         return fill

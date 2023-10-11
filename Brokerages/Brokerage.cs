@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -14,15 +14,16 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using System.Threading;
-using System.Threading.Tasks;
 using QuantConnect.Data;
-using QuantConnect.Interfaces;
-using QuantConnect.Logging;
 using QuantConnect.Orders;
+using QuantConnect.Logging;
+using System.Threading.Tasks;
+using QuantConnect.Interfaces;
 using QuantConnect.Securities;
+using System.Collections.Generic;
 
 namespace QuantConnect.Brokerages
 {
@@ -39,14 +40,41 @@ namespace QuantConnect.Brokerages
         private long _lastSyncTimeTicks = DateTime.UtcNow.Ticks;
 
         /// <summary>
-        /// Event that fires each time an order is filled
+        /// Event that fires each time the brokerage order id changes
         /// </summary>
-        public event EventHandler<OrderEvent> OrderStatusChanged;
+        public event EventHandler<BrokerageOrderIdChangedEvent> OrderIdChanged;
+
+        /// Event that fires each time the status for a list of orders change
+        /// </summary>
+        public event EventHandler<List<OrderEvent>> OrdersStatusChanged;
+
+        /// <summary>
+        /// Event that fires each time an order is updated in the brokerage side
+        /// </summary>
+        /// <remarks>
+        /// These are not status changes but mainly price changes, like the stop price of a trailing stop order
+        /// </remarks>
+        public event EventHandler<OrderUpdateEvent> OrderUpdated;
 
         /// <summary>
         /// Event that fires each time a short option position is assigned
         /// </summary>
         public event EventHandler<OrderEvent> OptionPositionAssigned;
+
+        /// <summary>
+        /// Event that fires each time an option position has changed
+        /// </summary>
+        public event EventHandler<OptionNotificationEventArgs> OptionNotification;
+
+        /// <summary>
+        /// Event that fires each time there's a brokerage side generated order
+        /// </summary>
+        public event EventHandler<NewBrokerageOrderNotificationEventArgs> NewBrokerageOrderNotification;
+
+        /// <summary>
+        /// Event that fires each time a delisting occurs
+        /// </summary>
+        public event EventHandler<DelistingNotificationEventArgs> DelistingNotification;
 
         /// <summary>
         /// Event that fires each time a user's brokerage account is changed
@@ -119,18 +147,53 @@ namespace QuantConnect.Brokerages
         /// <summary>
         /// Event invocator for the OrderFilled event
         /// </summary>
-        /// <param name="e">The OrderEvent</param>
-        protected virtual void OnOrderEvent(OrderEvent e)
+        /// <param name="orderEvents">The list of order events</param>
+        protected virtual void OnOrderEvents(List<OrderEvent> orderEvents)
         {
             try
             {
-                OrderStatusChanged?.Invoke(this, e);
+                OrdersStatusChanged?.Invoke(this, orderEvents);
+            }
+            catch (Exception err)
+            {
+                Log.Error(err);
+            }
+        }
 
-                if (Log.DebuggingEnabled)
-                {
-                    // log after calling the OrderStatusChanged event, the BrokerageTransactionHandler will set the order quantity
-                    Log.Debug("Brokerage.OnOrderEvent(): " + e);
-                }
+        /// <summary>
+        /// Event invocator for the OrderFilled event
+        /// </summary>
+        /// <param name="e">The order event</param>
+        protected virtual void OnOrderEvent(OrderEvent e)
+        {
+            OnOrderEvents(new List<OrderEvent> { e });
+        }
+
+        /// <summary>
+        /// Event invocator for the OrderUpdated event
+        /// </summary>
+        /// <param name="e">The update event</param>
+        protected virtual void OnOrderUpdated(OrderUpdateEvent e)
+        {
+            try
+            {
+                OrderUpdated?.Invoke(this, e);
+            }
+            catch (Exception err)
+            {
+                Log.Error(err);
+            }
+        }
+
+        /// <summary>
+        /// Event invocator for the OrderIdChanged event
+        /// </summary>
+        /// <param name="e">The BrokerageOrderIdChangedEvent</param>
+        protected virtual void OnOrderIdChangedEvent(BrokerageOrderIdChangedEvent e)
+        {
+            try
+            {
+                OrderIdChanged?.Invoke(this, e);
             }
             catch (Exception err)
             {
@@ -157,6 +220,60 @@ namespace QuantConnect.Brokerages
         }
 
         /// <summary>
+        /// Event invocator for the OptionNotification event
+        /// </summary>
+        /// <param name="e">The OptionNotification event arguments</param>
+        protected virtual void OnOptionNotification(OptionNotificationEventArgs e)
+        {
+            try
+            {
+                Log.Debug("Brokerage.OnOptionNotification(): " + e);
+
+                OptionNotification?.Invoke(this, e);
+            }
+            catch (Exception err)
+            {
+                Log.Error(err);
+            }
+        }
+
+        /// <summary>
+        /// Event invocator for the NewBrokerageOrderNotification event
+        /// </summary>
+        /// <param name="e">The NewBrokerageOrderNotification event arguments</param>
+        protected virtual void OnNewBrokerageOrderNotification(NewBrokerageOrderNotificationEventArgs e)
+        {
+            try
+            {
+                Log.Debug("Brokerage.OnNewBrokerageOrderNotification(): " + e);
+
+                NewBrokerageOrderNotification?.Invoke(this, e);
+            }
+            catch (Exception err)
+            {
+                Log.Error(err);
+            }
+        }
+
+        /// <summary>
+        /// Event invocator for the DelistingNotification event
+        /// </summary>
+        /// <param name="e">The DelistingNotification event arguments</param>
+        protected virtual void OnDelistingNotification(DelistingNotificationEventArgs e)
+        {
+            try
+            {
+                Log.Debug("Brokerage.OnDelistingNotification(): " + e);
+
+                DelistingNotification?.Invoke(this, e);
+            }
+            catch (Exception err)
+            {
+                Log.Error(err);
+            }
+        }
+
+        /// <summary>
         /// Event invocator for the AccountChanged event
         /// </summary>
         /// <param name="e">The AccountEvent</param>
@@ -164,7 +281,7 @@ namespace QuantConnect.Brokerages
         {
             try
             {
-                Log.Trace("Brokerage.OnAccountChanged(): " + e);
+                Log.Trace($"Brokerage.OnAccountChanged(): {e}");
 
                 AccountChanged?.Invoke(this, e);
             }
@@ -197,6 +314,62 @@ namespace QuantConnect.Brokerages
             {
                 Log.Error(err);
             }
+        }
+
+        /// <summary>
+        /// Helper method that will try to get the live holdings from the provided brokerage data collection else will default to the algorithm state
+        /// </summary>
+        /// <remarks>Holdings will removed from the provided collection on the first call, since this method is expected to be called only
+        /// once on initialize, after which the algorithm should use Lean accounting</remarks>
+        protected virtual List<Holding> GetAccountHoldings(Dictionary<string, string> brokerageData, IEnumerable<Security> securities)
+        {
+            if (Log.DebuggingEnabled)
+            {
+                Log.Debug("Brokerage.GetAccountHoldings(): starting...");
+            }
+
+            if (brokerageData != null && brokerageData.Remove("live-holdings", out var value) && !string.IsNullOrEmpty(value))
+            {
+                // remove the key, we really only want to return the cached value on the first request
+                var result = JsonConvert.DeserializeObject<List<Holding>>(value);
+                if (result == null)
+                {
+                    return new List<Holding>();
+                }
+                Log.Trace($"Brokerage.GetAccountHoldings(): sourcing holdings from provided brokerage data, found {result.Count} entries");
+                return result;
+            }
+
+            return securities?.Where(security => security.Holdings.AbsoluteQuantity > 0)
+                .OrderBy(security => security.Symbol)
+                .Select(security => new Holding(security)).ToList() ?? new List<Holding>();
+        }
+
+        /// <summary>
+        /// Helper method that will try to get the live cash balance from the provided brokerage data collection else will default to the algorithm state
+        /// </summary>
+        /// <remarks>Cash balance will removed from the provided collection on the first call, since this method is expected to be called only
+        /// once on initialize, after which the algorithm should use Lean accounting</remarks>
+        protected virtual List<CashAmount> GetCashBalance(Dictionary<string, string> brokerageData, CashBook cashBook)
+        {
+            if (Log.DebuggingEnabled)
+            {
+                Log.Debug("Brokerage.GetCashBalance(): starting...");
+            }
+
+            if (brokerageData != null && brokerageData.Remove("live-cash-balance", out var value) && !string.IsNullOrEmpty(value))
+            {
+                // remove the key, we really only want to return the cached value on the first request
+                var result = JsonConvert.DeserializeObject<List<CashAmount>>(value);
+                if (result == null)
+                {
+                    return new List<CashAmount>();
+                }
+                Log.Trace($"Brokerage.GetCashBalance(): sourcing cash balance from provided brokerage data, found {result.Count} entries");
+                return result;
+            }
+
+            return cashBook?.Select(x => new CashAmount(x.Value.Amount, x.Value.Symbol)).ToList() ?? new List<CashAmount>();
         }
 
         /// <summary>

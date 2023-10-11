@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -29,31 +29,30 @@ namespace QuantConnect.Tests.Common
                     {"Total Trades", "3"},
                     {"Average Win", "0%"},
                     {"Average Loss", "0%"},
-                    {"Compounding Annual Return", "-100%"},
-                    {"Drawdown", "99.600%"},
+                    {"Compounding Annual Return", "349.409%"},
+                    {"Drawdown", "2.600%"},
                     {"Expectancy", "0"},
-                    {"Net Profit", "-99.604%"},
-                    {"Sharpe Ratio", "-0.126"},
-                    {"Probabilistic Sharpe Ratio", "1.658%"},
+                    {"Net Profit", "1.940%"},
+                    {"Sharpe Ratio", "10.771"},
+                    {"Probabilistic Sharpe Ratio", "66.098%"},
                     {"Loss Rate", "0%"},
                     {"Win Rate", "0%"},
                     {"Profit-Loss Ratio", "0"},
-                    {"Alpha", "3.904"},
-                    {"Beta", "-2.545"},
-                    {"Annual Standard Deviation", "7.95"},
-                    {"Annual Variance", "63.196"},
-                    {"Information Ratio", "-0.367"},
-                    {"Tracking Error", "7.968"},
-                    {"Treynor Ratio", "0.393"},
+                    {"Alpha", "0.571"},
+                    {"Beta", "1.247"},
+                    {"Annual Standard Deviation", "0.282"},
+                    {"Annual Variance", "0.079"},
+                    {"Information Ratio", "14.457"},
+                    {"Tracking Error", "0.073"},
+                    {"Treynor Ratio", "2.433"},
                     {"Total Fees", "$0.00"},
-                    {"OrderListHash", "1518453211"}
+                    {"OrderListHash", "d303a19fe5a40b59ee99535985833000"}
                 },
                 Language.Python,
                 AlgorithmStatus.Completed);
 
             AlgorithmRunner.RunLocalBacktest(parameter.Algorithm,
                 parameter.Statistics,
-                parameter.AlphaStatistics,
                 parameter.Language,
                 parameter.ExpectedFinalStatus,
                 initialCash: 100000);

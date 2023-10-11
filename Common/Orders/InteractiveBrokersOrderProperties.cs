@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -47,6 +47,11 @@ namespace QuantConnect.Orders
         /// The allocation profile to be used for the order (only used by Financial Advisors)
         /// </summary>
         public string FaProfile { get; set; }
+
+        /// <summary>
+        /// If set to true, allows orders to also trigger or fill outside of regular trading hours.
+        /// </summary>
+        public bool OutsideRegularTradingHours { get; set; }
 
         /// <summary>
         /// Returns a new instance clone of this object

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -39,7 +39,6 @@ namespace QuantConnect.ToolBox.IQFeed
     public class IQFeedDataQueueHandler : HistoryProviderBase, IDataQueueHandler, IDataQueueUniverseProvider
     {
         private bool _isConnected;
-        private int _dataPointCount;
         private readonly HashSet<Symbol> _symbols;
         private readonly Dictionary<Symbol, Symbol> _underlyings;
         private readonly object _sync = new object();
@@ -57,7 +56,7 @@ namespace QuantConnect.ToolBox.IQFeed
         /// <summary>
         /// Gets the total number of data points emitted by this history provider
         /// </summary>
-        public override int DataPointCount => _dataPointCount;
+        public override int DataPointCount { get; } = 0;
 
         /// <summary>
         /// IQFeedDataQueueHandler is an implementation of IDataQueueHandler:
@@ -92,7 +91,7 @@ namespace QuantConnect.ToolBox.IQFeed
         {
             if (!CanSubscribe(dataConfig.Symbol))
             {
-                return Enumerable.Empty<BaseData>().GetEnumerator();
+                return null;
             }
 
             var enumerator = _aggregator.Add(dataConfig, newDataAvailableHandler);
@@ -348,20 +347,31 @@ namespace QuantConnect.ToolBox.IQFeed
         /// <param name="includeExpired">Include expired contracts</param>
         /// <param name="securityCurrency">Expected security currency(if any)</param>
         /// <param name="securityExchange">Expected security exchange name(if any)</param>
-        /// <returns></returns>
+        /// <returns>Symbol results</returns>
         public IEnumerable<Symbol> LookupSymbols(string lookupName, SecurityType securityType, bool includeExpired, string securityCurrency = null, string securityExchange = null)
         {
             return _symbolUniverse.LookupSymbols(lookupName, securityType, includeExpired, securityCurrency, securityExchange);
         }
 
         /// <summary>
-        /// Returns whether the time can be advanced or not.
+        /// Method returns a collection of Symbols that are available at the data source.
         /// </summary>
-        /// <param name="securityType">The security type</param>
-        /// <returns>true if the time can be advanced</returns>
-        public bool CanAdvanceTime(SecurityType securityType)
+        /// <param name="symbol">Symbol to lookup</param>
+        /// <param name="includeExpired">Include expired contracts</param>
+        /// <param name="securityCurrency">Expected security currency(if any)</param>
+        /// <returns>Symbol results</returns>
+        public IEnumerable<Symbol> LookupSymbols(Symbol symbol, bool includeExpired, string securityCurrency)
         {
-            return _symbolUniverse.CanAdvanceTime(securityType);
+            return LookupSymbols(symbol.ID.Symbol, symbol.SecurityType, includeExpired, securityCurrency);
+        }
+
+        /// <summary>
+        /// Returns whether selection can take place or not.
+        /// </summary>
+        /// <returns>True if selection can take place</returns>
+        public bool CanPerformSelection()
+        {
+            return _symbolUniverse.CanPerformSelection();
         }
 
         /// <summary>
@@ -379,7 +389,7 @@ namespace QuantConnect.ToolBox.IQFeed
     public class AdminPort : IQAdminSocketClient
     {
         public AdminPort()
-            : base(80)
+            : base(IQFeedDefault.BufferSize)
         {
         }
     }
@@ -415,7 +425,7 @@ namespace QuantConnect.ToolBox.IQFeed
         }
 
         public Level1Port(IDataAggregator aggregator, IQFeedDataQueueUniverseProvider symbolUniverse)
-            : base(80)
+            : base(IQFeedDefault.BufferSize)
         {
             start = DateTime.Now;
             _prices = new ConcurrentDictionary<string, double>();
@@ -592,15 +602,13 @@ namespace QuantConnect.ToolBox.IQFeed
         private bool _inProgress;
         private ConcurrentDictionary<string, HistoryRequest> _requestDataByRequestId;
         private ConcurrentDictionary<string, List<BaseData>> _currentRequest;
-        private readonly string DataDirectory = Config.Get("data-directory", "../../../Data");
-        private readonly double MaxHistoryRequestMinutes = Config.GetDouble("max-history-minutes", 5);
         private readonly IQFeedDataQueueUniverseProvider _symbolUniverse;
 
         /// <summary>
         /// ...
         /// </summary>
         public HistoryPort(IQFeedDataQueueUniverseProvider symbolUniverse)
-            : base(80)
+            : base(IQFeedDefault.BufferSize)
         {
             _symbolUniverse = symbolUniverse;
             _requestDataByRequestId = new ConcurrentDictionary<string, HistoryRequest>();
@@ -636,6 +644,7 @@ namespace QuantConnect.ToolBox.IQFeed
             var ticker = _symbolUniverse.GetBrokerageSymbol(request.Symbol);
             var start = request.StartTimeUtc.ConvertFromUtc(TimeZones.NewYork);
             DateTime? end = request.EndTimeUtc.ConvertFromUtc(TimeZones.NewYork);
+            var exchangeTz = request.ExchangeHours.TimeZone;
             // if we're within a minute of now, don't set the end time
             if (request.EndTimeUtc >= DateTime.UtcNow.AddMinutes(-1))
             {
@@ -682,7 +691,7 @@ namespace QuantConnect.ToolBox.IQFeed
                     foreach (var tradeBar in tradeBars)
                     {
                         // Returns IEnumerable<Slice> object
-                        yield return new Slice(tradeBar.EndTime, new[] { tradeBar });
+                        yield return new Slice(tradeBar.EndTime, new[] { tradeBar }, tradeBar.EndTime.ConvertToUtc(exchangeTz));
                     }
                 }
             }
@@ -827,8 +836,13 @@ namespace QuantConnect.ToolBox.IQFeed
                 case Resolution.Tick:
                 case Resolution.Daily:
                 default:
-                    throw new ArgumentOutOfRangeException("resolution", resolution, null);
+                    throw new ArgumentOutOfRangeException(nameof(resolution), resolution, null);
             }
         }
+    }
+
+    internal class IQFeedDefault
+    {
+        public static int BufferSize = 8192;
     }
 }

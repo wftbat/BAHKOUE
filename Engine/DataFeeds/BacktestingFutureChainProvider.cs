@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
@@ -14,54 +14,56 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.IO;
 using QuantConnect.Interfaces;
-using QuantConnect.Logging;
-using QuantConnect.Util;
+using System.Collections.Generic;
 
 namespace QuantConnect.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// An implementation of <see cref="IFutureChainProvider"/> that reads the list of contracts from open interest zip data files
     /// </summary>
-    public class BacktestingFutureChainProvider : IFutureChainProvider
+    public class BacktestingFutureChainProvider : BacktestingChainProvider, IFutureChainProvider
     {
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="dataCacheProvider">The data cache provider instance to use</param>
+        public BacktestingFutureChainProvider(IDataCacheProvider dataCacheProvider)
+            : base(dataCacheProvider)
+        {
+        }
+
         /// <summary>
         /// Gets the list of future contracts for a given underlying symbol
         /// </summary>
         /// <param name="symbol">The underlying symbol</param>
         /// <param name="date">The date for which to request the future chain (only used in backtesting)</param>
         /// <returns>The list of future contracts</returns>
-        public IEnumerable<Symbol> GetFutureContractList(Symbol symbol, DateTime date)
+        public virtual IEnumerable<Symbol> GetFutureContractList(Symbol symbol, DateTime date)
+        {
+            return GetSymbols(GetSymbol(symbol), date);
+        }
+
+        /// <summary>
+        /// Helper method to get the symbol to use
+        /// </summary>
+        protected static Symbol GetSymbol(Symbol symbol)
         {
             if (symbol.SecurityType != SecurityType.Future)
             {
-                throw new NotSupportedException($"BacktestingFutureChainProvider.GetFutureContractList(): SecurityType.Future is expected but was {symbol.SecurityType}");
-            }
-
-            // build the future contract list from the open interest zip file entry names
-
-            // build the zip file name for open interest data
-            var zipFileName = LeanData.GenerateZipFilePath(Globals.DataFolder, symbol, date, Resolution.Minute, TickType.OpenInterest);
-            if (!File.Exists(zipFileName))
-            {
-                // lets give quote a chance - some futures do not have an open interest file
-                var zipFileNameQuote = LeanData.GenerateZipFilePath(Globals.DataFolder, symbol, date, Resolution.Minute, TickType.Quote);
-                if (!File.Exists(zipFileNameQuote))
+                if (symbol.SecurityType == SecurityType.FutureOption && symbol.Underlying != null)
                 {
-                    Log.Error($"BacktestingFutureChainProvider.GetFutureContractList(): Failed, files not found: {zipFileName} {zipFileNameQuote}");
-                    yield break;
+                    // be user friendly and take the underlying
+                    symbol = symbol.Underlying;
                 }
-                zipFileName = zipFileNameQuote;
+                else
+                {
+                    throw new NotSupportedException($"BacktestingFutureChainProvider.GetFutureContractList():" +
+                        $" {nameof(SecurityType.Future)} or {nameof(SecurityType.FutureOption)} is expected but was {symbol.SecurityType}");
+                }
             }
 
-            // generate and return the contract symbol for each zip entry
-            var zipEntryNames = Compression.GetZipEntryFileNames(zipFileName);
-            foreach (var zipEntryName in zipEntryNames)
-            {
-                yield return LeanData.ReadSymbolFromZipEntry(symbol, Resolution.Minute, zipEntryName);
-            }
+            return symbol.Canonical;
         }
     }
 }

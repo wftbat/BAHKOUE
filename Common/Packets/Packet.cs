@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -153,6 +153,39 @@ namespace QuantConnect.Packets
         AlphaHeartbeat,
 
         /// Used when debugging to send status updates
-        DebuggingStatus
+        DebuggingStatus,
+
+        /// Optimization Node Packet:
+        OptimizationNode,
+
+        /// Optimization Estimate Packet:
+        OptimizationEstimate,
+
+        /// Optimization work status update
+        OptimizationStatus,
+
+        /// Optimization work result
+        OptimizationResult,
+
+        /// Aggregated packets
+        Aggregated,
+
+        /// Query the language model
+        LanguageModelQuery,
+
+        /// Send feedback to a language model response
+        LanguageModelFeedback,
+
+        /// The language models response
+        LanguageModelResponse,
+
+        /// Language model code analysis
+        LanguageModelCodeAnalysis,
+
+        /// Language model chat work
+        LanguageModelChatWork,
+
+        /// Language model chat response
+        LanguageModelChatResponse,
     }
 }

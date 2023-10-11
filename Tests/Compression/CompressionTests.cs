@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -31,7 +31,7 @@ namespace QuantConnect.Tests.Compression
         {
             const string file = "../../../Data/equity/usa/minute/spy/20131008_trade.zip";
 
-            const int expected = 827;
+            const int expected = 828;
             int actual = QuantConnect.Compression.ReadLines(file).Count();
 
             Assert.AreEqual(expected, actual);
@@ -59,7 +59,7 @@ namespace QuantConnect.Tests.Compression
             var fileBytes = File.ReadAllBytes(file);
             var zippedBytes = QuantConnect.Compression.ZipBytes(fileBytes, "entry");
 
-            Assert.AreEqual(899352, zippedBytes.Length);
+            Assert.AreEqual(OS.IsWindows ? 905921 : 906121, zippedBytes.Length);
         }
 
         [Test]
@@ -97,6 +97,38 @@ namespace QuantConnect.Tests.Compression
         }
 
         [Test]
+        public void UnzipByteArray()
+        {
+            var name = nameof(UnzipByteArray);
+            var root = new DirectoryInfo(name);
+            var testPath = Path.Combine(root.FullName, "test.txt");
+            var test2Path = Path.Combine(Path.Combine(root.FullName, "sub"), "test2.txt");
+            var zipFile = $"./{name}.zip";
+            var files = new List<string>();
+            try
+            {
+                root.Create();
+                File.WriteAllText(testPath, "string contents");
+                var sub = root.CreateSubdirectory("sub");
+                File.WriteAllText(test2Path, "string contents 2");
+                QuantConnect.Compression.ZipDirectory(root.FullName, zipFile);
+                Directory.Delete(root.FullName, true);
+
+                var data = File.ReadAllBytes(zipFile);
+                files = QuantConnect.Compression.UnzipToFolder(data,  Directory.GetCurrentDirectory());
+
+                Assert.AreEqual(2, files.Count);
+                Assert.IsTrue(File.Exists(testPath));
+                Assert.IsTrue(File.Exists(test2Path));
+            }
+            finally
+            {
+                File.Delete(zipFile);
+                files.ForEach(File.Delete);
+            }
+        }
+
+        [Test]
         public void UnzipToFolderDoesNotStripSubDirectories()
         {
             var name = nameof(UnzipToFolderDoesNotStripSubDirectories);
@@ -115,6 +147,7 @@ namespace QuantConnect.Tests.Compression
                 Directory.Delete(root.FullName, true);
                 files = QuantConnect.Compression.UnzipToFolder(zipFile);
 
+                Assert.AreEqual(2, files.Count);
                 Assert.IsTrue(File.Exists(testPath));
                 Assert.IsTrue(File.Exists(test2Path));
             }

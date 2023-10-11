@@ -20,6 +20,7 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using QuantConnect.Logging;
 using QuantConnect.Securities;
 
 namespace QuantConnect.Tests.Common.Securities
@@ -31,8 +32,8 @@ namespace QuantConnect.Tests.Common.Securities
         public void LoadsLotSize()
         {
             var db = SymbolPropertiesDatabase.FromDataFolder();
-
-            var symbolProperties = db.GetSymbolProperties(Market.FXCM, "EURGBP", SecurityType.Forex, "GBP");
+            var symbol = Symbol.Create("EURGBP", SecurityType.Forex, Market.FXCM);
+            var symbolProperties = db.GetSymbolProperties(symbol.ID.Market, symbol, symbol.SecurityType, "GBP");
 
             Assert.AreEqual(symbolProperties.LotSize, 1000);
         }
@@ -41,10 +42,62 @@ namespace QuantConnect.Tests.Common.Securities
         public void LoadsQuoteCurrency()
         {
             var db = SymbolPropertiesDatabase.FromDataFolder();
-
-            var symbolProperties = db.GetSymbolProperties(Market.FXCM, "EURGBP", SecurityType.Forex, "GBP");
+            var symbol = Symbol.Create("EURGBP", SecurityType.Forex, Market.FXCM);
+            var symbolProperties = db.GetSymbolProperties(symbol.ID.Market, symbol, symbol.SecurityType, "GBP");
 
             Assert.AreEqual(symbolProperties.QuoteCurrency, "GBP");
+        }
+
+        [Test]
+        public void LoadsMinimumOrderSize()
+        {
+            var db = SymbolPropertiesDatabase.FromDataFolder();
+
+            var bitfinexSymbol = Symbol.Create("BTCUSD", SecurityType.Crypto, Market.Bitfinex);
+            var bitfinexSymbolProperties = db.GetSymbolProperties(bitfinexSymbol.ID.Market, bitfinexSymbol, bitfinexSymbol.SecurityType, "USD");
+
+            var binanceSymbol = Symbol.Create("BTCEUR", SecurityType.Crypto, Market.Binance);
+            var binanceSymbolProperties = db.GetSymbolProperties(binanceSymbol.ID.Market, binanceSymbol, binanceSymbol.SecurityType, "EUR");
+
+            var gdaxSymbol = Symbol.Create("BTCGBP", SecurityType.Crypto, Market.GDAX);
+            var gdaxSymbolProperties = db.GetSymbolProperties(gdaxSymbol.ID.Market, gdaxSymbol, gdaxSymbol.SecurityType, "GBP");
+
+            var krakenSymbol = Symbol.Create("BTCCAD", SecurityType.Crypto, Market.Kraken);
+            var krakenSymbolProperties = db.GetSymbolProperties(krakenSymbol.ID.Market, krakenSymbol, krakenSymbol.SecurityType, "CAD");
+
+            Assert.AreEqual(bitfinexSymbolProperties.MinimumOrderSize, 0.00006m);
+            Assert.AreEqual(binanceSymbolProperties.MinimumOrderSize, 5m); // in quote currency, MIN_NOTIONAL
+            Assert.AreEqual(gdaxSymbolProperties.MinimumOrderSize, 0.000015m);
+            Assert.AreEqual(krakenSymbolProperties.MinimumOrderSize, 0.0001m);
+        }
+
+        [TestCase("KE", Market.CBOT, 100)]
+        [TestCase("ZC", Market.CBOT, 100)]
+        [TestCase("ZL", Market.CBOT, 100)]
+        [TestCase("ZO", Market.CBOT, 100)]
+        [TestCase("ZS", Market.CBOT, 100)]
+        [TestCase("ZW", Market.CBOT, 100)]
+
+        [TestCase("CB", Market.CME, 100)]
+        [TestCase("DY", Market.CME, 100)]
+        [TestCase("GF", Market.CME, 100)]
+        [TestCase("GNF", Market.CME, 100)]
+        [TestCase("HE", Market.CME, 100)]
+        [TestCase("LE", Market.CME, 100)]
+
+        [TestCase("CSC", Market.CME, 1)]
+        public void LoadsPriceMagnifier(string ticker, string market, int expectedPriceMagnifier)
+        {
+            var db = SymbolPropertiesDatabase.FromDataFolder();
+            var symbol = Symbol.Create(ticker, SecurityType.Future, market);
+
+            var symbolProperties = db.GetSymbolProperties(symbol.ID.Market, symbol, symbol.SecurityType, "USD");
+            Assert.AreEqual(expectedPriceMagnifier, symbolProperties.PriceMagnifier);
+
+            var futureOption = Symbol.CreateOption(symbol, symbol.ID.Market, OptionStyle.American,
+                OptionRight.Call, 1, new DateTime(2021, 10, 14));
+            var symbolPropertiesFop = db.GetSymbolProperties(futureOption.ID.Market, futureOption, futureOption.SecurityType, "USD");
+            Assert.AreEqual(expectedPriceMagnifier, symbolPropertiesFop.PriceMagnifier);
         }
 
         [Test]
@@ -75,16 +128,30 @@ namespace QuantConnect.Tests.Common.Securities
             }
         }
 
+        [Test]
+        public void CustomEntriesStoredAndFetched()
+        {
+            var database = SymbolPropertiesDatabase.FromDataFolder();
+            var ticker = "BTC";
+            var properties = SymbolProperties.GetDefault("USD");
+
+            // Set the entry
+            Assert.IsTrue(database.SetEntry(Market.USA, ticker, SecurityType.Base, properties));
+
+            // Fetch the entry to ensure we can access it with the ticker
+            var fetchedProperties = database.GetSymbolProperties(Market.USA, ticker, SecurityType.Base, "USD");
+            Assert.AreSame(properties, fetchedProperties);
+        }
+
         [TestCase(Market.FXCM, SecurityType.Cfd)]
         [TestCase(Market.Oanda, SecurityType.Cfd)]
-        [TestCase(Market.CBOE, SecurityType.Future)]
+        [TestCase(Market.CFE, SecurityType.Future)]
         [TestCase(Market.CBOT, SecurityType.Future)]
         [TestCase(Market.CME, SecurityType.Future)]
         [TestCase(Market.COMEX, SecurityType.Future)]
         [TestCase(Market.ICE, SecurityType.Future)]
         [TestCase(Market.NYMEX, SecurityType.Future)]
         [TestCase(Market.SGX, SecurityType.Future)]
-        [TestCase(Market.HKFE, SecurityType.Future)]
         public void GetSymbolPropertiesListIsNotEmpty(string market, SecurityType securityType)
         {
             var db = SymbolPropertiesDatabase.FromDataFolder();
@@ -149,7 +216,7 @@ namespace QuantConnect.Tests.Common.Securities
                 }
             }
 
-            Console.WriteLine(sb.ToString());
+            Log.Trace(sb.ToString());
         }
 
         private class GdaxCurrency
@@ -273,19 +340,19 @@ namespace QuantConnect.Tests.Common.Securities
                     else
                     {
                         // should never happen
-                        Console.WriteLine($"Skipping pair with unknown format: {pair}");
+                        Log.Trace($"Skipping pair with unknown format: {pair}");
                         continue;
                     }
 
                     string baseDescription, quoteDescription;
                     if (!currencyLabels.TryGetValue(baseCurrency, out baseDescription))
                     {
-                        Console.WriteLine($"Base currency description not found: {baseCurrency}");
+                        Log.Trace($"Base currency description not found: {baseCurrency}");
                         baseDescription = baseCurrency;
                     }
                     if (!currencyLabels.TryGetValue(quoteCurrency, out quoteDescription))
                     {
-                        Console.WriteLine($"Quote currency description not found: {quoteCurrency}");
+                        Log.Trace($"Quote currency description not found: {quoteCurrency}");
                         quoteDescription = quoteCurrency;
                     }
 
@@ -329,7 +396,7 @@ namespace QuantConnect.Tests.Common.Securities
                 }
             }
 
-            Console.WriteLine(sb.ToString());
+            Log.Trace(sb.ToString());
         }
 
         private class BitfinexSymbolDetails
@@ -358,5 +425,80 @@ namespace QuantConnect.Tests.Common.Securities
 
         #endregion
 
+        [TestCase("ES", Market.CME, 50, 0.25)]
+        [TestCase("ZB", Market.CBOT, 1000, 0.015625)]
+        [TestCase("ZW", Market.CBOT, 5000, 0.00125)]
+        [TestCase("SI", Market.COMEX, 5000, 0.001)]
+        public void ReadsFuturesOptionsEntries(string ticker, string market, int expectedMultiplier, double expectedMinimumPriceFluctuation)
+        {
+            var future = Symbol.CreateFuture(ticker, market, SecurityIdentifier.DefaultDate);
+            var option = Symbol.CreateOption(
+                future,
+                market,
+                default(OptionStyle),
+                default(OptionRight),
+                default(decimal),
+                SecurityIdentifier.DefaultDate);
+
+            var db = SymbolPropertiesDatabase.FromDataFolder();
+            var results = db.GetSymbolProperties(market, option, SecurityType.FutureOption, "USD");
+
+            Assert.AreEqual((decimal)expectedMultiplier, results.ContractMultiplier);
+            Assert.AreEqual((decimal)expectedMinimumPriceFluctuation, results.MinimumPriceVariation);
+        }
+
+        [TestCase("index")]
+        [TestCase("indexoption")]
+        [TestCase("bond")]
+        [TestCase("swap")]
+        public void HandlesUnknownSecurityType(string securityType)
+        {
+            var line = string.Join(",",
+                "usa",
+                "ABCXYZ",
+                securityType,
+                "Example Asset",
+                "USD",
+                "100",
+                "0.01",
+                "1");
+
+            SecurityDatabaseKey key;
+            Assert.DoesNotThrow(() => TestingSymbolPropertiesDatabase.TestFromCsvLine(line, out key));
+        }
+
+        [Test]
+        public void HandlesEmptyOrderSizePriceMagnifierCorrectly()
+        {
+            var line = string.Join(",",
+                "usa",
+                "ABC",
+                "equity",
+                "Example Asset",
+                "USD",
+                "100",
+                "0.01",
+                "1",
+                "",
+                "");
+
+            var result = TestingSymbolPropertiesDatabase.TestFromCsvLine(line, out _);
+
+            Assert.IsNull(result.MinimumOrderSize);
+            Assert.AreEqual(1, result.PriceMagnifier);
+        }
+
+        private class TestingSymbolPropertiesDatabase : SymbolPropertiesDatabase
+        {
+            public TestingSymbolPropertiesDatabase(string file)
+                : base(file)
+            {
+            }
+
+            public static SymbolProperties TestFromCsvLine(string line, out SecurityDatabaseKey key)
+            {
+                return FromCsvLine(line, out key);
+            }
+        }
     }
 }

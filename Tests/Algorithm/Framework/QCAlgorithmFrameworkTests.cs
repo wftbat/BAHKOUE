@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -42,7 +42,7 @@ namespace QuantConnect.Tests.Algorithm.Framework
             {
                 eventFired = true;
                 var insights = data.Insights;
-                Assert.AreEqual(1, insights.Count);
+                Assert.AreEqual(1, insights.Length);
                 Assert.IsTrue(insights.All(insight => insight.GeneratedTimeUtc != default(DateTime)));
                 Assert.IsTrue(insights.All(insight => insight.CloseTimeUtc != default(DateTime)));
             };
@@ -63,12 +63,53 @@ namespace QuantConnect.Tests.Algorithm.Framework
             };
             security.SetMarketPrice(tick);
 
-            algo.OnFrameworkData(new Slice(new DateTime(2000, 01, 01), algo.Securities.Select(s => tick)));
+            algo.OnFrameworkData(new Slice(new DateTime(2000, 01, 01), algo.Securities.Select(s => tick), new DateTime(2000, 01, 01)));
 
             Assert.IsTrue(eventFired);
             Assert.AreEqual(1, construction.Insights.Count);
             Assert.IsTrue(construction.Insights.All(insight => insight.GeneratedTimeUtc != default(DateTime)));
             Assert.IsTrue(construction.Insights.All(insight => insight.CloseTimeUtc != default(DateTime)));
+        }
+
+        [TestCase(true, 0)]
+        [TestCase(false, 2)]
+        public void DelistedSecuritiesInsightsTest(bool isDelisted, int expectedCount)
+        {
+            var algorithm = new QCAlgorithm();
+            algorithm.SubscriptionManager.SetDataManager(new DataManagerStub(algorithm));
+            algorithm.Transactions.SetOrderProcessor(new FakeOrderProcessor());
+            algorithm.SetStartDate(2007, 5, 16);
+            algorithm.SetUniverseSelection(new ManualUniverseSelectionModel());
+            algorithm.SetFinishedWarmingUp();
+
+            var alpha = new FakeAlpha();
+            algorithm.SetAlpha(alpha);
+
+            var construction = new FakePortfolioConstruction();
+            algorithm.SetPortfolioConstruction(construction);
+
+            var actualInsights = new List<Insight>();
+            algorithm.InsightsGenerated += (s, e) => actualInsights.AddRange(e.Insights);
+
+            var security = algorithm.AddEquity("SPY", Resolution.Daily);
+            var tick = new Tick
+            {
+                Symbol = security.Symbol,
+                Value = 1,
+                Quantity = 2
+            };
+
+            security.SetMarketPrice(tick);
+            security.IsDelisted = isDelisted;
+
+            // Trigger Alpha to emit insight
+            algorithm.OnFrameworkData(new Slice(new DateTime(2000, 01, 01), new List<BaseData>() { tick }, new DateTime(2000, 01, 01)));
+
+            // Manually emit insight
+            algorithm.EmitInsights(Insight.Price(Symbols.SPY, TimeSpan.FromDays(1), InsightDirection.Up, .5, .75));
+
+            // Should be zero because security is delisted
+            Assert.AreEqual(expectedCount, actualInsights.Count);
         }
 
         class FakeAlpha : AlphaModel

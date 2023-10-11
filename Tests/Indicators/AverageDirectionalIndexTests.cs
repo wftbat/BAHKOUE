@@ -24,6 +24,8 @@ namespace QuantConnect.Tests.Indicators
     {
         protected override IndicatorBase<IBaseDataBar> CreateIndicator()
         {
+            RenkoBarSize = 1m;
+            VolumeRenkoBarSize = 0.5m;
             return new AverageDirectionalIndex(14);
         }
 
@@ -32,7 +34,7 @@ namespace QuantConnect.Tests.Indicators
         protected override string TestColumnName => "ADX 14";
 
         [Test]
-        public void ComparesAgainstExternalData()
+        public override void ComparesAgainstExternalData()
         {
             const double epsilon = .0001;
             var adx = CreateIndicator();

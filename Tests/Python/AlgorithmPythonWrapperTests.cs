@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -51,6 +51,42 @@ namespace QuantConnect.Tests.Python
                 Assert.Null(algorithm.RunTimeError);
                 Assert.DoesNotThrow(() => algorithm.OnEndOfDay(Symbols.SPY));
                 Assert.Null(algorithm.RunTimeError);
+            }
+        }
+
+        [Test]
+        [TestCase("def OnEndOfDay(self): self.Name = 'EOD'\r\n    def OnEndOfDay(self, symbol): self.Name = 'EODSymbol'", "EODSymbol")]
+        [TestCase("def OnEndOfDay(self, symbol): self.Name = 'EODSymbol'\r\n    def OnEndOfDay(self): self.Name = 'EOD'", "EOD")]
+        public void OnEndOfDayBothImplemented(string code, string expectedImplementation)
+        {
+            // If we implement both OnEndOfDay functions we expect it to not throw,
+            // but only the latest will be seen and used.
+            // To test this we will have the functions set something we can verify such as Algo name
+            using (Py.GIL())
+            {
+                var algorithm = GetAlgorithm(code);
+                
+                Assert.Null(algorithm.RunTimeError);
+                Assert.DoesNotThrow(() => algorithm.OnEndOfDay());
+                Assert.Null(algorithm.RunTimeError);
+                Assert.DoesNotThrow(() => algorithm.OnEndOfDay(Symbols.SPY));
+                Assert.Null(algorithm.RunTimeError);
+
+                // Check the name
+                Assert.AreEqual(expectedImplementation, algorithm.Name);
+
+                // Check the wrapper EOD Implemented variables to confirm
+                switch (expectedImplementation)
+                {
+                    case "EOD":
+                        Assert.IsTrue(algorithm.IsOnEndOfDayImplemented);
+                        Assert.IsFalse(algorithm.IsOnEndOfDaySymbolImplemented);
+                        break;
+                    case "EODSymbol":
+                        Assert.IsTrue(algorithm.IsOnEndOfDaySymbolImplemented);
+                        Assert.IsFalse(algorithm.IsOnEndOfDayImplemented);
+                        break;
+                }
             }
         }
 
@@ -119,7 +155,7 @@ namespace QuantConnect.Tests.Python
 
             using (Py.GIL())
             {
-                 PythonEngine.ModuleFromString("Test_AlgorithmPythonWrapper", code);
+                PyModule.FromString("Test_AlgorithmPythonWrapper", code);
                 return new AlgorithmPythonWrapper("Test_AlgorithmPythonWrapper");
             }
         }

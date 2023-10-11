@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -15,13 +15,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Fasterflect;
-using Newtonsoft.Json;
 using QuantConnect.AlgorithmFactory;
 using QuantConnect.Brokerages;
-using QuantConnect.Brokerages.InteractiveBrokers;
 using QuantConnect.Configuration;
 using QuantConnect.Data.Market;
 using QuantConnect.Interfaces;
@@ -40,6 +39,13 @@ namespace QuantConnect.Lean.Engine.Setup
     /// </summary>
     public class BrokerageSetupHandler : ISetupHandler
     {
+        private bool _notifiedUniverseSettingsUsed;
+
+        /// <summary>
+        /// Max allocation limit configuration variable name
+        /// </summary>
+        public static string MaxAllocationLimitConfig = "max-allocation-limit";
+
         /// <summary>
         /// The worker thread instance the setup handler should use
         /// </summary>
@@ -96,7 +102,7 @@ namespace QuantConnect.Lean.Engine.Setup
             IAlgorithm algorithm;
 
             // limit load times to 10 seconds and force the assembly to have exactly one derived type
-            var loader = new Loader(false, algorithmNodePacket.Language, TimeSpan.FromSeconds(60), names => names.SingleOrAlgorithmTypeName(Config.Get("algorithm-type-name")), WorkerThread);
+            var loader = new Loader(false, algorithmNodePacket.Language, BaseSetupHandler.AlgorithmCreationTimeout, names => names.SingleOrAlgorithmTypeName(Config.Get("algorithm-type-name")), WorkerThread);
             var complete = loader.TryCreateAlgorithmInstanceWithIsolator(assemblyPath, algorithmNodePacket.RamAllocation, out algorithm, out error);
             if (!complete) throw new AlgorithmSetupException($"During the algorithm initialization, the following exception has occurred: {error}");
 
@@ -117,6 +123,8 @@ namespace QuantConnect.Lean.Engine.Setup
             {
                 throw new ArgumentException("BrokerageSetupHandler.CreateBrokerage requires a live node packet");
             }
+
+            Log.Trace($"BrokerageSetupHandler.CreateBrokerage(): creating brokerage '{liveJob.Brokerage}'");
 
             // find the correct brokerage factory based on the specified brokerage in the live job packet
             _factory = Composer.Instance.Single<IBrokerageFactory>(brokerageFactory => brokerageFactory.BrokerageType.MatchesTypeName(liveJob.Brokerage));
@@ -197,13 +205,20 @@ namespace QuantConnect.Lean.Engine.Setup
 
                 var message = $"{brokerage.Name} account base currency: {brokerage.AccountBaseCurrency ?? algorithm.AccountCurrency}";
 
+
+                var accountCurrency = brokerage.AccountBaseCurrency;
+                if (liveJob.BrokerageData.ContainsKey(MaxAllocationLimitConfig))
+                {
+                    accountCurrency = Currencies.USD;
+                    message += ". Allocation limited, will use 'USD' account currency";
+                }
+
                 Log.Trace($"BrokerageSetupHandler.Setup(): {message}");
 
                 algorithm.Debug(message);
-
-                if (brokerage.AccountBaseCurrency != null && brokerage.AccountBaseCurrency != algorithm.AccountCurrency)
+                if (accountCurrency != null && accountCurrency != algorithm.AccountCurrency)
                 {
-                    algorithm.SetAccountCurrency(brokerage.AccountBaseCurrency);
+                    algorithm.SetAccountCurrency(accountCurrency);
                 }
 
                 Log.Trace("BrokerageSetupHandler.Setup(): Initializing algorithm...");
@@ -225,10 +240,11 @@ namespace QuantConnect.Lean.Engine.Setup
 
                         //Set our parameters
                         algorithm.SetParameters(liveJob.Parameters);
-                        algorithm.SetAvailableDataTypes(GetConfiguredDataFeeds());
+                        algorithm.SetAvailableDataTypes(BaseSetupHandler.GetConfiguredDataFeeds());
 
                         //Algorithm is live, not backtesting:
-                        algorithm.SetLiveMode(true);
+                        algorithm.SetAlgorithmMode(liveJob.AlgorithmMode);
+                        algorithm.SetDeploymentTarget(liveJob.DeploymentTarget);
 
                         //Initialize the algorithm's starting date
                         algorithm.SetDateTime(DateTime.UtcNow);
@@ -236,23 +252,21 @@ namespace QuantConnect.Lean.Engine.Setup
                         //Set the source impl for the event scheduling
                         algorithm.Schedule.SetEventSchedule(parameters.RealTimeHandler);
 
-                        // set the option chain provider
-                        algorithm.SetOptionChainProvider(new CachingOptionChainProvider(new LiveOptionChainProvider()));
-
-                        // set the future chain provider
-                        algorithm.SetFutureChainProvider(new CachingFutureChainProvider(new LiveFutureChainProvider()));
-
-                        // set the object store
-                        algorithm.SetObjectStore(parameters.ObjectStore);
-
-                        // If we're going to receive market data from IB,
-                        // set the default subscription limit to 100,
-                        // algorithms can override this setting in the Initialize method
-                        if (brokerage is InteractiveBrokersBrokerage &&
-                            liveJob.DataQueueHandler.EndsWith("InteractiveBrokersBrokerage"))
+                        var optionChainProvider = Composer.Instance.GetPart<IOptionChainProvider>();
+                        if (optionChainProvider == null)
                         {
-                            algorithm.Settings.DataSubscriptionLimit = 100;
+                            optionChainProvider = new CachingOptionChainProvider(new LiveOptionChainProvider(parameters.DataCacheProvider, parameters.MapFileProvider));
                         }
+                        // set the option chain provider
+                        algorithm.SetOptionChainProvider(optionChainProvider);
+
+                        var futureChainProvider = Composer.Instance.GetPart<IFutureChainProvider>();
+                        if (futureChainProvider == null)
+                        {
+                            futureChainProvider = new CachingFutureChainProvider(new LiveFutureChainProvider(parameters.DataCacheProvider));
+                        }
+                        // set the future chain provider
+                        algorithm.SetFutureChainProvider(futureChainProvider);
 
                         //Initialise the algorithm, get the required data:
                         algorithm.Initialize();
@@ -271,7 +285,13 @@ namespace QuantConnect.Lean.Engine.Setup
                         AddInitializationError(err.ToString(), err);
                     }
                 }, controls.RamAllocation,
-                    sleepIntervalMillis: 50); // entire system is waiting on this, so be as fast as possible
+                    sleepIntervalMillis: 100); // entire system is waiting on this, so be as fast as possible
+
+                if (Errors.Count != 0)
+                {
+                    // if we already got an error just exit right away
+                    return false;
+                }
 
                 if (!initializeComplete)
                 {
@@ -279,90 +299,13 @@ namespace QuantConnect.Lean.Engine.Setup
                     return false;
                 }
 
-                Log.Trace("BrokerageSetupHandler.Setup(): Fetching cash balance from brokerage...");
-                try
+                if (!LoadCashBalance(brokerage, algorithm))
                 {
-                    // set the algorithm's cash balance for each currency
-                    var cashBalance = brokerage.GetCashBalance();
-                    foreach (var cash in cashBalance)
-                    {
-                        Log.Trace("BrokerageSetupHandler.Setup(): Setting " + cash.Currency + " cash to " + cash.Amount);
-
-                        algorithm.Portfolio.SetCash(cash.Currency, cash.Amount, 0);
-                    }
-                }
-                catch (Exception err)
-                {
-                    Log.Error(err);
-                    AddInitializationError("Error getting cash balance from brokerage: " + err.Message, err);
                     return false;
                 }
 
-                var supportedSecurityTypes = new HashSet<SecurityType>
+                if (!LoadExistingHoldingsAndOrders(brokerage, algorithm, parameters))
                 {
-                    SecurityType.Equity, SecurityType.Forex, SecurityType.Cfd, SecurityType.Option, SecurityType.Future, SecurityType.Crypto
-                };
-                var minResolution = new Lazy<Resolution>(() => algorithm.Securities.Select(x => x.Value.Resolution).DefaultIfEmpty(Resolution.Second).Min());
-
-                Log.Trace("BrokerageSetupHandler.Setup(): Fetching open orders from brokerage...");
-                try
-                {
-                    GetOpenOrders(algorithm, parameters.ResultHandler, parameters.TransactionHandler, brokerage, supportedSecurityTypes, minResolution.Value);
-                }
-                catch (Exception err)
-                {
-                    Log.Error(err);
-                    AddInitializationError("Error getting open orders from brokerage: " + err.Message, err);
-                    return false;
-                }
-
-                Log.Trace("BrokerageSetupHandler.Setup(): Fetching holdings from brokerage...");
-                try
-                {
-                    var utcNow = DateTime.UtcNow;
-
-                    // populate the algorithm with the account's current holdings
-                    var holdings = brokerage.GetAccountHoldings();
-
-                    // add options first to ensure raw data normalization mode is set on the equity underlyings
-                    foreach (var holding in holdings.OrderByDescending(x => x.Type))
-                    {
-                        Log.Trace("BrokerageSetupHandler.Setup(): Has existing holding: " + holding);
-
-                        // verify existing holding security type
-                        if (!supportedSecurityTypes.Contains(holding.Type))
-                        {
-                            Log.Error("BrokerageSetupHandler.Setup(): Unsupported security type: " + holding.Type + "-" + holding.Symbol.Value);
-                            AddInitializationError("Found unsupported security type in existing brokerage holdings: " + holding.Type + ". " +
-                                "QuantConnect currently supports the following security types: " + string.Join(",", supportedSecurityTypes));
-
-                            // keep aggregating these errors
-                            continue;
-                        }
-
-                        AddUnrequestedSecurity(algorithm, holding.Symbol, minResolution.Value);
-
-                        var security = algorithm.Securities[holding.Symbol];
-                        var exchangeTime = utcNow.ConvertFromUtc(security.Exchange.TimeZone);
-
-                        security.Holdings.SetHoldings(holding.AveragePrice, holding.Quantity);
-                        security.SetMarketPrice(new TradeBar
-                        {
-                            Time = exchangeTime,
-                            Open = holding.MarketPrice,
-                            High = holding.MarketPrice,
-                            Low = holding.MarketPrice,
-                            Close = holding.MarketPrice,
-                            Volume = 0,
-                            Symbol = holding.Symbol,
-                            DataType = MarketDataType.TradeBar
-                        });
-                    }
-                }
-                catch (Exception err)
-                {
-                    Log.Error(err);
-                    AddInitializationError("Error getting account holdings from brokerage: " + err.Message, err);
                     return false;
                 }
 
@@ -376,13 +319,23 @@ namespace QuantConnect.Lean.Engine.Setup
                     algorithm.Debug("Warning: No cash balances or holdings were found in the brokerage account.");
                 }
 
+                string maxCashLimitStr;
+                if (liveJob.BrokerageData.TryGetValue(MaxAllocationLimitConfig, out maxCashLimitStr))
+                {
+                    var maxCashLimit = decimal.Parse(maxCashLimitStr, NumberStyles.Any, CultureInfo.InvariantCulture);
+
+                    // If allocation exceeded by more than $10,000; block deployment
+                    if (algorithm.Portfolio.TotalPortfolioValue > (maxCashLimit + 10000m))
+                    {
+                        var exceptionMessage = $"TotalPortfolioValue '{algorithm.Portfolio.TotalPortfolioValue}' exceeds allocation limit '{maxCashLimit}'";
+                        algorithm.Debug(exceptionMessage);
+                        throw new ArgumentException(exceptionMessage);
+                    }
+                }
+
                 //Set the starting portfolio value for the strategy to calculate performance:
                 StartingPortfolioValue = algorithm.Portfolio.TotalPortfolioValue;
                 StartingDate = DateTime.Now;
-
-                // we set the free portfolio value based on the initial total value and the free percentage value
-                algorithm.Settings.FreePortfolioValue =
-                    algorithm.Portfolio.TotalPortfolioValue * algorithm.Settings.FreePortfolioValuePercentage;
             }
             catch (Exception err)
             {
@@ -399,28 +352,147 @@ namespace QuantConnect.Lean.Engine.Setup
             return Errors.Count == 0;
         }
 
-        private static void AddUnrequestedSecurity(IAlgorithm algorithm, Symbol symbol, Resolution minResolution)
+        private bool LoadCashBalance(IBrokerage brokerage, IAlgorithm algorithm)
         {
-            if (!algorithm.Portfolio.ContainsKey(symbol))
+            Log.Trace("BrokerageSetupHandler.Setup(): Fetching cash balance from brokerage...");
+            try
             {
+                // set the algorithm's cash balance for each currency
+                var cashBalance = brokerage.GetCashBalance();
+                foreach (var cash in cashBalance)
+                {
+                    Log.Trace($"BrokerageSetupHandler.Setup(): Setting {cash.Currency} cash to {cash.Amount}");
+
+                    algorithm.Portfolio.SetCash(cash.Currency, cash.Amount, 0);
+                }
+            }
+            catch (Exception err)
+            {
+                Log.Error(err);
+                AddInitializationError("Error getting cash balance from brokerage: " + err.Message, err);
+                return false;
+            }
+            return true;
+        }
+
+        private bool LoadExistingHoldingsAndOrders(IBrokerage brokerage, IAlgorithm algorithm, SetupHandlerParameters parameters)
+        {
+            var supportedSecurityTypes = new HashSet<SecurityType>
+            {
+                SecurityType.Equity, SecurityType.Forex, SecurityType.Cfd, SecurityType.Option, SecurityType.Future, SecurityType.FutureOption, SecurityType.IndexOption, SecurityType.Crypto, SecurityType.CryptoFuture
+            };
+
+            Log.Trace("BrokerageSetupHandler.Setup(): Fetching open orders from brokerage...");
+            try
+            {
+                GetOpenOrders(algorithm, parameters.ResultHandler, parameters.TransactionHandler, brokerage, supportedSecurityTypes);
+            }
+            catch (Exception err)
+            {
+                Log.Error(err);
+                AddInitializationError("Error getting open orders from brokerage: " + err.Message, err);
+                return false;
+            }
+
+            Log.Trace("BrokerageSetupHandler.Setup(): Fetching holdings from brokerage...");
+            try
+            {
+                var utcNow = DateTime.UtcNow;
+
+                // populate the algorithm with the account's current holdings
+                var holdings = brokerage.GetAccountHoldings();
+
+                // add options first to ensure raw data normalization mode is set on the equity underlyings
+                foreach (var holding in holdings.OrderByDescending(x => x.Type))
+                {
+                    Log.Trace("BrokerageSetupHandler.Setup(): Has existing holding: " + holding);
+
+                    // verify existing holding security type
+                    if (!supportedSecurityTypes.Contains(holding.Type))
+                    {
+                        Log.Error("BrokerageSetupHandler.Setup(): Unsupported security type: " + holding.Type + "-" + holding.Symbol.Value);
+                        AddInitializationError("Found unsupported security type in existing brokerage holdings: " + holding.Type + ". " +
+                            "QuantConnect currently supports the following security types: " + string.Join(",", supportedSecurityTypes));
+
+                        // keep aggregating these errors
+                        continue;
+                    }
+
+                    AddUnrequestedSecurity(algorithm, holding.Symbol);
+
+                    var security = algorithm.Securities[holding.Symbol];
+                    var exchangeTime = utcNow.ConvertFromUtc(security.Exchange.TimeZone);
+
+                    security.Holdings.SetHoldings(holding.AveragePrice, holding.Quantity);
+
+                    if (holding.MarketPrice == 0)
+                    {
+                        // try warming current market price
+                        holding.MarketPrice = algorithm.GetLastKnownPrice(security)?.Price ?? 0;
+                    }
+
+                    if (holding.MarketPrice != 0)
+                    {
+                        security.SetMarketPrice(new TradeBar
+                        {
+                            Time = exchangeTime,
+                            Open = holding.MarketPrice,
+                            High = holding.MarketPrice,
+                            Low = holding.MarketPrice,
+                            Close = holding.MarketPrice,
+                            Volume = 0,
+                            Symbol = holding.Symbol,
+                            DataType = MarketDataType.TradeBar
+                        });
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                Log.Error(err);
+                AddInitializationError("Error getting account holdings from brokerage: " + err.Message, err);
+                return false;
+            }
+
+            return true;
+        }
+
+        private Security AddUnrequestedSecurity(IAlgorithm algorithm, Symbol symbol)
+        {
+            if (!algorithm.Securities.TryGetValue(symbol, out Security security))
+            {
+                var resolution = algorithm.UniverseSettings.Resolution;
+                var fillForward = algorithm.UniverseSettings.FillForward;
+                var leverage = algorithm.UniverseSettings.Leverage;
+                var extendedHours = algorithm.UniverseSettings.ExtendedMarketHours;
+
+                if (!_notifiedUniverseSettingsUsed)
+                {
+                    // let's just send the message once
+                    _notifiedUniverseSettingsUsed = true;
+                    algorithm.Debug($"Will use UniverseSettings for automatically added securities for open orders and holdings. UniverseSettings:" +
+                        $" Resolution = {resolution}; Leverage = {leverage}; FillForward = {fillForward}; ExtendedHours = {extendedHours}");
+                }
+
                 Log.Trace("BrokerageSetupHandler.Setup(): Adding unrequested security: " + symbol.Value);
 
-                if (symbol.SecurityType == SecurityType.Option)
+                if (symbol.SecurityType.IsOption())
                 {
                     // add current option contract to the system
-                    algorithm.AddOptionContract(symbol, minResolution, true, 1.0m);
+                    security = algorithm.AddOptionContract(symbol, resolution, fillForward, leverage, extendedHours);
                 }
                 else if (symbol.SecurityType == SecurityType.Future)
                 {
                     // add current future contract to the system
-                    algorithm.AddFutureContract(symbol, minResolution, true, 1.0m);
+                    security = algorithm.AddFutureContract(symbol, resolution, fillForward, leverage, extendedHours);
                 }
                 else
                 {
                     // for items not directly requested set leverage to 1 and at the min resolution
-                    algorithm.AddSecurity(symbol.SecurityType, symbol.Value, minResolution, symbol.ID.Market, true, 1.0m, false);
+                    security = algorithm.AddSecurity(symbol.SecurityType, symbol.Value, resolution, symbol.ID.Market, fillForward, leverage, extendedHours);
                 }
             }
+            return security;
         }
 
         /// <summary>
@@ -431,9 +503,8 @@ namespace QuantConnect.Lean.Engine.Setup
         /// <param name="transactionHandler">The configurated transaction handler</param>
         /// <param name="brokerage">Brokerage output instance</param>
         /// <param name="supportedSecurityTypes">The list of supported security types</param>
-        /// <param name="minResolution">The resolution for the security to add, if required</param>
         protected void GetOpenOrders(IAlgorithm algorithm, IResultHandler resultHandler, ITransactionHandler transactionHandler, IBrokerage brokerage,
-            HashSet<SecurityType> supportedSecurityTypes, Resolution minResolution)
+            HashSet<SecurityType> supportedSecurityTypes)
         {
             // populate the algorithm with the account's outstanding orders
             var openOrders = brokerage.GetOpenOrders();
@@ -441,13 +512,10 @@ namespace QuantConnect.Lean.Engine.Setup
             // add options first to ensure raw data normalization mode is set on the equity underlyings
             foreach (var order in openOrders.OrderByDescending(x => x.SecurityType))
             {
-                // be sure to assign order IDs such that we increment from the SecurityTransactionManager to avoid ID collisions
-                order.Id = algorithm.Transactions.GetIncrementOrderId();
+                transactionHandler.AddOpenOrder(order, algorithm);
 
                 Log.Trace($"BrokerageSetupHandler.Setup(): Has open order: {order}");
                 resultHandler.DebugMessage($"BrokerageSetupHandler.Setup(): Open order detected.  Creating order tickets for open order {order.Symbol.Value} with quantity {order.Quantity}. Beware that this order ticket may not accurately reflect the quantity of the order if the open order is partially filled.");
-
-                transactionHandler.AddOpenOrder(order, order.ToOrderTicket(algorithm.Transactions));
 
                 // verify existing holding security type
                 if (!supportedSecurityTypes.Contains(order.SecurityType))
@@ -459,26 +527,9 @@ namespace QuantConnect.Lean.Engine.Setup
                     // keep aggregating these errors
                     continue;
                 }
-
-                AddUnrequestedSecurity(algorithm, order.Symbol, minResolution);
+                var security = AddUnrequestedSecurity(algorithm, order.Symbol);
+                order.PriceCurrency = security?.SymbolProperties.QuoteCurrency;
             }
-        }
-
-        /// <summary>
-        /// Get the available data feeds from config.json,
-        /// If none available, throw an error
-        /// </summary>
-        private static Dictionary<SecurityType, List<TickType>> GetConfiguredDataFeeds()
-        {
-            var dataFeedsConfigString = Config.Get("security-data-feeds");
-
-            Dictionary<SecurityType, List<TickType>> dataFeeds = new Dictionary<SecurityType, List<TickType>>();
-            if (dataFeedsConfigString != string.Empty)
-            {
-                dataFeeds = JsonConvert.DeserializeObject<Dictionary<SecurityType, List<TickType>>>(dataFeedsConfigString);
-            }
-
-            return dataFeeds;
         }
 
         /// <summary>

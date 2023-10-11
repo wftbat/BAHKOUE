@@ -31,7 +31,7 @@ namespace QuantConnect.Data.Market
     [ProtoContract(SkipConstructor = true)]
     public class QuoteBar : BaseData, IBaseDataBar
     {
-        // scale factor used in QC equity/forex data files
+        // scale factor used in QC equity/option/indexOption data files
         private const decimal _scaleFactor = 1 / 10000m;
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace QuantConnect.Data.Market
             Bid = new Bar();
             Ask = new Bar();
             Value = 0;
-            Period = TimeSpan.FromMinutes(1);
+            Period = QuantConnect.Time.OneMinute;
             DataType = MarketDataType.QuoteBar;
         }
 
@@ -234,7 +234,7 @@ namespace QuantConnect.Data.Market
             if (Bid != null) LastBidSize = lastBidSize;
             if (Ask != null) LastAskSize = lastAskSize;
             Value = Close;
-            Period = period ?? TimeSpan.FromMinutes(1);
+            Period = period ?? QuantConnect.Time.OneMinute;
             DataType = MarketDataType.QuoteBar;
         }
 
@@ -292,12 +292,15 @@ namespace QuantConnect.Data.Market
 
                     case SecurityType.Forex:
                     case SecurityType.Crypto:
+                    case SecurityType.CryptoFuture:
                         return ParseForex(config, stream, date);
 
                     case SecurityType.Cfd:
                         return ParseCfd(config, stream, date);
 
                     case SecurityType.Option:
+                    case SecurityType.FutureOption:
+                    case SecurityType.IndexOption:
                         return ParseOption(config, stream, date);
 
                     case SecurityType.Future:
@@ -338,12 +341,15 @@ namespace QuantConnect.Data.Market
 
                     case SecurityType.Forex:
                     case SecurityType.Crypto:
+                    case SecurityType.CryptoFuture:
                         return ParseForex(config, line, date);
 
                     case SecurityType.Cfd:
                         return ParseCfd(config, line, date);
 
                     case SecurityType.Option:
+                    case SecurityType.FutureOption:
+                    case SecurityType.IndexOption:
                         return ParseOption(config, line, date);
 
                     case SecurityType.Future:
@@ -399,24 +405,17 @@ namespace QuantConnect.Data.Market
                 quoteBar.Time = date.Date.AddMilliseconds(csv[0].ToInt32()).ConvertTo(config.DataTimeZone, config.ExchangeTimeZone);
             }
 
-            var bid = new Bar
-            {
-                Open = csv[1].ToDecimal(),
-                High = csv[2].ToDecimal(),
-                Low = csv[3].ToDecimal(),
-                Close = csv[4].ToDecimal()
-            };
+            // the Bid/Ask bars were already create above, we don't need to recreate them but just set their values
+            quoteBar.Bid.Open = csv[1].ToDecimal();
+            quoteBar.Bid.High = csv[2].ToDecimal();
+            quoteBar.Bid.Low = csv[3].ToDecimal();
+            quoteBar.Bid.Close = csv[4].ToDecimal();
 
-            var ask = new Bar
-            {
-                Open = csv[1].ToDecimal(),
-                High = csv[2].ToDecimal(),
-                Low = csv[3].ToDecimal(),
-                Close = csv[4].ToDecimal()
-            };
+            quoteBar.Ask.Open = csv[1].ToDecimal();
+            quoteBar.Ask.High = csv[2].ToDecimal();
+            quoteBar.Ask.Low = csv[3].ToDecimal();
+            quoteBar.Ask.Close = csv[4].ToDecimal();
 
-            quoteBar.Ask = ask;
-            quoteBar.Bid = bid;
             quoteBar.Value = quoteBar.Close;
 
             return quoteBar;
@@ -455,7 +454,7 @@ namespace QuantConnect.Data.Market
         /// <returns><see cref="QuoteBar"/> with the bid/ask set to same values</returns>
         public QuoteBar ParseOption(SubscriptionDataConfig config, string line, DateTime date)
         {
-            return ParseQuote(config, date, line, true);
+            return ParseQuote(config, date, line, OptionUseScaleFactor(config.Symbol));
         }
 
         /// <summary>
@@ -467,7 +466,19 @@ namespace QuantConnect.Data.Market
         /// <returns><see cref="QuoteBar"/> with the bid/ask set to same values</returns>
         public QuoteBar ParseOption(SubscriptionDataConfig config, StreamReader streamReader, DateTime date)
         {
-            return ParseQuote(config, date, streamReader, true);
+            // scale factor only applies for equity and index options
+            return ParseQuote(config, date, streamReader, useScaleFactor: OptionUseScaleFactor(config.Symbol));
+        }
+        
+        /// <summary>
+        /// Helper method that defines the types of options that should use scale factor
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
+        private static bool OptionUseScaleFactor(Symbol symbol)
+        {
+            return symbol.SecurityType == SecurityType.Option ||
+                   symbol.SecurityType == SecurityType.IndexOption;
         }
 
         /// <summary>
@@ -552,6 +563,7 @@ namespace QuantConnect.Data.Market
         /// <returns><see cref="QuoteBar"/> with the bid/ask prices set appropriately</returns>
         private QuoteBar ParseQuote(SubscriptionDataConfig config, DateTime date, StreamReader streamReader, bool useScaleFactor)
         {
+            // Non-equity asset classes will not use scaling, including options that have a non-equity underlying asset class.
             var scaleFactor = useScaleFactor
                               ? _scaleFactor
                               : 1;
@@ -581,13 +593,11 @@ namespace QuantConnect.Data.Market
             // only create the bid if it exists in the file
             if (open != 0 || high != 0 || low != 0 || close != 0)
             {
-                quoteBar.Bid = new Bar
-                {
-                    Open = open * scaleFactor,
-                    High = high * scaleFactor,
-                    Low = low * scaleFactor,
-                    Close = close * scaleFactor
-                };
+                // the Bid/Ask bars were already create above, we don't need to recreate them but just set their values
+                quoteBar.Bid.Open = open * scaleFactor;
+                quoteBar.Bid.High = high * scaleFactor;
+                quoteBar.Bid.Low = low * scaleFactor;
+                quoteBar.Bid.Close = close * scaleFactor;
                 quoteBar.LastBidSize = lastSize;
             }
             else
@@ -603,13 +613,11 @@ namespace QuantConnect.Data.Market
             // only create the ask if it exists in the file
             if (open != 0 || high != 0 || low != 0 || close != 0)
             {
-                quoteBar.Ask = new Bar
-                {
-                    Open = open * scaleFactor,
-                    High = high * scaleFactor,
-                    Low = low * scaleFactor,
-                    Close = close * scaleFactor
-                };
+                // the Bid/Ask bars were already create above, we don't need to recreate them but just set their values
+                quoteBar.Ask.Open = open * scaleFactor;
+                quoteBar.Ask.High = high * scaleFactor;
+                quoteBar.Ask.Low = low * scaleFactor;
+                quoteBar.Ask.Close = close * scaleFactor;
                 quoteBar.LastAskSize = lastSize;
             }
             else
@@ -658,13 +666,11 @@ namespace QuantConnect.Data.Market
             // only create the bid if it exists in the file
             if (csv[1].Length != 0 || csv[2].Length != 0 || csv[3].Length != 0 || csv[4].Length != 0)
             {
-                quoteBar.Bid = new Bar
-                {
-                    Open = csv[1].ToDecimal() * scaleFactor,
-                    High = csv[2].ToDecimal() * scaleFactor,
-                    Low = csv[3].ToDecimal() * scaleFactor,
-                    Close = csv[4].ToDecimal() * scaleFactor
-                };
+                // the Bid/Ask bars were already create above, we don't need to recreate them but just set their values
+                quoteBar.Bid.Open = csv[1].ToDecimal() * scaleFactor;
+                quoteBar.Bid.High = csv[2].ToDecimal() * scaleFactor;
+                quoteBar.Bid.Low = csv[3].ToDecimal() * scaleFactor;
+                quoteBar.Bid.Close = csv[4].ToDecimal() * scaleFactor;
                 quoteBar.LastBidSize = csv[5].ToDecimal();
             }
             else
@@ -675,13 +681,11 @@ namespace QuantConnect.Data.Market
             // only create the ask if it exists in the file
             if (csv[6].Length != 0 || csv[7].Length != 0 || csv[8].Length != 0 || csv[9].Length != 0)
             {
-                quoteBar.Ask = new Bar
-                {
-                    Open = csv[6].ToDecimal() * scaleFactor,
-                    High = csv[7].ToDecimal() * scaleFactor,
-                    Low = csv[8].ToDecimal() * scaleFactor,
-                    Close = csv[9].ToDecimal() * scaleFactor
-                };
+                // the Bid/Ask bars were already create above, we don't need to recreate them but just set their values
+                quoteBar.Ask.Open = csv[6].ToDecimal() * scaleFactor;
+                quoteBar.Ask.High = csv[7].ToDecimal() * scaleFactor;
+                quoteBar.Ask.Low = csv[8].ToDecimal() * scaleFactor;
+                quoteBar.Ask.Close = csv[9].ToDecimal() * scaleFactor;
                 quoteBar.LastAskSize = csv[10].ToDecimal();
             }
             else
@@ -711,8 +715,7 @@ namespace QuantConnect.Data.Market
             }
 
             var source = LeanData.GenerateZipFilePath(Globals.DataFolder, config.Symbol, date, config.Resolution, config.TickType);
-            if (config.SecurityType == SecurityType.Option ||
-                config.SecurityType == SecurityType.Future)
+            if (config.SecurityType == SecurityType.Future || config.SecurityType.IsOption())
             {
                 source += "#" + LeanData.GenerateZipEntryName(config.Symbol, date, config.Resolution, config.TickType);
             }
@@ -747,12 +750,13 @@ namespace QuantConnect.Data.Market
         /// <returns><see cref="TradeBars"/></returns>
         public TradeBar Collapse()
         {
-            return new TradeBar(Time, Symbol, Open, High, Low, Close, 0)
-            {
-                Period = Period
-            };
+            return new TradeBar(Time, Symbol, Open, High, Low, Close, 0, Period);
         }
 
+        /// <summary>
+        /// Convert this <see cref="QuoteBar"/> to string form.
+        /// </summary>
+        /// <returns>String representation of the <see cref="QuoteBar"/></returns>
         public override string ToString()
         {
             return $"{Symbol}: " +

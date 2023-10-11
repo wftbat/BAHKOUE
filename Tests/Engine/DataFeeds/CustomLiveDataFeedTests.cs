@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -15,6 +15,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,11 +23,7 @@ using System.Text;
 using System.Threading;
 using NUnit.Framework;
 using QuantConnect.Algorithm;
-using QuantConnect.Algorithm.CSharp;
-using QuantConnect.Configuration;
 using QuantConnect.Data;
-using QuantConnect.Data.Auxiliary;
-using QuantConnect.Data.Custom;
 using QuantConnect.Data.Market;
 using QuantConnect.Data.UniverseSelection;
 using QuantConnect.Interfaces;
@@ -36,10 +33,11 @@ using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Logging;
 using QuantConnect.Packets;
 using QuantConnect.Util;
+using QuantConnect.Lean.Engine.Storage;
 
 namespace QuantConnect.Tests.Engine.DataFeeds
 {
-    [TestFixture, Parallelizable(ParallelScope.All)]
+    [TestFixture]
     public class CustomLiveDataFeedTests
     {
         private LiveSynchronizer _synchronizer;
@@ -53,9 +51,10 @@ namespace QuantConnect.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void EmitsDailyQuandlFutureDataOverWeekends()
+        public void EmitsDailyCustomFutureDataOverWeekends()
         {
-            RemoteFileSubscriptionStreamReader.SetDownloadProvider(new Api.Api());
+            using var api = new Api.Api();
+            RemoteFileSubscriptionStreamReader.SetDownloadProvider(api);
             var tickers = new[] { "CHRIS/CME_ES1", "CHRIS/CME_ES2" };
             var startDate = new DateTime(2018, 4, 1);
             var endDate = new DateTime(2018, 4, 20);
@@ -63,7 +62,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             // delete temp files
             foreach (var ticker in tickers)
             {
-                var fileName = TestableQuandlFuture.GetLocalFileName(ticker, "test");
+                var fileName = TestableCustomFuture.GetLocalFileName(ticker, "test");
                 File.Delete(fileName);
             }
 
@@ -72,7 +71,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             var dataManager = new DataManagerStub(algorithm, _feed);
             algorithm.SubscriptionManager.SetDataManager(dataManager);
 
-            var symbols = tickers.Select(ticker => algorithm.AddData<TestableQuandlFuture>(ticker, Resolution.Daily).Symbol).ToList();
+            var symbols = tickers.Select(ticker => algorithm.AddData<TestableCustomFuture>(ticker, Resolution.Daily).Symbol).ToList();
 
             var timeProvider = new ManualTimeProvider(TimeZones.NewYork);
             timeProvider.SetCurrentTime(startDate);
@@ -80,7 +79,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             var dataPointsEmitted = 0;
             RunLiveDataFeed(algorithm, startDate, symbols, timeProvider, dataManager);
 
-            var cancellationTokenSource = new CancellationTokenSource();
+            using var cancellationTokenSource = new CancellationTokenSource();
             var lastFileWriteDate = DateTime.MinValue;
 
             // create a timer to advance time much faster than realtime and to simulate live Quandl data file updates
@@ -105,10 +104,10 @@ namespace QuantConnect.Tests.Engine.DataFeeds
                     {
                         foreach (var ticker in tickers)
                         {
-                            var source = TestableQuandlFuture.GetLocalFileName(ticker, "csv");
+                            var source = TestableCustomFuture.GetLocalFileName(ticker, "csv");
 
                             // write new local file including only rows up to current date
-                            var outputFileName = TestableQuandlFuture.GetLocalFileName(ticker, "test");
+                            var outputFileName = TestableCustomFuture.GetLocalFileName(ticker, "test");
 
                             var sb = new StringBuilder();
                             {
@@ -201,13 +200,14 @@ namespace QuantConnect.Tests.Engine.DataFeeds
         }
 
 
-        [Test, Ignore("To run this test please set a valid Quandl token")]
+        [Test]
         public void RemoteDataDoesNotIncreaseNumberOfSlices()
         {
-            Config.Set("quandl-auth-token", "QUANDL-TOKEN");
+            using var api = new Api.Api();
+            RemoteFileSubscriptionStreamReader.SetDownloadProvider(api);
 
-            var startDate = new DateTime(2018, 4, 2);
-            var endDate = new DateTime(2018, 4, 19);
+            var startDate = new DateTime(2017, 4, 2);
+            var endDate = new DateTime(2017, 4, 23);
             var algorithm = new QCAlgorithm();
 
             var timeProvider = new ManualTimeProvider(TimeZones.NewYork);
@@ -231,14 +231,13 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             algorithm.SubscriptionManager.SetDataManager(dataManager);
             var symbols = new List<Symbol>
             {
-                algorithm.AddData<Quandl>("CBOE/VXV", Resolution.Daily).Symbol,
-                algorithm.AddData<QuandlVix>("CBOE/VIX", Resolution.Daily).Symbol,
+                algorithm.AddData<TestableRemoteCustomData>("FB", Resolution.Daily).Symbol,
+                algorithm.AddData<TestableRemoteCustomData>("IBM", Resolution.Daily).Symbol,
                 algorithm.AddEquity("SPY", Resolution.Daily).Symbol,
                 algorithm.AddEquity("AAPL", Resolution.Daily).Symbol
             };
-            algorithm.PostInitialize();
 
-            var cancellationTokenSource = new CancellationTokenSource();
+            using var cancellationTokenSource = new CancellationTokenSource();
 
             var dataPointsEmitted = 0;
             var slicesEmitted = 0;
@@ -297,6 +296,84 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             Assert.AreEqual(14 * symbols.Count, dataPointsEmitted);
         }
 
+        [Test]
+        public void LiveDataFeedSourcesDataFromObjectStore()
+        {
+            using var api = new Api.Api();
+            RemoteFileSubscriptionStreamReader.SetDownloadProvider(api);
+
+            var startDate = new DateTime(2017, 4, 2);
+            var endDate = new DateTime(2017, 4, 23);
+            var algorithm = new QCAlgorithm();
+
+            var timeProvider = new ManualTimeProvider(TimeZones.NewYork);
+            timeProvider.SetCurrentTime(startDate);
+
+            CreateDataFeed();
+            var dataManager = new DataManagerStub(algorithm, _feed);
+            algorithm.SubscriptionManager.SetDataManager(dataManager);
+
+            using var store = new LocalObjectStore();
+            store.Initialize(0, 0, "", new Controls { StoragePermissions = FileAccess.ReadWrite });
+            algorithm.SetObjectStore(store);
+            algorithm.ObjectStore.Save("CustomData/CustomIBM", "2017-04-03,173.82\n2017-04-04,173.52\n2017-04-05,174.7\n2017-04-06,173.47\n2017-04-07,172.08\n2017-04-10,172.53\n2017-04-11,170.65\n2017-04-12,171.04\n2017-04-13,169.92\n2017-04-17,169.75\n2017-04-18,170.79\n2017-04-19,161.76\n2017-04-20,161.32\n2017-04-21,162.05\n2017-04-24,161.29\n2017-04-25,161.78\n2017-04-26,160.53\n2017-04-27,160.29\n2017-04-28,160.5");
+
+            var symbol = algorithm.AddData<TestableObjectStoreCustomData>("IBM", Resolution.Daily).Symbol;
+
+            using var cancellationTokenSource = new CancellationTokenSource();
+
+            var dataPointsEmitted = 0;
+            var slicesEmitted = 0;
+
+            RunLiveDataFeed(algorithm, startDate, new[] { symbol }, timeProvider, dataManager);
+
+            // create a timer to advance time much faster than realtime and to simulate live Quandl data file updates
+            var timerInterval = TimeSpan.FromMilliseconds(100);
+            var timer = Ref.Create<Timer>(null);
+            timer.Value = new Timer(state =>
+            {
+                // stop the timer to prevent reentrancy
+                timer.Value.Change(Timeout.Infinite, Timeout.Infinite);
+
+                var currentTime = timeProvider.GetUtcNow().ConvertFromUtc(TimeZones.NewYork);
+
+                if (currentTime.Date > endDate.Date)
+                {
+                    _feed.Exit();
+                    cancellationTokenSource.Cancel();
+                    return;
+                }
+
+                timeProvider.Advance(TimeSpan.FromHours(3));
+
+                // restart the timer
+                timer.Value.Change(timerInterval, timerInterval);
+
+            }, null, TimeSpan.FromSeconds(2), timerInterval);
+
+            try
+            {
+                foreach (var timeSlice in _synchronizer.StreamData(cancellationTokenSource.Token))
+                {
+                    if (timeSlice.Slice.HasData)
+                    {
+                        slicesEmitted++;
+                        dataPointsEmitted += timeSlice.Slice.Values.Count;
+                        Assert.AreEqual(symbol, timeSlice.Slice.Values.Single().Symbol, $"Slice doesn't contain {symbol}");
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.Trace($"Error: {exception}");
+            }
+
+            timer.Value.Dispose();
+            dataManager.RemoveAllSubscriptions();
+            Assert.AreEqual(14, slicesEmitted);
+            Assert.AreEqual(slicesEmitted, dataPointsEmitted);
+        }
+
         private void CreateDataFeed(
             FuncDataQueueHandler funcDataQueueHandler = null)
         {
@@ -313,9 +390,8 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             _synchronizer = new TestableLiveSynchronizer(timeProvider);
             _synchronizer.Initialize(algorithm, dataManager);
 
-            var mapFileProvider = new LocalDiskMapFileProvider();
             _feed.Initialize(algorithm, new LiveNodePacket(), new BacktestingResultHandler(),
-                mapFileProvider, new LocalDiskFactorFileProvider(mapFileProvider), new DefaultDataProvider(), dataManager, _synchronizer, new DataChannelProvider());
+                TestGlobals.MapFileProvider, TestGlobals.FactorFileProvider, TestGlobals.DataProvider, dataManager, _synchronizer, new DataChannelProvider());
 
             foreach (var symbol in symbols)
             {
@@ -327,13 +403,8 @@ namespace QuantConnect.Tests.Engine.DataFeeds
 
         private static int _countFilesWritten;
 
-        public class TestableQuandlFuture : Quandl
+        public class TestableCustomFuture : BaseData
         {
-            public TestableQuandlFuture()
-                : base("Settle")
-            {
-            }
-
             public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, bool isLiveMode)
             {
                 // use local file instead of remote file
@@ -344,7 +415,66 @@ namespace QuantConnect.Tests.Engine.DataFeeds
 
             public static string GetLocalFileName(string ticker, string fileExtension)
             {
-                return $"./TestData/quandl_future_{ticker.Replace("/", "_").ToLowerInvariant()}.{fileExtension}";
+                return $"./TestData/custom_future_{ticker.Replace("/", "_").ToLowerInvariant()}.{fileExtension}";
+            }
+
+            public override BaseData Reader(SubscriptionDataConfig config, string line, DateTime date, bool isLiveMode)
+            {
+                var csv = line.Split(',');
+
+                var data = new TestableCustomFuture
+                {
+                    Symbol = config.Symbol,
+                    Time = DateTime.ParseExact(csv[0], "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                    Value = csv[6].ToDecimal()
+                };
+
+                return data;
+            }
+        }
+
+        public class TestableRemoteCustomData : BaseData
+        {
+            public override DateTime EndTime
+            {
+                get { return Time + Period; }
+                set { Time = value - Period; }
+            }
+
+            /// <summary>
+            /// Gets a time span of one day
+            /// </summary>
+            public TimeSpan Period
+            {
+                get { return QuantConnect.Time.OneDay; }
+            }
+
+            public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, bool isLiveMode)
+            {
+                var source = $"https://www.dl.dropboxusercontent.com/s/1w6x1kfrlvx3d2v/CustomIBM.csv?dl=0";
+                return new SubscriptionDataSource(source, SubscriptionTransportMedium.RemoteFile);
+            }
+
+            public override BaseData Reader(SubscriptionDataConfig config, string line, DateTime date, bool isLiveMode)
+            {
+                var csv = line.Split(',');
+
+                var data = new TestableRemoteCustomData
+                {
+                    Symbol = config.Symbol,
+                    Time = DateTime.ParseExact(csv[0], "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                    Value = csv[1].ToDecimal()
+                };
+
+                return data;
+            }
+        }
+
+        public class TestableObjectStoreCustomData : TestableRemoteCustomData
+        {
+            public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, bool isLiveMode)
+            {
+                return new SubscriptionDataSource("CustomData/CustomIBM", SubscriptionTransportMedium.ObjectStore, FileFormat.Csv);
             }
         }
     }

@@ -52,6 +52,10 @@ namespace QuantConnect.Algorithm.CSharp
             SetPortfolioConstruction(new EqualWeightingPortfolioConstructionModel(Resolution.Daily, PortfolioBias.Long));
             SetExecution(new ImmediateExecutionModel());
 
+            // Order margin value has to have a minimum of 0.5% of Portfolio value, allows filtering out small trades and reduce fees.
+            // Commented so regression algorithm is more sensitive
+            //Settings.MinimumOrderMarginPortfolioPercentage = 0.005m;
+
             // set algorithm framework models
             SetUniverseSelection(
                 new ManualUniverseSelectionModel(
@@ -94,6 +98,16 @@ namespace QuantConnect.Algorithm.CSharp
         public Language[] Languages { get; } = { Language.CSharp, Language.Python };
 
         /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 7843;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 0;
+
+        /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
         /// </summary>
         public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
@@ -101,43 +115,27 @@ namespace QuantConnect.Algorithm.CSharp
             {"Total Trades", "9"},
             {"Average Win", "0.99%"},
             {"Average Loss", "-0.60%"},
-            {"Compounding Annual Return", "211.299%"},
+            {"Compounding Annual Return", "216.678%"},
             {"Drawdown", "2.300%"},
-            {"Expectancy", "0.319"},
-            {"Net Profit", "1.462%"},
-            {"Sharpe Ratio", "7.178"},
-            {"Probabilistic Sharpe Ratio", "64.689%"},
+            {"Expectancy", "0.318"},
+            {"Net Profit", "1.485%"},
+            {"Sharpe Ratio", "7.265"},
+            {"Probabilistic Sharpe Ratio", "64.957%"},
             {"Loss Rate", "50%"},
             {"Win Rate", "50%"},
             {"Profit-Loss Ratio", "1.64"},
-            {"Alpha", "-0.35"},
+            {"Alpha", "-0.36"},
             {"Beta", "1.003"},
-            {"Annual Standard Deviation", "0.22"},
-            {"Annual Variance", "0.049"},
-            {"Information Ratio", "-97.49"},
+            {"Annual Standard Deviation", "0.223"},
+            {"Annual Variance", "0.05"},
+            {"Information Ratio", "-100.088"},
             {"Tracking Error", "0.004"},
-            {"Treynor Ratio", "1.577"},
-            {"Total Fees", "$293.06"},
-            {"Fitness Score", "0.999"},
-            {"Kelly Criterion Estimate", "-6.994"},
-            {"Kelly Criterion Probability Value", "0.593"},
-            {"Sortino Ratio", "79228162514264337593543950335"},
-            {"Return Over Maximum Drawdown", "68.908"},
-            {"Portfolio Turnover", "1.741"},
-            {"Total Insights Generated", "10"},
-            {"Total Insights Closed", "8"},
-            {"Total Insights Analysis Completed", "8"},
-            {"Long Insight Count", "5"},
-            {"Short Insight Count", "5"},
-            {"Long/Short Ratio", "100%"},
-            {"Estimated Monthly Alpha Value", "$76052.4902"},
-            {"Total Accumulated Estimated Alpha Value", "$12252.9012"},
-            {"Mean Population Estimated Insight Value", "$1531.6126"},
-            {"Mean Population Direction", "62.5%"},
-            {"Mean Population Magnitude", "0%"},
-            {"Rolling Averaged Population Direction", "73.0394%"},
-            {"Rolling Averaged Population Magnitude", "0%"},
-            {"OrderListHash", "2007597727"}
+            {"Treynor Ratio", "1.617"},
+            {"Total Fees", "$309.75"},
+            {"Estimated Strategy Capacity", "$15000000.00"},
+            {"Lowest Capacity Asset", "SPY R735QTJ8XC9X"},
+            {"Portfolio Turnover", "179.37%"},
+            {"OrderListHash", "79a973155c0106b60249931daa89c54b"}
         };
     }
 }

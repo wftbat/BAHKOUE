@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -76,9 +76,11 @@ namespace QuantConnect.Algorithm.CSharp
         /// <param name="data">Slice object keyed by symbol containing the stock data</param>
         public override void OnData(Slice data)
         {
-            if (!_equityBought && data.ContainsKey(_spy)) {
-                //Buy our Equity
-                var quantity = CalculateOrderQuantity(_spy, .1m);
+            if (!_equityBought && data.ContainsKey(_spy))
+            {
+                //Buy our Equity.
+                //Quantity is rounded down to an even number since it will be split in two equal halves
+                var quantity = Math.Floor(CalculateOrderQuantity(_spy, .1m) / 2) * 2;
                 _equityBuy = MarketOrder(_spy, quantity, asynchronous: true);
                 _equityBought = true;
             }
@@ -119,7 +121,7 @@ namespace QuantConnect.Algorithm.CSharp
             var order = Transactions.GetOrderById(orderEvent.OrderId);
 
             // Based on the type verify the order
-            switch(order.Type)
+            switch (order.Type)
             {
                 case OrderType.Market:
                     VerifyMarketOrder(order, orderEvent);
@@ -140,7 +142,7 @@ namespace QuantConnect.Algorithm.CSharp
         /// <param name="order">Order object to analyze</param>
         public void VerifyMarketOrder(Order order, OrderEvent orderEvent)
         {
-            switch(order.Status)
+            switch (order.Status)
             {
                 case OrderStatus.Submitted:
                     break;
@@ -152,7 +154,7 @@ namespace QuantConnect.Algorithm.CSharp
                         throw new Exception("LastFillTime should not be null");
                     }
 
-                    if (order.Quantity/2 != orderEvent.FillQuantity)
+                    if (order.Quantity / 2 != orderEvent.FillQuantity)
                     {
                         throw new Exception("Order size should be half");
                     }
@@ -215,9 +217,9 @@ namespace QuantConnect.Algorithm.CSharp
             }
 
             //Check equity holding, should be invested, profit should be
-            //Quantity should be 50, AveragePrice should be ticket AverageFillPrice
+            //Quantity should be 52, AveragePrice should be ticket AverageFillPrice
             var equityHolding = Portfolio[_equityBuy.Symbol];
-            if (!equityHolding.Invested || equityHolding.Quantity != 50 || equityHolding.AveragePrice != _equityBuy.AverageFillPrice)
+            if (!equityHolding.Invested || equityHolding.Quantity != 52 || equityHolding.AveragePrice != _equityBuy.AverageFillPrice)
             {
                 throw new Exception("Equity holding does not match expected outcome");
             }
@@ -292,6 +294,16 @@ namespace QuantConnect.Algorithm.CSharp
         public Language[] Languages { get; } = { Language.CSharp };
 
         /// <summary>
+        /// Data Points count of all timeslices of algorithm
+        /// </summary>
+        public long DataPoints => 1272232;
+
+        /// <summary>
+        /// Data Points count of the algorithm history
+        /// </summary>
+        public int AlgorithmHistoryDataPoints => 0;
+
+        /// <summary>
         /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
         /// </summary>
         public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
@@ -299,25 +311,27 @@ namespace QuantConnect.Algorithm.CSharp
             {"Total Trades", "3"},
             {"Average Win", "0%"},
             {"Average Loss", "-0.40%"},
-            {"Compounding Annual Return", "-22.335%"},
+            {"Compounding Annual Return", "-22.717%"},
             {"Drawdown", "0.400%"},
             {"Expectancy", "-1"},
-            {"Net Profit", "-0.323%"},
-            {"Sharpe Ratio", "-0.888"},
-            {"Probabilistic Sharpe Ratio", "0%"},
+            {"Net Profit", "-0.329%"},
+            {"Sharpe Ratio", "-14.095"},
+            {"Probabilistic Sharpe Ratio", "1.216%"},
             {"Loss Rate", "100%"},
             {"Win Rate", "0%"},
             {"Profit-Loss Ratio", "0"},
-            {"Alpha", "0.035"},
-            {"Beta", "0.183"},
-            {"Annual Standard Deviation", "0.004"},
+            {"Alpha", "-0.01"},
+            {"Beta", "0.097"},
+            {"Annual Standard Deviation", "0.002"},
             {"Annual Variance", "0"},
-            {"Information Ratio", "12.058"},
-            {"Tracking Error", "0.017"},
-            {"Treynor Ratio", "-0.018"},
+            {"Information Ratio", "7.39"},
+            {"Tracking Error", "0.015"},
+            {"Treynor Ratio", "-0.234"},
             {"Total Fees", "$2.00"},
-            {"Fitness Score", "0.213"},
-            {"OrderListHash", "904167951"}
+            {"Estimated Strategy Capacity", "$0"},
+            {"Lowest Capacity Asset", "GOOCV VP83T1ZUHROL"},
+            {"Portfolio Turnover", "17.02%"},
+            {"OrderListHash", "85cbf92f01c2c91b5f710b7eeefecbe1"}
         };
     }
 }

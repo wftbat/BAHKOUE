@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -120,8 +120,18 @@ namespace QuantConnect.Algorithm.Framework.Alphas
             }
         }
 
+        /// <summary>
+        /// Determine if its time to emit insight for this symbol
+        /// </summary>
+        /// <param name="utcTime">Time of the insight</param>
+        /// <param name="symbol">The symbol to emit an insight for</param>
         protected virtual bool ShouldEmitInsight(DateTime utcTime, Symbol symbol)
         {
+            if(symbol.IsCanonical())
+            {
+                // canonical futures & options are none tradable
+                return false;
+            }
             DateTime generatedTimeUtc;
             if (_insightsTimeBySymbol.TryGetValue(symbol, out generatedTimeUtc))
             {

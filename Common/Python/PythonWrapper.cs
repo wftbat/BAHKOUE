@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -30,13 +30,14 @@ namespace QuantConnect.Python
         /// <summary>
         /// Validates that the specified <see cref="PyObject"/> completely implements the provided interface type
         /// </summary>
-        /// <typeparam name="TInterface">The inteface type</typeparam>
+        /// <typeparam name="TInterface">The interface type</typeparam>
         /// <param name="model">The model implementing the interface type</param>
-        public static void ValidateImplementationOf<TInterface>(this PyObject model)
+        public static PyObject ValidateImplementationOf<TInterface>(this PyObject model)
         {
             if (!typeof(TInterface).IsInterface)
             {
-                throw new ArgumentException($"{nameof(PythonWrapper)}.{nameof(ValidateImplementationOf)} expected an interface type parameter.");
+                throw new ArgumentException(
+                    $"{nameof(PythonWrapper)}.{nameof(ValidateImplementationOf)}(): {Messages.PythonWrapper.ExpectedInterfaceTypeParameter}");
             }
 
             var missingMembers = new List<string>();
@@ -50,11 +51,15 @@ namespace QuantConnect.Python
                         missingMembers.Add(member.Name);
                     }
                 }
+
+                if (missingMembers.Any())
+                {
+                    throw new NotImplementedException(
+                        Messages.PythonWrapper.InterfaceNotFullyImplemented(typeof(TInterface).Name, model.GetPythonType().Name, missingMembers));
+                }
             }
-            if (missingMembers.Any())
-            {
-                throw new NotImplementedException($"{nameof(TInterface)} must be fully implemented. Missing implementations: {string.Join(", ", missingMembers)}");
-            }
+
+            return model;
         }
     }
 }

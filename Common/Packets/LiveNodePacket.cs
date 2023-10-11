@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -14,8 +14,9 @@
  *
 */
 
-using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using QuantConnect.Notifications;
 
 namespace QuantConnect.Packets
 {
@@ -59,6 +60,36 @@ namespace QuantConnect.Packets
         /// </summary>
         [JsonProperty(PropertyName = "DisableAcknowledgement")]
         public bool DisableAcknowledgement;
+
+        /// <summary>
+        /// A list of event types to generate notifications for, which will use <see cref="NotificationTargets"/>
+        /// </summary>
+        [JsonProperty(PropertyName = "aNotificationEvents")]
+        public HashSet<string> NotificationEvents;
+
+        /// <summary>
+        /// A list of notification targets to use
+        /// </summary>
+        [JsonProperty(PropertyName = "aNotificationTargets")]
+        public List<Notification> NotificationTargets;
+
+        /// <summary>
+        /// List of real time data types available in the live trading environment
+        /// </summary>
+        [JsonProperty(PropertyName = "aLiveDataTypes")]
+        public HashSet<string> LiveDataTypes;
+
+        /// <summary>
+        /// Algorithm running mode.
+        /// </summary>
+        [JsonIgnore]
+        public override AlgorithmMode AlgorithmMode
+        {
+            get
+            {
+                return AlgorithmMode.Live;
+            }
+        }
 
         /// <summary>
         /// Default constructor for JSON of the Live Task Packet
