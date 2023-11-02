@@ -1,0 +1,5393 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Aricie.DNN
+</name>
+</assembly>
+<members>
+<member name="T:Aricie.DNN.My.Resources.Resources">
+<summary>
+  Une classe de ressource fortement typée destinée, entre autres, à la consultation des chaînes localisées.
+</summary>
+</member>
+<member name="P:Aricie.DNN.My.Resources.Resources.ResourceManager">
+<summary>
+  Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
+</summary>
+</member>
+<member name="P:Aricie.DNN.My.Resources.Resources.Culture">
+<summary>
+  Remplace la propriété CurrentUICulture du thread actuel pour toutes
+  les recherches de ressources à l'aide de cette classe de ressource fortement typée.
+</summary>
+</member>
+<member name="P:Aricie.DNN.My.Resources.Resources.DefaultStyler">
+<summary>
+  Recherche une chaîne localisée semblable à {
+  &quot;Containers&quot;: {
+    &quot;RootContainer&quot;: {
+      &quot;CssClass&quot;: &quot;pEditor&quot;,
+      &quot;OverrideCss&quot;: false,
+      &quot;UseTokens&quot;: false,
+      &quot;CustomAttributes&quot;: {},
+      &quot;Template&quot;: {
+        &quot;Enabled&quot;: false
+      }
+    },
+    &quot;EditorContainer&quot;: {
+      &quot;CssClass&quot;: &quot;pEditor&quot;,
+      &quot;OverrideCss&quot;: false,
+      &quot;UseTokens&quot;: false,
+      &quot;CustomAttributes&quot;: {},
+      &quot;Template&quot;: {
+        &quot;Enabled&quot;: false
+      }
+    },
+    &quot;EditorBox&quot;: {
+      &quot;CssClass&quot;: &quot;dnnForm&quot;,
+      &quot;OverrideCss&quot;: false,
+ [le reste de la chaîne a été tronqué]&quot;;.
+</summary>
+</member>
+<member name="P:Aricie.DNN.My.Resources.Resources.PublicSuffix">
+<summary>
+  Recherche une chaîne localisée semblable à // This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// ===BEGIN ICANN DOMAINS===
+
+// ac : http://en.wikipedia.org/wiki/.ac
+ac
+com.ac
+edu.ac
+gov.ac
+net.ac
+mil.ac
+org.ac
+
+// ad : http://en.wikipedia.org/wiki/.ad
+ad
+nom.ad
+
+// ae : http://en.wikipedia.org/wiki/.ae
+// see also: &quot;Domain Name Eligibility Policy&quot; at http://www.aeda.ae/eng/aepolic [le reste de la chaîne a été tronqué]&quot;;.
+</summary>
+</member>
+<member name="T:Aricie.DNN.ComponentModel.AutoModuleConfig`1">
+ <summary>
+ Generic self referencing self identifying module configuration class
+ </summary>
+ <remarks>Contains its own identifying implementation</remarks>
+</member>
+<member name="T:Aricie.DNN.ComponentModel.ModuleConfig">
+ <summary>
+ Base Module configuration class
+ </summary>
+ <remarks>Basic capabilitites to generate a custom filename</remarks>
+</member>
+<member name="T:Aricie.DNN.ComponentModel.ModuleConfig`1">
+ <summary>
+ Generic self referencing module configuration class
+ </summary>
+ <remarks>Has self file load/save capabilities</remarks>
+</member>
+<member name="T:Aricie.DNN.ComponentModel.ModuleConfig`2">
+ <summary>
+ Generic self referencing with identification module configuration class
+ </summary>
+ <remarks>Has all module configuration capabilities.</remarks>
+</member>
+<member name="T:Aricie.DNN.Configuration.AddInfoBase">
+ <summary>
+ Base Class for a add merge node
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.AppSettingAddInfo">
+ <summary>
+ AppSettings Add merge node
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.ConfigActionType">
+ <summary>
+ The kinds of configuration operations
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.AuthenticationServiceInfo">
+ <summary>
+ Configuration class for a custom Authentication provider
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.IConfigElementInfo">
+ <summary>
+ Represents the base installable component configuration
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Configuration.IConfigElementInfo.IsInstalled">
+ <summary>
+ Checks if the current component is already installed
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Configuration.IConfigElementInfo.ProcessConfig(Aricie.DNN.Configuration.ConfigActionType)">
+ <summary>
+ Performs the install/uninstall action with current parameters
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.AppSettingInfo">
+ <summary>
+ Base class for Appsettings configuration element
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.CustomErrorAddInfo">
+ <summary>
+ Custom Error Add merge node
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.CustomErrorsAddInfo">
+ <summary>
+ Custom Errors Add merge node
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.MultiUpdateProvider">
+ <summary>
+ Compund Update provider for modular usage
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.TrustAddInfo">
+ <summary>
+ Custom Error Add merge node
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.TrustInfo">
+ <summary>
+ Component to switch application trust level
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.UrlCompressionInfo">
+ <summary>
+ Component to switch application trust level
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.UrlCompressionAddInfo">
+ <summary>
+ Custom Error Add merge node
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.XmlNamedConfigElementInfo">
+ <summary>
+ Base class for Xml nodes with a name attribute.
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.HttpHandlerAddInfo">
+ <summary>
+ HttpHandler Add merge node
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.HttpModuleAddInfo">
+ <summary>
+ HttpModule Add merge node
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.ProviderAddInfo">
+ <summary>
+ Providers Add merge node
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.TimeUnit">
+ <summary>
+ Enumeration for represent of common time units
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.TimeLapse">
+ <summary>
+ Represents a duration by a value and a unit
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.SchedulerTaskElementInfo">
+ <summary>
+ Configuration class for a scheduled Task
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.TypedEntityElementInfo">
+ <summary>
+ Base class for custom types of configurable entities
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.WebServerAddInfo">
+ <summary>
+ Base Webserver Add merge node
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.XmlConfigElementInfo">
+ <summary>
+ This is the base element for an Xml based installable component
+ </summary>
+ <remarks>Uses xml merge files</remarks>
+</member>
+<member name="T:Aricie.DNN.Configuration.SkinControlConfigInfo">
+ <summary>
+ Configuration element for a Skin Control component
+ </summary>
+ <remarks>Contains DB properties for DNN declaration</remarks>
+</member>
+<member name="T:Aricie.DNN.Configuration.WebServerElementInfo">
+ <summary>
+ Base class for ASP.Net webserver elements
+ </summary>
+ <remarks>Can deal with II6/II7 configuration models</remarks>
+</member>
+<member name="T:Aricie.DNN.Configuration.HttpHandlerInfo">
+ <summary>
+ Configuration element for an ASP.Net HttpHandler class
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.TypedXmlConfigElementInfo">
+ <summary>
+ Base class for configuration elements with a type attribute
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.HttpModuleInfo">
+ <summary>
+ Configuration element for an ASP.Net HttpModule
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.ProviderInfo">
+ <summary>
+ Base class for DotNetNuke providers
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.IUpdateProvider">
+ <summary>
+ Base interface for configuration dedicated providers
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Configuration.ConfigHelper">
+ <summary>
+ The main Helper for configuration operations.
+ </summary>
+ <remarks>Can be fed a configuration provider, combines the Xml operations and executes all operations in sequence.</remarks>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.Constants">
+ <summary>
+ Constants for the Diagnostics namespace
+ </summary>
+ <remarks>Contains many custom debug types</remarks>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.DebugInfoScope">
+ <summary>
+ Scope class to ease the use of a live debugger within business code.
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.DebugInfo">
+ <summary>
+ A piece of Debug information
+ </summary>
+ <remarks>The AdditionalProperties property can hold arbitrary additional structured data.</remarks>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.DebugLoggerBase`1">
+ <summary>
+ Generic definition for a base Logger class
+ </summary>
+ <remarks>Handles its own stopwatch for precise measurements</remarks>
+</member>
+<member name="M:Aricie.DNN.Diagnostics.DebugLoggerBase`1.AddDebugInfo(`0,System.Boolean)">
+ <summary>
+ Queues a log addition
+ </summary>
+ <param name="objToLog">the generic object to log</param>
+ <param name="serializeObject">a boolean to determine if the object should be included serialized in the wrapping DNN log event</param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.ExternalFileAsyncLogger`1">
+ <summary>
+ Asynchronous generic file based logger
+ </summary>
+ <remarks>Monitors a list of entities to be Xml Serialized</remarks>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.ExternalFileLog`1">
+ <summary>
+ Generic class for a file based log container
+ </summary>
+ <remarks>A purge filter can be added to manage purge sequences</remarks>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.SimpleDebugLogger">
+ <summary>
+ Simple concrete implementation of a item based asynchronous logger
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.WorkingPhase">
+ <summary>
+ Enumeration used to distinguish time consumed by the application from external time.
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.StepInfo">
+ <summary>
+ Base class for a performance logger measurements.
+ </summary>
+ <remarks>Allows to log precisely timed sequences of custom events together with additional data.</remarks>
+</member>
+<member name="M:Aricie.DNN.Diagnostics.StepInfo.#ctor(System.String,System.String,Aricie.DNN.Diagnostics.WorkingPhase,System.Boolean,System.Boolean,System.Int32,System.String,System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+ <summary>
+ Builds a DNN event Log to record the timing of a particular process.
+ Computes each step duration according to inner records</summary>
+ <param name="debugType">name for the process flow being monitored</param>
+ <param name="label">label for the current step</param>
+ <param name="isLastStep">States if this is the last step to reset the inner counters</param>
+ <param name="logMemoryUsage">True if a log property must be added with a memory footprint obtained from the garbage collector</param>
+ <param name="portalId">The portal Id of the corresponding event if available, -1 is espected otherwise</param>
+ <param name="flowId">Specific key associated to each of concurrent processes. empty string otherwise to associate with the current thread id</param>
+ <param name="additionalProperties">optional additional properties entered as Pairs of IConvertible (Property Name, Property Value)</param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.CumulatedStepLog">
+ <summary>
+ Lightweight structure to handle quantities of aggregations
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.PerformanceLogger">
+ <summary>
+ Precise performance based logger
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Diagnostics.AsyncLogger">
+ <summary>
+ Asynchronous DotNetNuke Logger.
+ </summary>
+ <remarks>Has a default period of 10 ms between each DNN log API call,and queues early call to wait for the providers to be loaded.</remarks>
+</member>
+<member name="T:Aricie.DNN.Entities.APICredentials">
+ <summary>
+ Entity class for common secure API credentials authentication systems
+ </summary>
+ <remarks>The last authentication date helps managing locks.</remarks>
+</member>
+<member name="P:Aricie.DNN.Entities.DomainName.SubDomain">
+ <summary>
+ The subdomain portion
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Entities.DomainName.Domain">
+ <summary>
+ The domain name portion, without the subdomain or the TLD
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Entities.DomainName.SLD">
+ <summary>
+ The domain name portion, without the subdomain or the TLD
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Entities.DomainName.TLD">
+ <summary>
+ The TLD portion
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Entities.DomainName.TLDRule">
+ <summary>
+ The matching TLD rule
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Entities.DomainName.#ctor(System.String)">
+ <summary>
+ Constructs a DomainName object from the string representation of a domain. 
+ </summary>
+ <param name="domainString"></param>
+</member>
+<member name="M:Aricie.DNN.Entities.DomainName.#ctor(System.String,System.String,System.String,Aricie.DNN.Entities.TLDRule)">
+ <summary>
+ Constructs a DomainName object from its 3 parts
+ </summary>
+ <param name="TLD">The top-level domain</param>
+ <param name="SLD">The second-level domain</param>
+ <param name="SubDomain">The subdomain portion</param>
+ <param name="TLDRule">The rule used to parse the domain</param>
+</member>
+<member name="M:Aricie.DNN.Entities.DomainName.ParseDomainName(System.String,System.String@,System.String@,System.String@,Aricie.DNN.Entities.TLDRule@)">
+ <summary>
+ Converts the string representation of a domain to it's 3 distinct components: 
+ Top Level Domain (TLD), Second Level Domain (SLD), and subdomain information
+ </summary>
+ <param name="domainString">The domain to parse</param>
+ <param name="TLD"></param>
+ <param name="SLD"></param>
+ <param name="SubDomain"></param>
+ <param name="MatchingRule"></param>
+</member>
+<member name="M:Aricie.DNN.Entities.DomainName.TryParse(System.String,Aricie.DNN.Entities.DomainName@)">
+ <summary>
+ Converts the string representation of a domain to its DomainName equivalent.  A return value
+ indicates whether the operation succeeded.
+ </summary>
+ <param name="domainString"></param>
+ <param name="result"></param>
+ <returns></returns>
+</member>
+<member name="M:Aricie.DNN.Entities.DomainName.FindMatchingTLDRule(System.String)">
+ <summary>
+ Finds matching rule for a domain.  If no rule is found, 
+ returns a null TLDRule object
+ </summary>
+ <param name="domainString"></param>
+ <returns></returns>
+</member>
+<member name="T:Aricie.DNN.Entities.TLDRule">
+ <summary>
+ Meta information class for an individual TLD rule
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Entities.TLDRule.Name">
+ <summary>
+ The rule name
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Entities.TLDRule.Type">
+ <summary>
+ The rule type
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Entities.TLDRule.#ctor(System.String)">
+ <summary>
+ Construct a TLDRule based on a single line from
+ the www.publicsuffix.org list
+ </summary>
+ <param name="RuleInfo"></param>
+</member>
+<member name="T:Aricie.DNN.Entities.TLDRule.RuleType">
+ <summary>
+ TLD Rule type
+ </summary>
+</member>
+<member name="F:Aricie.DNN.Entities.TLDRule.RuleType.Normal">
+ <summary>
+ A normal rule
+ </summary>
+</member>
+<member name="F:Aricie.DNN.Entities.TLDRule.RuleType.Wildcard">
+ <summary>
+ A wildcard rule, as defined by www.publicsuffix.org
+ </summary>
+</member>
+<member name="F:Aricie.DNN.Entities.TLDRule.RuleType.Exception">
+ <summary>
+ An exception rule, as defined by www.publicsuffix.org
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Entities.TLDRulesCache.Instance">
+ <summary>
+ Returns the singleton instance of the class
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Entities.TLDRulesCache.TLDRuleList">
+ <summary>
+ List of TLD rules
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Entities.TLDRulesCache.Reset">
+ <summary>
+ Resets the singleton class and flushes all the cached 
+ values so they will be re-cached the next time they are requested
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Entities.TLDRulesCache.GetTLDRules">
+ <summary>
+ Gets the list of TLD rules from the cache
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Aricie.DNN.Entities.FileUploadInfo">
+ <summary>
+ Simple entity class for a secure Rest service
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Entities.ParsedUri">
+ <summary>
+ Advanced URI class that support TLD parsing
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Entities.PingUrlInfo">
+ <summary>
+ Configuration Entity class for a Web Ping engine
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Entities.SimpleControlUrlInfo">
+ <summary>
+ Simpler inherited class without Redirection mode display
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Entities.ControlUrlInfo">
+ <summary>
+ Entity class for a Link
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Entities.ControlUrlInfo.Redirect(System.Web.HttpContext)">
+ <summary>
+  Redirect to Url
+ </summary>
+ <param name="context">HTTP Context</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Entities.ControlUrlInfo.Redirect(System.Web.HttpContext,System.Collections.Specialized.NameValueCollection,System.Collections.Generic.IEnumerable{System.String})">
+ <summary>
+  Redirect to Url
+ </summary>
+ <param name="context">HTTP Context</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Entities.ControlUrlInfo.Redirect(System.Web.HttpContext,System.Int32,System.String,System.String,System.Collections.Specialized.NameValueCollection,System.Collections.Generic.IEnumerable{System.String})">
+ <summary>
+ Redirect to Url when there is an error
+ </summary>
+ <param name="context">HTTP Context</param>
+ <param name="targetStatus">Page status</param>
+ <param name="queryErrorsParam">Name of the error params to avoid infinite loop</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Entities.ControlUrlInfo.Redirect(System.Web.HttpContext,System.Int32,System.String,System.String)">
+ <summary>
+ Redirect to Url when there is an error
+ </summary>
+ <param name="context">HTTP Context</param>
+ <param name="targetStatus">Page status</param>
+ <param name="queryErrorsParam">Name of the error params to avoid infinite loop</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Entities.ConditionalEntity`1">
+ <summary>
+ Composite Entity with a code expression to be evaluated for a conditional behaviour
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Entities.MetaDataInfo">
+ <summary>
+ General Entity class to hold common metadata
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Entities.MetaDataInfo.Logo">
+ <summary>
+ Le fileId DNN du logo
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Modules.Link.LinkInfoProperty">
+ <summary>
+ Properties for the Link module
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Modules.Link.LinkControllerMethod">
+ <summary>
+ Methods for the Link controller
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Modules.Link.LinkModuleHelper">
+ <summary>
+ Helper to access information about the link module when it is build as code behind
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Link.LinkModuleHelper.ControllerFullType">
+ <summary>
+ gets Controller type name
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Link.LinkModuleHelper.ElementInfoFullType">
+ <summary>
+ gets entity type name
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Modules.Link.LinkModuleHelper.SetProperty(System.Object,System.Object)">
+ <summary>
+ Set module id property on link entity
+ </summary>
+ <param name="objLink"></param>
+ <param name="value"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Modules.Link.LinkModuleHelper.AddLink(System.Object)">
+ <summary>
+ adds link to controller
+ </summary>
+ <param name="objLink"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Modules.Link.LinkModuleHelper.DeleteLink(System.Int32,System.Int32)">
+ <summary>
+ deletes link from controller
+ </summary>
+ <param name="ItemID"></param>
+ <param name="ModuleId"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Modules.Link.LinkModuleHelper.UpdateLink(System.Object)">
+ <summary>
+ updates link on controller
+ </summary>
+ <param name="objLink"></param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Modules.Helper.ModuleHelper`2">
+ <summary>
+ Class to try and replace behaviors on modules that have been set as code behind by DNN in some versions
+ </summary>
+ <typeparam name="Properties"></typeparam>
+ <typeparam name="Methods"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Modules.Helper.ModuleHelper`2.InstantiateElementInfo">
+ <summary>
+ Returns an instantiated entity of type ElementInfoFullType
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Helper.ModuleHelper`2.GetElementInfoType">
+ <summary>
+ Returns type defined by ElementInfoFullType
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Helper.ModuleHelper`2.GetControllerType">
+ <summary>
+ Returns type defined by ControllerFullType
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Helper.ModuleHelper`2.GetController">
+ <summary>
+ return ControllerFullType instance
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Helper.ModuleHelper`2.GetProperties(`0)">
+ <summary>
+ Returns module property 
+ </summary>
+ <param name="infoProperty"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Helper.ModuleHelper`2.GetMethods(`1)">
+ <summary>
+ returns controller MethodInfo
+ </summary>
+ <param name="infoMehod"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Helper.ModuleHelper`2.HtmlTextAssemblyVersion">
+ <summary>
+ Returns version number of the assembly for the controller
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Modules.Html.HtmlTextInfoProperty">
+ <summary>
+ Html entities properties we're interested in 
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Modules.Html.HtmlTextControllerMethod">
+ <summary>
+ Controller methods we're interested in
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Modules.Html.HtmlModuleHelper">
+ <summary>
+ A helper class to access the Html module when it is declared as code behind in some DNN versions
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Modules.Html.HtmlModuleHelper.GetNewHtmlTextInfo">
+ <summary>
+ Returns new HtmlModule entity
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Html.HtmlModuleHelper.HtmlTextInfoType">
+ <summary>
+ gets HtmlModule entity type
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Html.HtmlModuleHelper.HtmlTextControllerType">
+ <summary>
+ returns type of the htmlmodule controller
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Html.HtmlModuleHelper.HtmlTextController">
+ <summary>
+ returns new instance of the HtmlModule controllers
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Html.HtmlModuleHelper.HtmlTextInfoProperties(Aricie.DNN.Modules.Html.HtmlTextInfoProperty)">
+ <summary>
+ Returns properties of the HtmlText information entity
+ </summary>
+ <param name="infoProperty"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Html.HtmlModuleHelper.HtmlTextControllerMethods(Aricie.DNN.Modules.Html.HtmlTextControllerMethod)">
+ <summary>
+ Calls a method on the HtmlModule controller
+ </summary>
+ <param name="infoMehod"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Modules.Html.HtmlModuleHelper.HtmlTextAssemblyVersion">
+ <summary>
+ Returns the version of the assembly that contains the HtmlModule controller
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Providers.DotNetNukeServiceProvider">
+ <summary>
+ Cache-enhanced SystemServiceProvider class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Providers.DotNetNukeServiceProvider.GetCache(System.String)">
+ <summary>
+ Returns cached object
+ </summary>
+ <param name="key"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Providers.DotNetNukeServiceProvider.RemoveCache(System.String)">
+ <summary>
+ Removes cached object
+ </summary>
+ <param name="key"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Providers.DotNetNukeServiceProvider.SetCache(System.String,System.Object)">
+ <summary>
+ Sets cached object
+ </summary>
+ <param name="key"></param>
+ <param name="value"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Providers.DotNetNukeServiceProvider.SetCacheDependant(System.String,System.Object,System.TimeSpan,System.String[])">
+ <summary>
+ Sets cached object with dependency
+ </summary>
+ <param name="key"></param>
+ <param name="value"></param>
+ <param name="absoluteExpiration"></param>
+ <param name="dependencies"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Providers.DotNetNukeServiceProvider.LogException(System.Exception)">
+ <summary>
+ Log exception
+ </summary>
+ <param name="ex"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.EncryptionHelper.EncryptString(System.String)">
+ <summary>
+ Encrypt the string passed as parameter using DotNetNuke portal settings
+ </summary>
+ <param name="str">String to encrypt</param>
+ <returns>Encrypted string</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.EncryptionHelper.DecryptString(System.String)">
+ <summary>
+ Decrypt the string passed as parameter using DotNetNuke portal settings
+ </summary>
+ <param name="str">String to decrypt</param>
+ <returns>Decrypted string</returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.Cryptography.RSAParametersInfo">
+ <summary>
+ Represents the standard parameters for the <see cref="T:System.Security.Cryptography.RSA"/> algorithm.
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Security.Cryptography.RSAParametersInfo.Exponent">
+ <summary>
+ Represents the Exponent parameter for the <see cref="T:System.Security.Cryptography.RSA"/> algorithm.
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Security.Cryptography.RSAParametersInfo.Modulus">
+ <summary>
+ Represents the Modulus parameter for the <see cref="T:System.Security.Cryptography.RSA"/> algorithm.
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Security.Cryptography.RSAParametersInfo.P">
+ <summary>
+ Represents the P parameter for the <see cref="T:System.Security.Cryptography.RSA"/> algorithm.
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Security.Cryptography.RSAParametersInfo.Q">
+ <summary>
+ Represents the Q parameter for the <see cref="T:System.Security.Cryptography.RSA"/> algorithm.
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Security.Cryptography.RSAParametersInfo.DP">
+ <summary>
+ Represents the DP parameter for the <see cref="T:System.Security.Cryptography.RSA"/> algorithm.
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Security.Cryptography.RSAParametersInfo.DQ">
+ <summary>
+ Represents the DQ parameter for the <see cref="T:System.Security.Cryptography.RSA"/> algorithm.
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Security.Cryptography.RSAParametersInfo.InverseQ">
+ <summary>
+ Represents the InverseQ parameter for the <see cref="T:System.Security.Cryptography.RSA"/> algorithm.
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Security.Cryptography.RSAParametersInfo.D">
+ <summary>
+ Represents the D parameter for the <see cref="T:System.Security.Cryptography.RSA"/> algorithm.
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Security.Trial.TrialPropertyMode">
+ <summary>
+ Type of display that will be shortcircuited by the trial
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.Trial.ITrialProvider">
+ <summary>
+ Interface for getting back TrialConfigInfo
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.Trial.TrialConfigInfo">
+ <summary>
+ Information about trial configuration
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.Trial.TrialInfo">
+ <summary>
+ Class giving information about the trial status
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.Trial.TrialInfo.ExpirationDate">
+ <summary>
+ Expiration date for the trial version
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.Trial.TrialInfo.Key">
+ <summary>
+ Key for the trial version
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.Trial.TrialInfo.IsDecrypted">
+ <summary>
+ Is the trail version decrypted
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.Trial.TrialInfo.Value">
+ <summary>
+ Value of the trial version
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialInfo.Encrypt(System.String)">
+ <summary>
+ Encryption 
+ </summary>
+ <param name="encryptionKey"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialInfo.Decrypt(System.String)">
+ <summary>
+ Decryption
+ </summary>
+ <param name="encryptionKey"></param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.Trial.TrialLimitation">
+ <summary>
+ Type of limitation de trial will present to the user
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.Trial.TrialMessage">
+ <summary>
+ Type of message the trial will give the user when expiring
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.Trial.TrialStatus">
+ <summary>
+ Possible statuses for the trial
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.Trial.TrialStatusInfo">
+ <summary>
+ Trial status information structure
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.Trial.TrialStatusInfo.NoTrial(Aricie.DNN.Security.Trial.TrialConfigInfo)">
+ <summary>
+ Quick property access to a "No trial" information structure for each module
+ </summary>
+ <param name="config"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialStatusInfo.IsLimited">
+ <summary>
+ Returns information about trial limitation
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.Trial.TrialController">
+ <summary>
+ Trial controller
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.Trial.TrialController.Instance(Aricie.DNN.Security.Trial.ITrialProvider)">
+ <summary>
+ Returns the trial controller for the type of the Trial provider
+ </summary>
+ <param name="provider"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialController.IsTrial">
+ <summary>
+ States if the dll is compiled trial mode
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialController.GetCurrentStatusInfo(System.Int32)">
+ <summary>
+ Returns the current trial status of the module, together with the nb of days left
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialController.LimitModule(DotNetNuke.Entities.Modules.PortalModuleBase@,System.Boolean)">
+ <summary>
+ Returns the current trial status of the module, together with the nb of days left, and deals with displaing corresponding messages
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialController.SetStatus">
+ <summary>
+ Starts the trial period and stores the corresponding encrypted token in the portal settings
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialController.SetStatus(Aricie.DNN.Security.Trial.TrialInfo)">
+ <summary>
+ Stores the current trial status in the portal settings
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialController.SetModuleTimeStamp(System.Int32)">
+ <summary>
+ Stores the current trial status in a module's settings
+ Prevents pondering with removing the global portal status
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialController.GetSettingsKey">
+ <summary>
+ Gets the specific key used to store for portal token trial setting (to be combined with other parts in the setmodulesettings method)
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialController.GetCurrentStatus">
+ <summary>
+ Gets the current global (portal wide) trial status as stored in the portal settings 
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialController.GetCurrentStatus(System.Int32)">
+ <summary>
+ Gets the current module specific trial status as stored in the module settings 
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Security.Trial.TrialController.DisplayMessage(Aricie.DNN.Security.Trial.TrialStatusInfo,DotNetNuke.Entities.Modules.PortalModuleBase,System.Boolean)">
+ <summary>
+ Displays a module message according to the trial status and configuration
+ </summary>
+</member>
+<member name="T:Aricie.DNN.Security.PermissionEnumInfo">
+ <summary>
+ Class allowing quick access to the permission info for DotNetNuke entities
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Aricie.DNN.Security.PermissionEnumInfo.TabView">
+ <summary>
+ Tab view permission structure
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Aricie.DNN.Security.PermissionEnumInfo.TabEdit">
+ <summary>
+ Tab edition permission structure
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Aricie.DNN.Security.PermissionEnumInfo.ModuleView">
+ <summary>
+ Module view permission structure
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Aricie.DNN.Security.PermissionEnumInfo.ModuleEdit">
+ <summary>
+ Module edition permission structure
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Aricie.DNN.Security.PermissionEnumInfo.FolderRead">
+ <summary>
+ Folder read permission structure
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Aricie.DNN.Security.PermissionEnumInfo.FolderWrite">
+ <summary>
+ Folder write permission structure
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.PermissionEnumInfo.PermissionType">
+ <summary>
+ Type de la permission
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.PermissionEnumInfo.Code">
+ <summary>
+ Code permission
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.PermissionEnumInfo.Key">
+ <summary>
+ Clé permission
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.PermissionEnumInfo.Name">
+ <summary>
+ Nom de la permission
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.PermissionEnumInfo.ModuleNames">
+ <summary>
+ Liste de modules
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.PermissionEnumInfo.Equals1(Aricie.DNN.Security.PermissionEnumInfo)">
+ <summary>
+ Egalité entre deux structures de permission
+ </summary>
+ <param name="other"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.PermissionType">
+ <summary>
+ Permission type enumeration
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.IModulePermissionsProvider`1">
+ <summary>
+ Interface to retrieve module permissions
+ </summary>
+ <typeparam name="T"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Security.PermissionHelper`1">
+ <summary>
+ Helper class for generic permission sets
+ </summary>
+ <typeparam name="T"></typeparam>
+ <remarks>The generic argument represents the set of permissions. The class can install/uninstall the permission set through IConfigElementInfo implementation</remarks>
+</member>
+<member name="P:Aricie.DNN.Security.PermissionHelper`1.PermissionDef(`0)">
+ <summary>
+ Récupération des permissions pour chaque type indépendant
+ </summary>
+ <param name="perm"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.PermissionHelper`1.ModuleDefIds(`0)">
+ <summary>
+ Liste de définition de modules
+ </summary>
+ <param name="perm"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Security.PermissionHelper`1.PermissionInfo(`0,System.Int32)">
+ <summary>
+ récupération de la permission DNN pour un objet
+ </summary>
+ <param name="permission"></param>
+ <param name="moduleDefId"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.PermissionHelper`1.GetPermissionEnum(System.String)">
+ <summary>
+ Permission récupérée via la clé de permission
+ </summary>
+ <param name="permissionKey"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.PermissionHelper`1.GetPermissionEnumInfo(`0)">
+ <summary>
+ 
+ </summary>
+ <param name="perm"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.PermissionHelper`1.IsInstalled">
+ <summary>
+ Verifies that the permission is installed.
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.PermissionHelper`1.ProcessConfig(Aricie.DNN.Configuration.ConfigActionType)">
+ <summary>
+ Installs the permission
+ </summary>
+ <param name="actionType"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.PermissionHelper`1.ResetPermissions(System.Boolean)">
+ <summary>
+ Permission reset
+ </summary>
+ <param name="deleteNonEnumPerms"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.PermissionHelper`1.UninstallPermissions">
+ <summary>
+ Uninstall permission
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.PermissionHelper`1.AddModulePerm(System.Int32,DotNetNuke.Security.Permissions.PermissionInfo,System.Int32,System.String,System.Boolean)">
+ <summary>
+ Adds a module permission
+ </summary>
+ <param name="ModuleId"></param>
+ <param name="permInfo"></param>
+ <param name="scopeId"></param>
+ <param name="scopeName"></param>
+ <param name="AddForUser"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Security.PermissionHelper`1.AddTabPerm(System.Int32,DotNetNuke.Security.Permissions.PermissionInfo,System.Int32,System.String,System.Boolean)">
+ <summary>
+ Adds a tab permission
+ </summary>
+ <param name="tabId"></param>
+ <param name="permInfo"></param>
+ <param name="scopeId"></param>
+ <param name="scopeName"></param>
+ <param name="AddForUser"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Caching.OutputCachingSettings">
+ <summary>
+ Settings for cache output
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Caching.OutputCachingSettings.Enabled">
+ <summary>
+ Gets or sets whether the output caching is enabled
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Caching.OutputCachingSettings.DefaultStrategy">
+ <summary>
+  Gets or sets the output caching strategy
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.ContextBase`1">
+ <summary>
+ Base class for context
+ </summary>
+ <typeparam name="TContext"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.ContextBase`1.DnnContext">
+ <summary>
+ Gets or sets the current DnnContext
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.ContextBase`1.GetInstance">
+ <summary>
+ Retrieve instance of context
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.ContextBase`1.Instance">
+ <summary>
+ Gets singleton instance
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.ContextBase`1.Instance(System.Web.HttpContext)">
+ <summary>
+ Gets singleton instance from HttpContext
+ </summary>
+ <param name="context"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.ContextBase`1.FlowId">
+ <summary>
+ Gets flow identifier
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.ContextBase`1.GetVar(System.String)">
+ <summary>
+ Returns value from inner dictionary
+ </summary>
+ <param name="key"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.ContextBase`1.SetVar(System.String,System.Object)">
+ <summary>
+ Sets value in inner dictionary
+ </summary>
+ <param name="key"></param>
+ <param name="value"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.ContextBase`1.SetVars(System.Collections.Generic.IDictionary{System.String,System.Object})">
+ <summary>
+ Serts multiple values in inner dictionary
+ </summary>
+ <param name="items"></param>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.ContextBase`1.Item(System.String)">
+ <summary>
+ Return value from inner dictionary
+ </summary>
+ <param name="key"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.ContextBase`1.Items">
+ <summary>
+ Returns inner item dictionary
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.ContextBase`1.GetItem``1(System.String[])">
+ <summary>
+ Returns inner item from dictionary using key built from parameters
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="params"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.ContextBase`1.SetItem``1(``0,System.String[])">
+ <summary>
+ Sets inner item from dictionary using key built from parameters
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="item"></param>
+ <param name="params"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.ContextBase`1.GetService(System.Type)">
+ <summary>
+ returns instance of type
+ </summary>
+ <param name="serviceType"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.ContextBase`1.CreateService(System.Type)">
+ <summary>
+ returns instance of type
+ </summary>
+ <param name="serviceType"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.ContextBase`1.GetService``1">
+ <summary>
+ returns instance of type
+ </summary>
+ <typeparam name="T"></typeparam>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.ContextBase`1.GetService(System.String)">
+ <summary>
+ returns instance of type
+ </summary>
+ <param name="typeName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Errors.CustomErrorsHandler">
+ <summary>
+ Error manager as a page
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.CustomErrorsHandler.IsReusable">
+ <summary>
+ This page can be reused for further error management
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.CustomErrorsHandler.GetCustomErrors">
+ <summary>
+ Returns custom errors information
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.CustomErrorsHandler.ProcessRequest(System.Web.HttpContext)">
+ <summary>
+ Handles request
+ </summary>
+ <param name="context"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.CustomErrorsHandler.ProcessRequest(System.Web.HttpContext,Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo)">
+ <summary>
+ Process the error handling request
+ </summary>
+ <param name="context"></param>
+ <param name="objCustomErrors"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.CustomErrorsHandler.GetTargetUrl(System.Web.HttpContext,System.Int32,Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo)">
+ <summary>
+ Gets redirection url matching the error code
+ </summary>
+ <param name="context"></param>
+ <param name="targetStatus"></param>
+ <param name="objCustomErrors"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Errors.CustomErrorsInfo">
+ <summary>
+ Configuration for custom errors management
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.CustomErrorsInfo.Mode">
+ <summary>
+ Gets or sets custom error mode
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.CustomErrorsInfo.DefaultRedirect">
+ <summary>
+ Gets or sets the default redirection
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.CustomErrorsInfo.CustomErrors">
+ <summary>
+ Gets or sets custom errors
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.CustomErrorsInfo.CustomErrorsEnabled(System.Web.HttpRequest)">
+ <summary>
+ Returns whether the custom errors are active for the current request
+ </summary>
+ <param name="request"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.CustomErrorsInfo.IsInstalled(System.Xml.XmlDocument)">
+ <summary>
+ Returns whether the custom errors are active in the current web.config
+ </summary>
+ <param name="xmlConfig"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.CustomErrorsInfo.AddConfigNodes(Aricie.DNN.Configuration.NodesInfo@,Aricie.DNN.Configuration.ConfigActionType)">
+ <summary>
+ Sets up custom errors in the web.config file
+ </summary>
+ <param name="targetNodes"></param>
+ <param name="actionType"></param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Errors.CustomErrorInfo">
+ <summary>
+ Custom error holder class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.CustomErrorInfo.Status">
+ <summary>
+ Status code
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.CustomErrorInfo.Redirect">
+ <summary>
+ Url to which the custom error will redirect
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.CustomErrorInfo.IsInstalled(System.Xml.XmlDocument)">
+ <summary>
+ Checks whether the entry is present in the web.config file
+ </summary>
+ <param name="xmlConfig"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Errors.MultipleCustomErrorsMode">
+ <summary>
+ Error mode types
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Errors.CustomErrorsType">
+ <summary>
+ Type of handling of custom errors
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo">
+ <summary>
+ Virtual custom error configuration
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.CustomErrorsType">
+ <summary>
+ Type of handler for handler
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.VirtualHandlerName">
+ <summary>
+ Gets or sets the virtual handler name
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.VirtualHandlerPath">
+ <summary>
+ Gets or sets the virtual handler path
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.UseAshx">
+ <summary>
+ Gets or sets whether to use ashx as error handler
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.DynamicHandlerType">
+ <summary>
+ Gets or sets the dynamic handler type
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.IncludeRandomDelay">
+ <summary>
+ gets or sets whether to use a random delay in response for security reasons
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.DuplicateStatusMode">
+ <summary>
+ gets or sets whether to use random delays for same duplicate errors
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.PreserveStatusCode">
+ <summary>
+ Gets or sets whether the status code must be preserved
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.ToLegacy">
+ <summary>
+ Returns legacy information about custom error management from current information
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.GetVirtualRedirect">
+ <summary>
+ returns the Virtual Handler Path
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Errors.VirtualCustomErrorsInfo.GetUpdateProvider">
+ <summary>
+ Returns an updater based on current Custom Errors configuration
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.DefaultTransforms">
+ <summary>
+ Enumeration of the possible transformations for the filter
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.XPathInfo">
+ <summary>
+ xpath selection helper class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.XPathInfo.Expression">
+ <summary>
+ XPath selection expression
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.XPathInfo.IsHtmlContent">
+ <summary>
+ Selection is against Html content using HtmlAgilityPack rather than regular Xml content using System.Xml
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.XPathInfo.SingleSelect">
+ <summary>
+ Single node selection 
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.XPathInfo.SelectTree">
+ <summary>
+ Selection of whole tree
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.XPathInfo.SubSelects">
+ <summary>
+ Sub-selection
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.XPathInfo.SimulationData">
+ <summary>
+ Simulation data
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.XPathInfo.BrowsableSimulationResult">
+ <summary>
+ Result of the simulation
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.XPathInfo.DoSelect(System.String)">
+ <summary>
+ Select against a string that will be converted to HTML
+ </summary>
+ <param name="source"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.XPathInfo.DoSelect(System.String,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Select against a string that will be converted to HTML
+ </summary>
+ <param name="source"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.XPathInfo.DoSelect(System.Xml.XPath.IXPathNavigable,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Select against a navigable entity
+ </summary>
+ <param name="source"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.XPathInfo.SelectNavigate(System.Xml.XPath.XPathNavigator,System.Xml.XPath.XPathNodeIterator,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Runs selection against a navigator
+ </summary>
+ <param name="navigator"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.XPathInfo.GetNavigable(System.String)">
+ <summary>
+ Transforms the parameter string into a navigable xpath object
+ </summary>
+ <param name="source"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.ConditionalTokenInfo">
+ <summary>
+ Conditional token holder class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.ConditionalTokenSourceInfo">
+ <summary>
+ Holder class for conditional token source info
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.StringFilterType">
+ <summary>
+ Type of string filtering
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.StringTransformInfo">
+ <summary>
+ Class for string transformation
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.StringTransformInfo.FilterType">
+ <summary>
+ Type of filter
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.StringTransformInfo.Source">
+ <summary>
+ Source value
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks>The source value will change depending on what filter type is used</remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.StringTransformInfo.Replace">
+ <summary>
+ Replace value
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks>The replace value will change depending on what filter type is used, most natbly for char replacement</remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.StringTransformInfo.AddCharsMap(System.Collections.Generic.Dictionary{System.Char,System.Char}@,System.String,System.String)">
+ <summary>
+ Add char map to the transformation map
+ </summary>
+ <param name="targetDico"></param>
+ <param name="fromStr"></param>
+ <param name="toStr"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.StringTransformInfo.AddCharsTrim(System.Collections.Generic.Dictionary{System.Char,System.Char}@,System.String)">
+ <summary>
+ Add char trim to the transformation map
+ </summary>
+ <param name="targetDico"></param>
+ <param name="escapeString"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.StringTransformInfo.AddCharsDefault(System.Collections.Generic.Dictionary{System.Char,System.Char}@,System.String,System.Char)">
+ <summary>
+ Add char default to the transformation map
+ </summary>
+ <param name="targetDico"></param>
+ <param name="escapeString"></param>
+ <param name="defaultChar"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.StringTransformInfo.Equals(System.Object)">
+ <summary>
+ Equality
+ </summary>
+ <param name="obj"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.ExpressionFilterInfo">
+ <summary>
+ Class representing filtering and transformation applied to a string
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.EncodePreProcessing">
+ <summary>
+ Encoding preprocessing
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.Trim">
+ <summary>
+ Is the output Trimmed the output
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.TrimChar">
+ <summary>
+ The char to be trimmed
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.EncodePostProcessing">
+ <summary>
+ Encoding postprocessing
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.MaxLength">
+ <summary>
+ Maximum length for the output
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks>-1 to disable</remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.TransformList">
+ <summary>
+ Transformation list to replace elements of the input
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.PreventDoubleDefaults">
+ <summary>
+ Prevent char replacements to output multiple separation chars
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.DefaultCharReplacement">
+ <summary>
+ returns default char replacement
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.AdditionalFilters">
+ <summary>
+ Complete sub filters to be executed in order for fine tuning of transformations, just after the parent filter.
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.SimulationData">
+ <summary>
+ Simulation data
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.SimulationResult">
+ <summary>
+ Result of the simulation
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.BuildDefault(Aricie.DNN.Services.Filtering.DefaultTransforms)">
+ <summary>
+ Default values for the transformation
+ </summary>
+ <param name="defaultTrans"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.ProcessList(System.Collections.Generic.IEnumerable{System.String},Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Escapes the string passed as the parameter according to the rules defined in the ExpressionFilterInfo
+ </summary>
+ <param name="originalStrings"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.ExpressionFilterInfo.Process(System.String,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Escapes the string passed as the parameter according to the rules defined in the ExpressionFilterInfo
+ </summary>
+ <param name="originalString"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.StringEscaper">
+ <summary>
+ Class that runs the ExpressionFilterInfo transformation on a input
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.StringEscaper.#ctor(Aricie.DNN.Services.Filtering.ExpressionFilterInfo)">
+ <summary>
+ Builds the string escaper for the ExpressionFilterInfo
+ </summary>
+ <param name="filter"></param>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.StringEscaper.Filter">
+ <summary>
+ The Filter that will be executed against the input
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.StringEscaper.EscapeString(System.String)">
+ <summary>
+ Escapes the string passed as the parameter according to the rules defined in the ExpressionFilterInfo
+ </summary>
+ <param name="originalString"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.StringEscaper.Equals(System.Object)">
+ <summary>
+ Equality comparison
+ </summary>
+ <param name="obj"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.TokenSourceInfo">
+ <summary>
+ Class holder for token data source information
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.TokenSourceInfo.StaticTokens">
+ <summary>
+ List of static tokens in the source
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.TokenSourceInfo.TokenProviders">
+ <summary>
+ List of tokens providers
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.TokenSourceInfo.ConditionalTokens">
+ <summary>
+ List of conditional tokens
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Filtering.TokenSourceInfo.ReflectedProviders">
+ <summary>
+ List of reflected tokens
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.TokenSourceInfo.SetTokens(Aricie.DNN.Services.AdvancedTokenReplace,System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Sets the token from the source in the advanced token replace
+ </summary>
+ <param name="atr"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.TokenSourceInfo.SetTokens(Aricie.DNN.Services.AdvancedTokenReplace)">
+ <summary>
+ Sets the token from the source in the advanced token replace
+ </summary>
+ <param name="atr"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Filtering.TokenSourceInfo.FormatToken(System.String)">
+ <summary>
+ Token format
+ </summary>
+ <param name="token"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.TokenSourceInfo.TokenKeyAttributes">
+ <summary>
+ Attribute for key edition
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Filtering.TokenSourceInfo.TokenValueAttributes">
+ <summary>
+ Attribute for vzalue edition
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.AddEventHandler`1">
+ <summary>
+ Runs method as flee action
+ </summary>
+ <typeparam name="TObjectType"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.CallObjectMethod`1">
+ <summary>
+ Runs method as flee action
+ </summary>
+ <typeparam name="TObjectType"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.CallObjectMethod`1.MethodName">
+ <summary>
+ Gets or sets the method name
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.CallObjectMethod`1.Run(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Runs the method
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.CallObjectMethod`1.GetSelector(System.String)">
+ <summary>
+ Returns a list of the methods on the generic type
+ </summary>
+ <param name="propertyName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.CallObjectMethod`1.GetSelectorG(System.String)">
+ <summary>
+ Returns a list of the methods on the generic type
+ </summary>
+ <param name="propertyName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.CtorVariableInfo`1">
+ <summary>
+ Class to use flee constructors
+ </summary>
+ <typeparam name="TResult"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.CtorVariableInfo`1.Parameters">
+ <summary>
+ Parameters that will be evaluated for the constructor of TResult
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.CtorVariableInfo`1.EvaluateOnce(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Evaluate Constructor and returns a TResult
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.FleeHelper.MakeDictionary(System.Collections.Generic.KeyValuePair{System.Object,System.Object}[])">
+ <summary>
+ makes a dictionary from key values
+ </summary>
+ <param name="pairs"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.FleeHelper.SetProperties(System.Object,System.String,System.Object,System.String,System.Object,System.String,System.Object)">
+ <summary>
+ Sets properties on an object through reflexion
+ </summary>
+ <param name="objTarget"></param>
+ <param name="prop1"></param>
+ <param name="obj1"></param>
+ <param name="prop2"></param>
+ <param name="obj2"></param>
+ <param name="prop3"></param>
+ <param name="obj3"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.FleeHelper`1">
+ <summary>
+ Helper for flee manipulation
+ </summary>
+ <typeparam name="T"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.FleeHelper`1.MakeDictionary(System.Collections.Generic.KeyValuePair{System.Object,`0}[])">
+ <summary>
+ makes a dictionary from key values
+ </summary>
+ <param name="pairs"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.FleeHelper`1.MakeDictionary(System.Collections.Generic.KeyValuePair{System.String,`0}[])">
+ <summary>
+ makes a dictionary from key values
+ </summary>
+ <param name="pairs"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.GeneralObjectAction">
+ <summary>
+ Non Generic version of the ObjectAction
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.GeneralObjectAction.MemberName">
+ <summary>
+ Gets or sets the property name
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.GeneralObjectAction.Instance">
+ <summary>
+ Instance of the generic type
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.GeneralObjectAction.Parameters">
+ <summary>
+ Parameters for the object
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.GeneralObjectAction.GetSelectorMethods(System.String)">
+ <summary>
+ Returns a list of the methods on the generic type
+ </summary>
+ <param name="propertyName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.GeneralVariableInfo.Instance">
+ <summary>
+ Get or sets the instance of the object
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.GeneralVariableInfo.AdvancedExpression">
+ <summary>
+ Is the variable and advanced expression
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.GeneralVariableInfo.FleeExpression">
+ <summary>
+ Gets the flee expression that will be used
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.GeneralVariableInfo.SimpleExpression">
+ <summary>
+ Retrieve the simple expression that will be evaluated
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.GeneralVariableInfo.AsCompiledExpression">
+ <summary>
+ Gets or sets whether the expression should be compiled or evaluated
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.GeneralVariableInfo.Evaluate(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Evaluates the variable 
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.GeneralVariableInfo.EvaluateOnce(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Evaluate variable once
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.InstanceMode">
+ <summary>
+ Instance modes types
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.ObjectAction">
+ <summary>
+ Base class for flee actions
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.ObjectAction.ObjectType">
+ <summary>
+ Returns the name of the Object object
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.ObjectActionType">
+ <summary>
+ Type of flee actions
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.ObjectAction`1">
+ <summary>
+ Generic version of the ObjectAction
+ </summary>
+ <typeparam name="TObjectType"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.ObjectAction`1.ObjectType">
+ <summary>
+ Returns the generic type
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.ObjectAction`1.Instance">
+ <summary>
+ Instance of the generic type
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.ObjectAction`1.Parameters">
+ <summary>
+ Parameters for the object
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.ObjectActions`1">
+ <summary>
+ Generics-compatible List of flee actions holder class
+ </summary>
+ <typeparam name="TObjectType"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.ObjectActions`1.GetInitialTypes">
+ <summary>
+ Returns the generic type
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.ObjectActions">
+ <summary>
+ List of flee actions holder class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.ObjectActions.ShowAvailableTypes">
+ <summary>
+ Gets or sets whther to display the available types
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.ObjectActions.ExpressionTypes">
+ <summary>
+ Gets or sets List of types from the base class
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.ObjectActions.GetInitialTypes">
+ <summary>
+ Returns a list of types containing string type and boolean type
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.ObjectActionsBase">
+ <summary>
+ List of flee actions holder class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.ObjectActionsBase.Run(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Run flee actions
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.ObjectActionsBase.GetAvailableProviders">
+ <summary>
+ Returns collection of object actions
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.ObjectActionsBase.GetInitialTypes">
+ <summary>
+ Returns a list containing the type of Object
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.SetObjectProperty`1">
+ <summary>
+ Set property flee action
+ </summary>
+ <typeparam name="TObjectType"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.SetObjectProperty`1.PropertyName">
+ <summary>
+ Gets or sets the property name
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.SetObjectProperty`1.Run(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Runs the evaluation against an object
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.SetObjectProperty`1.GetSelector(System.String)">
+ <summary>
+ Returns values for the generic Type properties that are writable
+ </summary>
+ <param name="propertyName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.SetObjectProperty`1.GetSelectorG(System.String)">
+ <summary>
+ Returns the generic Type properties that are writable
+ </summary>
+ <param name="propertyName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.SimpleExpression`1">
+ <summary>
+ Simple flee expression
+ </summary>
+ <typeparam name="TResult"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.SimpleExpression`1.ReturnType">
+ <summary>
+ Gets the generic type
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.SimpleExpression`1.SlaveExpression">
+ <summary>
+ Gets or sets the Flee expression
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.SimpleExpression`1.Expression">
+ <summary>
+ Gets or sets the expression as string
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.SimpleExpression`1.Evaluate(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Evaluates the flee expression
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.SimpleExpression`1.Evaluate(System.Object,Aricie.DNN.Services.IContextLookup,System.Type)">
+ <summary>
+ Evaluates the flee expression
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.SimpleExpression`1.GetCompiledExpression(System.Object,Aricie.DNN.Services.IContextLookup,System.Type)">
+ <summary>
+ Returns the compiled flee expression
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.SimpleExpression`1.GetExpressionContext(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Returns the expression context
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.SimpleExpression`1.OnDemandVariableLookup">
+ <summary>
+ Lazy variable evaluation class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.SimpleExpression`1.OnDemandVariableLookup.Items">
+ <summary>
+ Gets or sets the context lookup
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.SimpleExpression`1.OnDemandVariableLookup.ResolveVariableType(System.Object,Ciloci.Flee.ResolveVariableTypeEventArgs)">
+ <summary>
+ Calculates the variable type
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.SimpleExpression`1.OnDemandVariableLookup.ResolveVariableValue(System.Object,Ciloci.Flee.ResolveVariableValueEventArgs)">
+ <summary>
+ Calculates the variable value
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.VariablesBase">
+ <summary>
+ Base class for variables 
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.VariablesBase.EvaluateVariables(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Returns collection of evaluated variables
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.VariablesBase.GetAvailableProviders">
+ <summary>
+ Returns the available providers for the variables
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.VariablesBase.GetInitialTypes">
+ <summary>
+ Returns a list containing the object type
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.CultureInfoMode">
+ <summary>
+ Culture information type
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.ExpressionVariableInfo`1">
+ <summary>
+ Class to use flee variables
+ </summary>
+ <typeparam name="TResult"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.ExpressionVariableInfo`1.AdvancedExpression">
+ <summary>
+ Is the variable and advanced expression
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.ExpressionVariableInfo`1.FleeExpression">
+ <summary>
+ Gets the flee expression that will be used
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.ExpressionVariableInfo`1.SimpleExpression">
+ <summary>
+ Retrieve the simple expression that will be evaluated
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.ExpressionVariableInfo`1.AsCompiledExpression">
+ <summary>
+ Gets or sets whether the expression should be compiled or evaluated
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.ExpressionVariableInfo`1.EvaluateOnce(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Evaluates the variable value
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.FleeExpressionInfo`1">
+ <summary>
+ Flee expression, wrapper around SimpleExpressionInfo
+ </summary>
+ <typeparam name="TResult"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.FleeExpressionInfo`1.Variables">
+ <summary>
+ gets or sets SimpleExpressionInfo.InternalVariables
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.FleeExpressionInfo`1.StaticImports">
+ <summary>
+ gets or sets SimpleExpressionInfo.InternalStaticImports
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.FleeExpressionInfo`1.ImportBuiltinTypes">
+ <summary>
+ gets or sets SimpleExpressionInfo.InternalImportBuiltTypes
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.FleeExpressionInfo`1.DateTimeFormat">
+ <summary>
+ gets or sets SimpleExpressionInfo.InternalDateTimeFormat
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.FleeExpressionInfo`1.RequireDigitsBeforeDecimalPoint">
+ <summary>
+ gets or sets SimpleExpressionInfo.InternalRequireDigitsBeforeDecimalPoint
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.FleeExpressionInfo`1.ParseCultureMode">
+ <summary>
+ gets or sets SimpleExpressionInfo.InternalParseCultureMode
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.FleeExpressionInfo`1.CustomCultureLocale">
+ <summary>
+ gets or sets SimpleExpressionInfo.InternalCustomCultureLocale
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.FleeExpressionInfo`1.RealLiteralDataType">
+ <summary>
+ gets or sets SimpleExpressionInfo.InternalRealLiteralDataType
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.FleeImportInfo">
+ <summary>
+ Flee import class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.FleeImportInfo.DotNetType">
+ <summary>
+ Imported type
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.FleeImportInfo.CustomNamespace">
+ <summary>
+ Destination namespace
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.VarEvaluationMode">
+ <summary>
+ Evaluations mode types for Flee
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.VariableInfo">
+ <summary>
+ Variable information
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.VariableInfo.VariableType">
+ <summary>
+ Gets the variable type as string
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.VariableInfo.EvaluationMode">
+ <summary>
+ Gets or sets Evaluation mode
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.VariableInfo.Scope">
+ <summary>
+ Gets or sets the scope
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.VariableInfo.ProviderName">
+ <summary>
+ Gets ot sets the provider name
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.VariableInfo.Evaluate(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Evaluates the value of the variable
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.VariableInfo`1">
+ <summary>
+ Generics variable information
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.VariableInfo`1.GetDefaultInstanceMode">
+ <summary>
+ Returns context less instance mode
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.VariableInfo`1.VariableType">
+ <summary>
+ Gets the type of the generic
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.VariableInfo`1.InstanceMode">
+ <summary>
+ Gets or sets Instance mode
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.VariableInfo`1.UseClone">
+ <summary>
+ Gets or sets whether to use clones
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.VariableInfo`1.Instance">
+ <summary>
+ Get or sets the instance of the object
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.VariableInfo`1.Evaluate(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Evaluates the variable 
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.VariableInfo`1.EvaluateOnce(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Evaluate variable once
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.Variables`1">
+ <summary>
+ Generics version of VariablesBase
+ </summary>
+ <typeparam name="TResult"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.Variables`1.GetInitialTypes">
+ <summary>
+ Returns a list containing the generics type
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.Variables`1.EvaluateGeneric(System.Object,Aricie.DNN.Services.IContextLookup)">
+ <summary>
+ Evaluate the variable
+ </summary>
+ <param name="owner"></param>
+ <param name="globalVars"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.Variables">
+ <summary>
+ Variables in flee
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.Variables.GetInitialTypes">
+ <summary>
+ Returns a list containing types String and boolean
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.InstanceVariableInfo`1">
+ <summary>
+ Flee instance variable
+ </summary>
+ <typeparam name="TResult"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Flee.InstanceVariableInfo`1.GetDefaultInstanceMode">
+ <summary>
+ Return Off as the default instance mode
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.InstanceVariableInfo`1.InstanceMode">
+ <summary>
+ gets or sets base InstanceMode
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.InstanceVariableInfo`1.EvaluationMode">
+ <summary>
+ gets or sets base _EvaluationMode
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Flee.InstanceVariableInfo`1.Scope">
+ <summary>
+ gets or sets base scope
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Flee.VariableScope">
+ <summary>
+ Scope type
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.IContext`1">
+ <summary>
+ Interfaces for context
+ </summary>
+ <typeparam name="TContext"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.IContextLookup">
+ <summary>
+ Interface for dictionary collection of items in a context
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.SimpleContextLookup">
+ <summary>
+ Simple context implementation
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.IModuleContext">
+ <summary>
+ Interface for module context
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.DelimiterType">
+ <summary>
+ Delimiter type for Advanced Token Replace
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.IContextProvider">
+ <summary>
+ Interface for context providers: obsolete (restored for compatibility)
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.IContextSource">
+ <summary>
+ Interface for context providing contexts by type
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.LoopTokenProcessor">
+ <summary>
+ Loop processor for Advanced Token Replace
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.LoopTokenProcessor.ListToken">
+ <summary>
+ Token list for the processor
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.LoopTokenProcessor.Enumerable">
+ <summary>
+ Enumerable for loop processing
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.LoopTokenProcessor.SubTokens">
+ <summary>
+ List of subtokens that will be applied inside of the loop
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.LoopTokenProcessor.AddMatch(System.Text.RegularExpressions.Match)">
+ <summary>
+ Adds a subtoken match 
+ </summary>
+ <param name="match"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.LoopTokenProcessor.AddSubProcessor(Aricie.DNN.Services.LoopTokenProcessor)">
+ <summary>
+ Adds a subtoken processor
+ </summary>
+ <param name="subProcessor"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.LoopTokenProcessor.RunProcessor(Aricie.DNN.Services.AdvancedTokenReplace,System.Text.StringBuilder)">
+ <summary>
+ Runs the loop with the configured data
+ </summary>
+ <param name="atr"></param>
+ <param name="builder"></param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.SubToken">
+ <summary>
+ SubToken information holder
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.SubTokenType">
+ <summary>
+ Possible types for sub tokens values
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.AbstractUpgradeAction">
+ <summary>
+ Classe abstraite de base pour les actions de mise à jour
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.ActionStep">
+ <summary>
+ Enumeration des différentes étapes possibles pour l'exécution d'une action de mise à jour
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.GlobalUpgradeAction">
+ <summary>
+ Action de mise à jour globale sur l'ensemble du site, ne sera lancée qu'une fois
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.UpgradeSystem.Actions.GlobalUpgradeAction.#ctor(Aricie.DNN.Services.UpgradeSystem.Actions.ActionStep)">
+ <summary>
+ l'étape ou doit se dérouler cette action globale
+ </summary>
+ <param name="ExecutingStep">Une valeur de [ActionStep]</param>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.UpgradeSystem.Actions.GlobalUpgradeAction.UpgradeOperation">
+ <summary>
+ L'opération devant être lancée globalement sur le site: elle reçoit la version visée
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.ModuleUpgradeAction">
+ <summary>
+ Action de mise à jour des modules qui sera lancée pour chaque instance du module
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.UpgradeSystem.Actions.ModuleUpgradeAction.#ctor(Aricie.DNN.Services.UpgradeSystem.Actions.ActionStep)">
+ <summary>
+ l'étape ou doit se dérouler cette action de mise à jour de module
+ </summary>
+ <param name="ExecutingStep">Une valeur de [ActionStep]</param>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.UpgradeSystem.Actions.ModuleUpgradeAction.UpgradeOperation">
+ <summary>
+ L'opération devant être lancée pour chaque module: elle reçoit la version visée, l'identifiant du portail et l'identifiant du module
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.PortalUpgradeAction">
+ <summary>
+ Action de mise à jour des portails qui sera lancée pour chaque portail
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.UpgradeSystem.Actions.PortalUpgradeAction.#ctor(Aricie.DNN.Services.UpgradeSystem.Actions.ActionStep)">
+ <summary>
+ l'étape ou doit se dérouler cette action de mise à jour de portail
+ </summary>
+ <param name="ExecutingStep">Une valeur de [ActionStep]</param>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.UpgradeSystem.Actions.PortalUpgradeAction.UpgradeOperation">
+ <summary>
+ L'opération devant être lancée pour chaque portail: elle reçoit la version visée et l'identifiant du portail 
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.StepUpgradeAction">
+ <summary>
+ Classe abstraite pour les actions exécutables sur une étape
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.Configuration.ConfigurationRepository">
+ <summary>
+ Classe de gestion de la configuration pour les actions se rapportant aux paramètres: implémentation actuelle de la gestion des paramètres dans Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.Configuration.IConfigurationRepository">
+ <summary>
+ Interface de gestion des paramètres pour changements futurs
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.IUpgradeSettingsAction">
+ <summary>
+ Interface générique pour les actions de mise à jour des paramètres
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.IUpgradeHostSettingsAction">
+ <summary>
+ Interface pour les mises à jour de paramètres globaux
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.IUpgradePortalSettingsAction">
+ <summary>
+ Interface pour les mises à jour de paramètres de portail
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.IUpgradeModuleSettingsAction">
+ <summary>
+ Interface pour les mises à jour de paramètres de module
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.UpgradeHostSettingsAction`1">
+ <summary>
+ Implémentation de la classe de mise à jour des paramètres globaux
+ </summary>
+ <typeparam name="T"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.UpgradeModuleSettingsAction`1">
+ <summary>
+ Implémentation de la classe de mise à jour des paramètres de module
+ </summary>
+ <typeparam name="T"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.UpgradePortalSettingsAction`1">
+ <summary>
+ Implémentation de la classe de mise à jour des paramètres de portail
+ </summary>
+ <typeparam name="T"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.UpgradeSettingsAction`1">
+ <summary>
+ Classe de base de mise à jour des paramètres
+ </summary>
+ <typeparam name="T"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.UpgradeSystem.Actions.Settings.UpgradeSettingsAction`1.UpgradeOperation">
+ <summary>
+ La fonction de mise à jour des paramètres: passe la version cible et le document xml des paramètres. Il faut renvoyer le document xml des paramètres 
+ modifiés pour correspondre au nouveau chargement via déserialisation
+ </summary>
+ <value></value>
+ <returns>XDocument représentant la nouvelle structure des paramètres </returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.IUpgradeActionsProvider`1">
+ <summary>
+ Interface de récupération des actions de mise à jour
+ </summary>
+ <typeparam name="T"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.UpgradeSystem.IUpgradeActionsProvider`1.GetActions">
+ <summary>
+ Renvoie la collection d'actions à effectuer pour mise à jour
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.UpgradeActionsCollection">
+ <summary>
+ La classe qui renvoie la collection d'action à effectuer pour atteindre un numéro de version spécifique sur un module
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.UpgradeSystem.UpgradeActionsCollection.#ctor(System.Version)">
+ <summary>
+ </summary>
+ <param name="DesiredTarget">La version que permet d'atteindre cette collection d'actions</param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.UpgradeEngine`1">
+ <summary>
+ Moteur de mise à jour d'une classe (forcément le controller d'un module IUpgradeable)
+ </summary>
+ <typeparam name="T">Le type de la classe que l'on souhaite mettre à jour</typeparam>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.UpgradeSystem.UpgradeEngine`1.#ctor(System.String)">
+ <summary>
+ </summary>
+ <param name="ForModule">Nom du module optionnel pour information</param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.UpgradeSystem.UpgradeEngine`1.ResolveAndAddUpgrades">
+ <summary>
+ Recherche et ajoute automatiquement au moteur toutes les classes de type IUpgradeActionProvider(of T) contenues dans l'assembly appellante
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.UpgradeSystem.UpgradeEngine`1.MigrateSettingsTo(System.Version)">
+ <summary>
+ Permet de faire migrer le moteur automatiquement vers une version données. Le moteur cherche la version précédente à cette version donnée et exécute les opérations
+ correspondant à des versions intermédiaires. A utiliser avec le moteur d'upgrade DNN pour les upgrades incrémentales.
+ </summary>
+ <param name="to">Le numéro de version de destination. Attention, ce numéro doit avoir des règles de migration définies.</param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.UpgradeSystem.UpgradeEngine`1.MigrateSettings(System.Version,System.Version)">
+ <summary>
+ Effectue la mise à jour entre deux versions en effectuant toutes les opérations comprises entre ces deux actions.
+ </summary>
+ <param name="from">Version initiale</param>
+ <param name="to">Version visée</param>
+ <remarks>Les opérations sélectionnées n'incluent pas celles de la version initiale, mais incluent celle de la version visée</remarks>
+</member>
+<member name="T:Aricie.DNN.Services.UpgradeSystem.UpgradeEngine`1.UpgradeActionsDelayer">
+ <summary>
+ Permet de stocker les actions qui doivent être lancées regroupées à un moment donné du processus de mise à jour
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Workers.SafeRunner">
+ <summary>
+ Class to run threads operation safely
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.SafeRunner.Run">
+ <summary>
+ Runs the thread that has 
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Workers.AsyncWorker">
+ <summary>
+ Async worker class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.AsyncWorker.Instance">
+ <summary>
+ Returns single instance
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.AsyncWorker.AsyncRun(System.Threading.ThreadStart,System.Boolean)">
+ <summary>
+ Adds a thread to run asynchronously
+ </summary>
+ <param name="objStart"></param>
+ <param name="background"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.AsyncWorker.Start(System.String,System.Threading.ThreadStart,System.Int32,System.Boolean,System.IDisposable)">
+ <summary>
+ Starts a thread with dispoable objects
+ </summary>
+ <param name="key"></param>
+ <param name="objStart"></param>
+ <param name="nbThreads"></param>
+ <param name="background"></param>
+ <param name="objIDisposable"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.AsyncWorker.JoinAll(System.String,System.TimeSpan)">
+ <summary>
+ Joins all threads to wait on their end
+ </summary>
+ <param name="key"></param>
+ <param name="timeOut"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.AsyncWorker.ForceThreadEnd(System.Threading.Thread)">
+ <summary>
+ Force a thread end
+ </summary>
+ <param name="worker"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.AsyncWorker.TerminateAll">
+ <summary>
+ Force all threads to terminate
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Workers.SafeSemaphore">
+ <summary>
+ That class was introduced because native cross process Semaphore are unsafe and the safe light Semaphore is cross threads only. 
+ It is a costly and a naïve implementation but should be safe as Mutexes are
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Workers.TaskQueue`1">
+ <summary>
+ Processing Queue
+ </summary>
+ <typeparam name="T"></typeparam>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.TaskQueue`1.#ctor(System.Action{`0},Aricie.DNN.Services.Workers.TaskQueueInfo)">
+ <summary>
+ T étant le type de paramètre utilisé par la fonction appelée (action),
+ la TaskQueue permet d'appeler plusieurs fois la même fonction avec des paramètres différents en asynchrone.
+ </summary>
+ <param name="action">Méthode à utiliser par les threads.</param>
+ <param name="objTask">Objet de paramètres de la TaskQueue</param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.TaskQueue`1.EnqueueTasks(System.Collections.Generic.IEnumerable{`0})">
+ <summary>
+ Adds tasks to the queue
+ </summary>
+ <param name="tasks"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.TaskQueue`1.EnqueueTask(`0)">
+ <summary>
+ Add task to the queue
+ </summary>
+ <param name="task"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.TaskQueue`1.Terminate">
+ <summary>
+ Terminates tasks waiting in the queue
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.TaskQueue`1.Work(`0)">
+ <summary>
+ runs methods waiting in the queue
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.TaskQueue`1.OnActionPerformed">
+ <summary>
+ Callback on action run
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Workers.TaskQueueInfo">
+ <summary>
+ Information class for task queue
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Workers.TaskQueueInfo.NbThreads">
+ <summary>
+ Number of threads that will run the task
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Workers.TaskQueueInfo.TaksWaitTime">
+ <summary>
+ Time to wait for task
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Workers.TaskQueueInfo.InitialWaitTime">
+ <summary>
+ Initial waiting time for task
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Workers.TaskQueueInfo.WakeUpWaitTime">
+ <summary>
+ Waiting time before wake up
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.Workers.TaskQueueInfo.IsBackground">
+ <summary>
+ Task in the background
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.Workers.WaitQueue">
+ <summary>
+ Queue d'attente de résolutions
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.WaitQueue.Wait(System.Int32)">
+ <summary>
+ Attend numTimes réponses
+ </summary>
+ <param name="numTimes"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.Workers.WaitQueue.WaitOne">
+ <summary>
+ Attend une réponse
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.AdvancedTokenReplace">
+ <summary>
+ Extended DotnetNuke Token replace system
+ </summary>
+ <remarks>
+ Voici un exemple d'utilisation de l'advance token replace :
+ <h1>Newsletter</h1>
+ <h2>il y a [newsletter:Actus:Count] actus</h2>
+ [newsletter:Actus:Count:]
+  <p>Les voici :</p>
+  <ul>
+  [newsletter:Actus:]
+   <li><a href="[newsletter:GetActuUrl:[:IdActu]]">[:Title]</a></li>
+  [/newsletter:Actus:]
+  </ul>
+ [/newsletter:Actus:Count:]
+ <h2>il y a [newsletter:Reunions:Count] réunions</h2>
+ [newsletter:Reunions:Count:]
+  <p>Les voici :</p>
+  <ul>
+  [newsletter:Reunions:]
+   <li><a href="[newsletter:GetReunionUrl:[:IdEvent]]">[:Title]</a></li>
+  [/newsletter:Reunions:]
+  </ul>
+ [/newsletter:Reunions:Count:]
+ </remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.#ctor(DotNetNuke.Entities.Users.UserInfo)">
+ <summary>
+ Build AdvancedTokenReplace and add User data
+ </summary>
+ <param name="objUser"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.#ctor(DotNetNuke.Entities.Modules.ModuleInfo)">
+ <summary>
+ Build AdvancedTokenReplace and add Module data
+ </summary>
+ <param name="objModuleInfo"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.#ctor(DotNetNuke.Entities.Modules.ModuleInfo,System.String)">
+ <summary>
+ Build AdvancedTokenReplace and add Module data and resource file
+ </summary>
+ <param name="moduleInfo"></param>
+ <param name="resourceFile"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.#ctor(System.String)">
+ <summary>
+ Build AdvancedTokenReplace and add resource file
+ </summary>
+ <param name="resourceFile"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.#ctor(System.String,System.Object,System.String)">
+ <summary>
+ Build AdvancedTokenReplace and add resource file
+ </summary>
+ <param name="resourceFile"></param>
+ <param name="customObject"></param>
+ <param name="customCaption"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.SetModule(DotNetNuke.Entities.Modules.ModuleInfo)">
+ <summary>
+ Adds module data to the ATR
+ </summary>
+ <param name="objModule"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.SetTab(DotNetNuke.Entities.Tabs.TabInfo)">
+ <summary>
+ Adds Tab data to the ATR
+ </summary>
+ <param name="objTab"></param>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.ResourceFile">
+ <summary>
+ Adds Resource file to the ATR
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.ObjectLessExpression">
+ <summary>
+ Gets or sets if the ATR uses ObjectLess expression
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.SimpleTokens">
+ <summary>
+ Gets or sets Collection of simple tokens
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.ProcessLoops">
+ <summary>
+ Gets or sets the ATR processing loops
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.Delimiter">
+ <summary>
+ Gets or sets the delimiter for tokens
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.DelimOpen">
+ <summary>
+ Gets the delimiter opening value, ignoring the Delimiter property
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.DelimClose">
+ <summary>
+ Gets the delimiter closing value, ignoring the Delimiter property
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.RegExpression">
+ <summary>
+ Gets the regular expression used by the ATR
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.LoopRegExpression">
+ <summary>
+ Gets the loop regular expression used by the ATR
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.TokenReplaceCacheKey">
+ <summary>
+ Gets the cache key
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.TokenizerRegex">
+ <summary>
+ Gets the Regular expression for the token to be replaced
+ </summary>
+ <remarks>Propriété à modifier afin quelle utilise un singleton plutot qu'une mise en cache</remarks>
+ <value>A regular Expression</value>   
+</member>
+<member name="P:Aricie.DNN.Services.AdvancedTokenReplace.LoopTokenizerRegex">
+ <summary>
+ Gets the regular expression for the loop to be replaced
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.SetObjectReplace(System.Object,System.String)">
+ <summary>
+ Adds an object to the collection of source data for the ATR
+ </summary>
+ <param name="customObject"></param>
+ <param name="customCaption"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.RemoveObjectReplace(System.String)">
+ <summary>
+ Removes an object from the collection of source data for the ATR
+ </summary>
+ <param name="customCaption"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.ReplaceSetTokens(System.String,System.Object,System.String)">
+ <summary>
+ Replaces tokens from the source text
+ </summary>
+ <param name="strSourceText"></param>
+ <param name="customObject"></param>
+ <param name="customCaption"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.ReplaceAllTokens(System.String)">
+ <summary>
+ Replaces all tokens from the source text
+ </summary>
+ <param name="strSourceText"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.OnReplacedTokenValue(System.String,System.String,System.String)">
+ <summary>
+ Callback on token replaced
+ </summary>
+ <param name="strObjectName"></param>
+ <param name="strPropertyName"></param>
+ <param name="strFormat"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.ReplaceTokens(System.String)">
+ <summary>
+ Replaces tokens from the source text
+ </summary>
+ <param name="strSourceText"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.ReplaceLoopTokens(System.String)">
+ <summary>
+ Replaces loop tokens from the source text
+ </summary>
+ <param name="sourceText"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.GetTokenDatatable(System.Data.DataTable@,System.String,System.Type,System.Int32,System.Collections.ArrayList)">
+ <summary>
+ Returns the tokens list as a datatable for help purpose
+ </summary>
+ <param name="dt"></param>
+ <param name="prefix"></param>
+ <param name="objectType"></param>
+ <param name="levelNb"></param>
+ <param name="filter"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.InsertTokenHelp(System.Web.UI.Control)">
+ <summary>
+ Adds token help
+ </summary>
+ <param name="parentControl"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.GetTokenHelp(System.String)">
+ <summary>
+ Returns token help
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.GetTokenHelp(System.String,System.String,System.String,System.String)">
+ <summary>
+ returns token help
+ </summary>
+ <param name="itemsTemplate"></param>
+ <param name="itemTemplate"></param>
+ <param name="itemTokenTemplate"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.GetTokenSources(System.String,System.Object,System.Type,System.Int32,System.Collections.Generic.List{System.Reflection.MemberInfo}@)">
+ <summary>
+ Returns token sources
+ </summary>
+ <param name="prefix"></param>
+ <param name="objectType"></param>
+ <param name="levelNb"></param>
+ <param name="membersDone"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.GetTokenSources">
+ <summary>
+ Returns token sources
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.AdvancedTokenReplace.ReplaceDelims(System.String)">
+ <summary>
+ Replace delimiters
+ </summary>
+ <param name="sourceRegex"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.DnnContext">
+ <summary>
+ Class that regroups some information about the DotNetNuke instance
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.DnnContext.GetInstance">
+ <summary>
+ returns the current DnnContext from the current HttpContext
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.Current">
+ <summary>
+ returns the current DnnContext from the current HttpContext
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.Current(System.Web.HttpContext)">
+ <summary>
+ returns the current DnnContext from the HttpContext passd as parameters
+ </summary>
+ <param name="context"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.IsAuthenticated">
+ <summary>
+ Returns authentication information from the HttpContext
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.Session">
+ <summary>
+ Returns session information from the HttpContext
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.HttpContext">
+ <summary>
+ Returns the current HttpContext
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.Request">
+ <summary>
+  Returns request information from the HttpContext
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.Response">
+ <summary>
+  Returns response information from the HttpContext
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.Culture">
+ <summary>
+  Returns culture information from the HttpContext, failing that from the thread current culture
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.Administrator">
+ <summary>
+ Returns the administrator id for this portal
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.Portal">
+ <summary>
+  Returns DotNetNuke current portal settings
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.HostSettings">
+ <summary>
+ Returns DotNetNuke host settings
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.ServerName">
+ <summary>
+ Returns server name
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.Page">
+ <summary>
+ Returns the current page
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.DnnPage">
+ <summary>
+ Returns the current page
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.CurrentTabs">
+ <summary>
+ Returns desktopTabs for the current portal
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.User">
+ <summary>
+ Returns the current User
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.CurrentModule">
+ <summary>
+ Returns the current module
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.ModuleForm(System.Int32)">
+ <summary>
+ returns the module information from its id
+ </summary>
+ <param name="mid"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.ModuleForms">
+ <summary>
+ Collection of mapping between id and module infos
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.AdvancedTokenReplace">
+ <summary>
+ Gets or sets the AdvancedTokenReplace
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.MetaData">
+ <summary>
+ Gets or sets the Metadata
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.IPAddress">
+ <summary>
+ Returns the requesting IPAdress
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.CountryName">
+ <summary>
+ returns the requesting country name
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DnnContext.CountryLookup">
+ <summary>
+ Returns the lookup data for IP localization
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.DnnContext.CreateService(System.Type)">
+ <summary>
+ Creates a service
+ </summary>
+ <param name="serviceType"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.UploadFile(System.String,System.Web.HttpPostedFile)">
+ <summary>
+ Upload un fichier
+ </summary>
+ <param name="Path">Chemin ou le fichier doit être copié</param>
+ <param name="objHtmlInputFile">Fichier posté</param>
+ <returns>FileId du fichier copié</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.GetFileId(System.String,System.String)">
+ <summary>
+ Retourne le FileId à partir d'un répertoire et d'un nom de fichier
+ </summary>
+ <param name="Path"></param>
+ <param name="FileName"></param>
+ <returns>-1 si le fichier n'est pas trouvé</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.GetFileUrl(System.Int32)">
+ <summary>
+ Retourne l'url à partir d'un FileId
+ </summary>
+ <param name="FileId"></param>
+ <returns>Url correspondant au FileId</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.GetFileUrl(System.Int32,System.Int32)">
+ <summary>
+ Retourne l'url à partir d'un FileId
+ </summary>
+ <param name="FileId"></param>
+ <returns>Url correspondant au FileId</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.GetFileRootPath(DotNetNuke.Services.FileSystem.FileInfo)">
+ <summary>
+ Retourne le répertoire racine du gestionnaire de fichier à partir d'un fichier
+ </summary>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.GetFileIconPath(DotNetNuke.Services.FileSystem.FileInfo)">
+ <summary>
+ Returns path to icon matching a file extension
+ </summary>
+ <param name="file"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.ResizeImage(System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Redimensionne une image en gardant les proportions
+ </summary>
+ <param name="FileId">FileId de l'image</param>
+ <param name="Height">Hauteur de l'image voulue</param>
+ <param name="Width">Largeur de l'image voulue</param>
+ <returns>Le FileId de l'image</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.ResizeImage(System.Int32,System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Redimensionne une image en gardant les proportions
+ </summary>
+ <param name="FileId">FileId de l'image</param>
+ <param name="Height">Hauteur de l'image voulue</param>
+ <param name="Width">Largeur de l'image voulue</param>
+ <param name="PortId">L'Id du portail</param>
+ <returns>Le FileId de l'image</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.CropImage(System.Int32,System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Coupe une image en fonction de sa hauteur ou de sa largeur
+ </summary>
+ <param name="FileId">FileId de l'image</param>
+ <param name="Height">Hauteur de l'image voulue</param>
+ <param name="Width">Largeur de l'image voulue</param>
+ <param name="PortId">L'Id du portail</param>
+ <returns>Le FileId de l'image</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.IsImageByExtension(DotNetNuke.Services.FileSystem.FileInfo)">
+ <summary>
+ Checks if extension matches any of the common images extension
+ </summary>
+ <param name="fi"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.GetAbsoluteMapPath(System.String,System.Boolean)">
+ <summary>
+ returns the mapped path of a relative path
+ </summary>
+ <param name="relativePath"></param>
+ <param name="hostRoot"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.FileHelper.DeleteFile(System.Int32)">
+ <summary>
+ Delete a file from current portal
+ </summary>
+ <param name="fileId">fileId to delete</param>
+ <returns>True if the file is delete, false if there is any error</returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.PropertyExplorer">
+ <summary>
+ Property explorer for the ATR, to go from string representation of properties to code representation
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.PropertyExplorer.IsCompleted">
+ <summary>
+ Gets if the Property Explorer is done digging down in the properties
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.PropertyExplorer.Params">
+ <summary>
+ List of parameters to dig down into
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.PropertyExplorer.CurrentValue">
+ <summary>
+ Current status for the exploration value
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.PropertyExplorer.CurrentIndex">
+ <summary>
+ Current index of the exploration
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.PropertyExplorer.IsLocalized">
+ <summary>
+ Gets or sets whether the property access is localized
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.PropertyExplorer.CurrentParam">
+ <summary>
+ Gets the current parameter
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.PropertyExplorer.CurrentMember">
+ <summary>
+ Gets the current member information
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.PropertyExplorer.TokenQueue">
+ <summary>
+ Gets the remaining tokens as a list
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.PropertyExplorer.GetDeepPropertyValue(Aricie.DNN.Services.DeepObjectPropertyAccess)">
+ <summary>
+ Calculates deep property value
+ </summary>
+ <param name="deepAccess"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.PropertyExplorer.GetPropertyValue">
+ <summary>
+ Calculates property value
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Services.DeepObjectPropertyAccess">
+ <summary>
+ Reflection access for complex types in the ATR context
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DeepObjectPropertyAccess.TokenSource">
+ <summary>
+ Data source for the deep property access
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.DeepObjectPropertyAccess.Cacheability">
+ <summary>
+ Returns boolean indicating whether the obect can be cached
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.DeepObjectPropertyAccess.GetEnumerable(System.String)">
+ <summary>
+ Returns property value of the object as IEnumerable
+ </summary>
+ <param name="strPropertyName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.DeepObjectPropertyAccess.GetProperty(System.String,System.String,System.Globalization.CultureInfo,DotNetNuke.Entities.Users.UserInfo,DotNetNuke.Services.Tokens.Scope,System.Boolean@)">
+ <summary>
+ Returns property value as string
+ </summary>
+ <param name="strPropertyName"></param>
+ <param name="strFormat"></param>
+ <param name="formatProvider"></param>
+ <param name="accessingUser"></param>
+ <param name="accessLevel"></param>
+ <param name="propertyNotFound"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.DeepObjectPropertyAccess.GetDeepPropertyAccess(System.String,Aricie.DNN.Services.PropertyExplorer)">
+ <summary>
+ Returns recursive DOPA
+ </summary>
+ <param name="param"></param>
+ <param name="propExplorer"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.RoleController">
+ <summary>
+ Gets current RoleController
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.WebConfigDocument">
+ <summary>
+ Gets current web.config
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.DnnConnectionString">
+ <summary>
+ Gets current connection string
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.DnnObjectQualifier">
+ <summary>
+ Gets current Object qualifier
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.DnnDatabaseOwner">
+ <summary>
+ Gets current database owner
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.SetDbParameters">
+ <summary>
+ Initialize database information
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.DefineWebServerElementPath(System.String)">
+ <summary>
+ Gets node value from web.config file
+ </summary>
+ <param name="elementName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.User">
+ <summary>
+ Gets current user info
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.DnnVersion">
+ <summary>
+ Returns DotNetNuke version
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.PortalId">
+ <summary>
+ gets current portal id
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.PortalIds">
+ <summary>
+ Gets a list of portal ids on the server
+ </summary>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.PortalSettings">
+ <summary>
+ Gets current portal settings
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.PortalAliasByPortalAliasId(System.Int32)">
+ <summary>
+ Gets portal alias information by portal alias id
+ </summary>
+ <param name="portalAliasId"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.PortalIdByPortalAlias(System.String)">
+ <summary>
+ Gets portal id by portal alias
+ </summary>
+ <param name="portalAlias"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.PortalAliasesByPortalId(System.Int32)">
+ <summary>
+ gets list of portal alias info for one portal
+ </summary>
+ <param name="portalId"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.PortalInfo(System.Int32)">
+ <summary>
+ Gets portal info according to portal id
+ </summary>
+ <param name="portalId"></param>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetPortalIdByModuleId(System.Int32)">
+ <summary>
+ Gets portal id according to moduleid
+ </summary>
+ <param name="moduleId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.BuildPortalAliasDictionaries">
+ <summary>
+ Builds the portal alias matching dictionary
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetSSLEnabled(System.Int32)">
+ <summary>
+ Gets the SSL enabled value
+ </summary>
+ <param name="portalId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetSSLEnforced(System.Int32)">
+ <summary>
+ Gets the SSL Enforced value
+ </summary>
+ <param name="portalId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.RenewPortalSettings(System.Int32,System.Web.HttpContext)">
+ <summary>
+ Refreshes the portal settings
+ </summary>
+ <param name="targetTabId"></param>
+ <param name="context"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetPortalUsers(System.Int32)">
+ <summary>
+ Gets a list of users for a portal
+ </summary>
+ <param name="pid"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetTag(System.String,System.Char,System.String,System.Boolean)">
+ <summary>
+ Gets a string for advanced token replacement
+ </summary>
+ <param name="prefix">Prefix value</param>
+ <param name="middlefix">Separator</param>
+ <param name="suffix">Suffix value</param>
+ <param name="endTag"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetAdjustedUserTime(System.String,System.String,System.Int32)">
+ <summary>
+ Returns time adjusted to user timezone
+ </summary>
+ <param name="sourceDate"></param>
+ <param name="format"></param>
+ <param name="timeZone"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetAdjustedUserTime(System.String,System.String)">
+ <summary>
+ Returns time adjusted to user timezone
+ </summary>
+ <param name="dateString"></param>
+ <param name="format"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetAdjustedUserTime(System.DateTime)">
+ <summary>
+ Returns time adjusted to user timezone
+ </summary>
+ <param name="objDateTime"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetAdjustedServerTime(System.DateTime)">
+ <summary>
+ Returns time adjusted to server timezone
+ </summary>
+ <param name="objDateTime"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleSharedResourceFile(System.Int32)">
+ <summary>
+ Returns the shared resource file for a module definition id
+ </summary>
+ <param name="moduleDefId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleSharedResourceFile(System.String)">
+ <summary>
+ Returns the shared resource file for a module definition id
+ </summary>
+ <param name="moduleName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetDesktopModuleByModuleDefId(System.Int32)">
+ <summary>
+ Returns the DesktopModuleInfo for a module definition id
+ </summary>
+ <param name="moduleDefId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.IsModuleInstalled(System.String)">
+ <summary>
+ Returns boolean indicating whether the module is installed
+ </summary>
+ <param name="moduleName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleDefIdByModuleName(System.String)">
+ <summary>
+ Returns module definition id according to module name
+ </summary>
+ <param name="moduleName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleDirectoryPath(System.String)">
+ <summary>
+ Returns module directory path
+ </summary>
+ <param name="moduleName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleDirectoryPath(System.Int32)">
+ <summary>
+ Returns module directory path
+ </summary>
+ <param name="moduleDefId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleDirectoryPath(System.Int32,System.Boolean)">
+ <summary>
+ Returns module directory path
+ </summary>
+ <param name="moduleDefId"></param>
+ <param name="useCache"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleDirectorySubPath(System.Int32,System.Boolean)">
+ <summary>
+ Returns module directory sub path
+ </summary>
+ <param name="moduleDefId"></param>
+ <param name="useCache"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleDirectoryMapPath(System.String,System.Boolean)">
+ <summary>
+ Returns module directory path mapped to physical folder
+ </summary>
+ <param name="moduleName"></param>
+ <param name="useCache"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleDirectoryMapPath(System.String)">
+ <summary>
+ Returns module directory path mapped to physical folder
+ </summary>
+ <param name="moduleName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleDirectoryMapPath(System.Int32)">
+ <summary>
+ Returns module directory path mapped to physical folder
+ </summary>
+ <param name="moduleDefId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleDirectoryMapPath(System.Int32,System.Boolean)">
+ <summary>
+ Returns module directory path mapped to physical folder
+ </summary>
+ <param name="moduleDefId"></param>
+ <param name="useCache"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetTabIdByModuleId(System.Int32)">
+ <summary>
+ Returns the tab id for a module
+ </summary>
+ <param name="moduleId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleNameByModuleId(System.Int32)">
+ <summary>
+ returns the name of a module
+ </summary>
+ <param name="moduleId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetModuleFriendlyNameByModuleId(System.Int32)">
+ <summary>
+ returns the friendly name of a module
+ </summary>
+ <param name="moduleId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.Services.NukeHelper.ApplicationMapPath">
+ <summary>
+ Returns application mapped path
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetPathFromCtrUrl(System.Int32,System.String)">
+ <summary>
+ Returns path from a control url
+ </summary>
+ <param name="portalId"></param>
+ <param name="controlUrl"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetPathFromCtrUrl(System.String,System.Boolean)">
+ <summary>
+ Returns path from a control url
+ </summary>
+ <param name="controlUrl"></param>
+ <param name="track"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetFileInfoFromCtrUrl(System.Int32,System.String)">
+ <summary>
+ Returns file information from control url
+ </summary>
+ <param name="portalId"></param>
+ <param name="controlUrl"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetFolderMapPath(System.Int32,System.String)">
+ <summary>
+ Returns mapped folder path
+ </summary>
+ <param name="portalId"></param>
+ <param name="folderPath"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetFolderMapPath(System.Int32,System.Int32)">
+ <summary>
+ Returns mapped folder path
+ </summary>
+ <param name="portalId"></param>
+ <param name="folderId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Services.NukeHelper.GetLocaleFromNeutralLangauge(System.String)">
+ <summary>
+ Returns locale from neutral language
+ </summary>
+ <param name="language"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Settings.GeneralSettings">
+ <summary>
+ base settings class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Settings.PersonalSettings">
+ <summary>
+ Base settings class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.PersonalSettings.Get``1(System.String,``0)">
+ <summary>
+ Returns the setting value for key, cast as T
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="settingName"></param>
+ <param name="defaultValue">Default returned value in case the setting doesn't exist</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.PersonalSettings.Put``1(System.String,``0)">
+ <summary>
+ Sets the setting value for settingName of type T
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="settingName"></param>
+ <param name="settingValue"></param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Settings.SettingsController">
+ <summary>
+ Controller class for settings
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.GetPersonalSettings(System.Int32,System.Int32)">
+ <summary>
+ returns personnal settings for a given user
+ </summary>
+ <param name="portalId"></param>
+ <param name="userId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.GetPersonalSettings(System.Int32)">
+ <summary>
+ Returns global personnal settings that can be defined on a portal
+ </summary>
+ <param name="portalId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.GetPersonalSettings(System.Int32,System.Boolean)">
+ <summary>
+ Returns global personnal settings that can be defined on a portal and caches them
+ </summary>
+ <param name="portalId"></param>
+ <param name="useCache"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.SetPersonalSettings(System.Int32,System.Int32,Aricie.DNN.Settings.PersonalSettings,System.Boolean)">
+ <summary>
+ Sets personnal settings for a given user
+ </summary>
+ <param name="portalId"></param>
+ <param name="userId"></param>
+ <param name="personalSettings"></param>
+ <param name="setCache"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.SetPersonalSettings(System.Int32,Aricie.DNN.Settings.PersonalSettings,System.Boolean)">
+ <summary>
+ Sets global personnal settings that can be defined on a portal
+ </summary>
+ <param name="portalId"></param>
+ <param name="personalSettings"></param>
+ <param name="setCache"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.LoadFileSettings``1(System.String,System.Boolean)">
+ <summary>
+ Loads settings as custom class from a file
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="fileName"></param>
+ <param name="useCache"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.GetDefaultFileName(System.String)">
+ <summary>
+ returns the default filename for settings by adding .default before the extension
+ </summary>
+ <param name="filename"></param>
+ <returns></returns>
+ <remarks>If there is no extension, just add .default</remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.LoadFileSettings``1(System.String,System.Boolean,System.Boolean)">
+ <summary>
+ Loads settings as custom class from a file
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="fileName"></param>
+ <param name="useCache"></param>
+ <param name="useBinarySnapShot"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.LoadFileSettings(System.String,System.Type,System.Boolean,System.Boolean,System.Boolean)">
+ <summary>
+ Loads settings as object from a file
+ </summary>
+ <param name="fileName"></param>
+ <param name="targetType"></param>
+ <param name="useCache"></param>
+ <param name="useBinarySnapShot"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.SaveFileSettings``1(System.String,``0)">
+ <summary>
+ Saves settings to a file
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="fileName"></param>
+ <param name="settings"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.GetSnapShotName(System.String)">
+ <summary>
+ Returns filename with ".bin" at the end
+ </summary>
+ <param name="fileName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.SaveFileSettings``1(System.String,``0,System.Boolean)">
+ <summary>
+ Saves settings to a file
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="fileName"></param>
+ <param name="settings"></param>
+ <param name="createBinarySnapShot"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.SaveFileSettings``1(System.String,``0,System.Boolean,System.Int32)">
+ <summary>
+ Saves settings to a file
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="fileName"></param>
+ <param name="settings"></param>
+ <param name="createBinarySnapShot"></param>
+ <param name="backupsNb"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.SaveFileSettings(System.String,System.Object,System.Boolean,System.Boolean)">
+ <summary>
+ Saves settings to a file
+ </summary>
+ <param name="fileName"></param>
+ <param name="settings"></param>
+ <param name="createBinarySnapShot"></param>
+ <param name="logException"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.SaveFileSettings(System.String,System.Object,System.Boolean,System.Boolean,System.Int32)">
+ <summary>
+ Saves settings to a file
+ </summary>
+ <param name="fileName"></param>
+ <param name="settings"></param>
+ <param name="createBinarySnapShot"></param>
+ <param name="logException"></param>
+ <param name="backupsNb"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.GetModuleSettings``1(Aricie.DNN.Settings.SettingsScope,System.Int32)">
+ <summary>
+ Renvoie les settings de type T
+ </summary>
+ <typeparam name="T">Type des settings</typeparam>
+ <param name="scope">Portée des settings</param>
+ <param name="scopeid">Identifiant lié à la portée des settings(portalid,moduleid ..)</param>
+ <returns>Settings de type T</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.FixOldModuleSettings``1(Aricie.DNN.Settings.SettingsScope,System.Int32,System.Collections.Hashtable,System.String[])">
+ <summary>
+ Fixes issues with settings saved in previous versions of DNN
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="scope"></param>
+ <param name="scopeid"></param>
+ <param name="moduleSettings"></param>
+ <param name="args"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.GetModuleSettingsKey``1(Aricie.DNN.Settings.SettingsScope,System.Int32,System.String[])">
+ <summary>
+ Renvoie les settings de type T pour un module donné
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="scope"></param>
+ <param name="scopeid"></param>
+ <param name="args"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.GetKeyArgs``1(Aricie.DNN.Settings.SettingsScope,System.Int32,System.String[])">
+ <summary>
+ Returns the key built from parameters for cache usage
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="scope"></param>
+ <param name="scopeid"></param>
+ <param name="args"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.GetModuleSettings``1(Aricie.DNN.Settings.SettingsScope,System.Int32,System.Collections.Hashtable,System.Boolean,System.String[])">
+ <summary>
+ Renvoie les settings de type T
+ </summary>
+ <typeparam name="T">Type des settings</typeparam>
+ <param name="scope">Portée des settings</param>
+ <param name="scopeid">Identifiant lié à la portée des settings(portalid,moduleid ..)</param>
+ <param name="moduleSettings">Settings à utiliser</param>
+ <param name="useCache">True pour utiliser le cache(valeur par défaut), false sinon</param>
+ <param name="args">paramètres additionnels, permettant de qualifier l'objet à retourner</param>
+ <returns>Settings de type T</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.SetModuleSettings``1(Aricie.DNN.Settings.SettingsScope,System.Int32,``0)">
+ <summary>
+ Enregistre les settings
+ </summary>
+ <typeparam name="T">Type des settings</typeparam>
+ <param name="scope">Portée des settings</param>
+ <param name="scopeID">Identifiant lié à la portée des settings(portalid,moduleid ..)</param>
+ <param name="settings">Settings à utiliser</param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.SetModuleSettings``1(Aricie.DNN.Settings.SettingsScope,System.Int32,``0,System.Boolean,System.String[])">
+ <summary>
+ Enregistre les settings
+ </summary>
+ <typeparam name="T">Type des settings</typeparam>
+ <param name="scope">Portée des settings</param>
+ <param name="scopeID">Identifiant lié à la portée des settings(portalid,moduleid ..)</param>
+ <param name="settings">Settings à utiliser</param>
+ <param name="setCache">True pour mettre en cache les settings(valeur par défaut),false sinon</param>
+ <param name="args">Paramètres additionnel pour qualifier les settings</param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.VerifyTagsXML``1(System.String)">
+ <summary>
+ Cette fonction vérifie qu'il n'y a pas deux fois la balise de fermeture de WrapperSettings
+ Cette balise indique la fin des informations utiles
+ </summary>
+ <param name="xmlSettings"></param>
+ <returns>
+ il retourne -1 si c'est correct
+ sinon
+ il retourne la position où la balise se finit
+ </returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.EvalEndOfValidXMLString``1(System.String)">
+ <summary>
+ This function determines end of valid xml content
+ </summary>
+ <param name="xmlSettings"></param>
+ <returns>
+ Return position of the latest char of the valid xml
+ Return -1 if string doesn't contains valid xml string
+ </returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.FetchFromModuleSettings(Aricie.DNN.Settings.SettingsScope,System.Int32,System.String,System.Collections.Hashtable@)">
+ <summary>
+ Recupere la valeur stockée dans les settings
+ </summary>
+ <param name="scope">Portée des settings</param>
+ <param name="scopeid">Identifiant lié à la portée des settings(portalid,moduleid ..)</param>
+ <param name="key">Cle des settings</param>
+ <param name="settings">Settings à utiliser</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.SaveToModuleSettings(Aricie.DNN.Settings.SettingsScope,System.Int32,System.String,System.String)">
+ <summary>
+ Sauvegarde les settings du module en base
+ </summary>
+ <param name="scope">Portée des settings</param>
+ <param name="scopeId">Identifiant lié à la portée des settings(portalid,moduleid ...)</param>
+ <param name="key">Cle des settings</param>
+ <param name="strXmlToSave">Xml a sauvegarder</param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Settings.SettingsController.DeleteFromModuleSettings(Aricie.DNN.Settings.SettingsScope,System.Int32,System.String,System.Collections.Hashtable@)">
+ <summary>
+ Efface une entrée des settings
+ </summary>
+ <param name="scope">Portée des settings</param>
+ <param name="scopeId">Identifiant lié à la portée des settings(portalid,moduleid ...)</param>
+ <param name="key">Clé à supprimer</param>
+ <param name="Settings">Settings à utiliser</param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.Settings.SettingsScope">
+ <summary>
+ Defini la portée des settings
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.UI.Adapters.HtmlRenderer`1">
+ <summary>
+ Provides custom HTML rendering for a <see cref="T:System.Web.UI.WebControls.WebControl"/>.
+ </summary>
+ <typeparam name="T">A <see cref="T:System.Web.UI.WebControls.WebControl"/> type.</typeparam>
+ <remarks>
+ Unlike typical controls related to rendering web markup, the HtmlRenderer does not
+ output directly to the current request, even though an <see cref="T:System.Web.UI.HtmlTextWriter"/>
+ is provided to many methods. Instead, this class is responsible for returning the HTML output
+ as a string. 
+ 
+ This is done to improve testability. Output from HtmlRenderer objects
+ can be tested programmatically, and the custom control adapters rely on these renderers
+ for basic markup.
+ </remarks>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.#ctor">
+ <summary>
+ Initializes a new instance of the class.
+ </summary>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.#ctor(`0)">
+ <summary>
+ Initializes a new instance of the class.
+ </summary>
+ <param name="control">The control this renderer generates HTML for.</param>
+</member>
+<member name="P:Aricie.DNN.UI.Adapters.HtmlRenderer`1.Control">
+ <summary>
+ Gets or sets the control this renderer generates HTML for.
+ </summary>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.RenderBeginTag">
+ <summary>
+ Renders the beginning HTML code for a control. Intended to be called by a control adapter's
+ RenderBeginTag method.
+ </summary>
+ <returns>The generated HTML.</returns>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.RenderContents">
+ <summary>
+ Renders the inner HTML code for a control. Intended to be called by a control adapter's
+ RenderContents method.
+ </summary>
+ <returns>The generated HTML.</returns>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.RenderEndTag">
+ <summary>
+ Renders the ending HTML code for a control. Intended to be called by a control adapter's
+ RenderEndTag method.
+ </summary>
+ <returns>The generated HTML.</returns>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.AddDefautAttributesToCollection(System.Web.UI.WebControls.WebControl,System.Web.UI.AttributeCollection)">
+ <summary>
+ Adds the default properties and attributes for a given control to a given attribute collection.
+ </summary>
+ <param name="control">The web control.</param>
+ <param name="attributes">The collection of attributes.</param>
+ <returns>The updated collection.</returns>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.WriteAttributes(System.Web.UI.HtmlTextWriter,System.Web.UI.AttributeCollection)">
+ <summary>
+ Writes a collection of attributes to the output stream.
+ </summary>
+ <param name="writer">The output stream to write to.</param>
+ <param name="attributes">The collection of attributes.</param>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.WriteStyles(System.Web.UI.HtmlTextWriter,System.Web.UI.CssStyleCollection)">
+ <summary>
+ Writes a collection of styles to the output stream.
+ </summary>
+ <param name="writer">The output stream to write to.</param>
+ <param name="styles">The collection of styles.</param>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.ConcatenateCssClasses(System.String[])">
+ <summary>
+ Concatenates a series of CSS class names into a markup-friendly class list.
+ </summary>
+ <param name="classes">The CSS classes to concatenate.</param>
+ <returns>A markup-friendly class list.</returns>
+ <remarks>
+ Duplicates are permitted and would be included in the output. Empty strings are skipped.
+ </remarks>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.GetNameFromClientID(System.String)">
+ <summary>
+ Gets the HTML Name attribute value, such as for form fields, from a given ID attribute value.
+ </summary>
+ <param name="clientID">The ID attribute value.</param>
+ <returns>The corresponding Name attribute value.</returns>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.CreateHtmlTextWriter">
+ <summary>
+ Returns a new <see cref="T:System.Web.UI.HtmlTextWriter"/> for use in rendering output.
+ </summary>
+ <returns>A new <see cref="T:System.Web.UI.HtmlTextWriter"/>.</returns>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.HtmlRenderer`1.GenerateHtmlFromTemplate(System.Web.UI.ITemplate)">
+ <summary>
+ Generates HTML from a control template.
+ </summary>
+ <param name="template">The template.</param>
+ <returns>The generated HTML.</returns>
+</member>
+<member name="T:Aricie.DNN.UI.Adapters.ControlAdapterBase`1">
+ <summary>
+ Provides an abstract base class for our custom control adapters.
+ </summary>
+ <typeparam name="T">A type of <see cref="T:System.Web.UI.WebControls.WebControl"/> that this adapter will service.</typeparam>
+</member>
+<member name="P:Aricie.DNN.UI.Adapters.ControlAdapterBase`1.AdaptedControl">
+ <summary>
+ Returns a strongly-typed instance of the <see cref="P:System.Web.UI.Adapters.ControlAdapter.Control"/> property.
+ </summary>
+</member>
+<member name="T:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1">
+ <summary>
+ Provides an abstract base class for our custom control adapters.
+ </summary>
+ <typeparam name="T">A type of <see cref="T:System.Web.UI.WebControls.WebControl"/> that this adapter will service.</typeparam>
+</member>
+<member name="P:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.HtmlRenderer">
+ <summary>
+ Gets or sets the <see cref="P:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.HtmlRenderer"/> used by this adapter.
+ </summary>
+</member>
+<member name="P:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.AdaptedControl">
+ <summary>
+ Returns a strongly-typed instance of the <see cref="P:System.Web.UI.Adapters.ControlAdapter.Control"/> property.
+ </summary>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.CreateHtmlRenderer">
+ <summary>
+ Abstract class that returns the appropriate <see cref="P:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.HtmlRenderer"/> to use for this class.
+ </summary>
+ <returns>An <see cref="P:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.HtmlRenderer"/>.</returns>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.OnPreRender(System.EventArgs)">
+ <summary>
+ Initializes the control adapter prior to rendering markup.
+ The default implementation creates the <see cref="P:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.HtmlRenderer"/> to use by the
+ adapter by calling <see cref="M:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.CreateHtmlRenderer"/> if the renderer has not
+ already been provided.
+ </summary>
+ <param name="e">The event arguments.</param>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+ <summary>
+ Writes the beginning HTML tag to the output stream.
+ The default implementation writes the HtmlRenderer's RenderBeginTag
+ output to the output stream.
+ </summary>
+ <param name="writer">The output stream.</param>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.RenderContents(System.Web.UI.HtmlTextWriter)">
+ <summary>
+ Writes the HTML contents to the output stream.
+ The default implementation writes the HtmlRenderer's RenderContents
+ output to the output stream.
+ </summary>
+ <param name="writer">The output stream.</param>
+</member>
+<member name="M:Aricie.DNN.UI.Adapters.WebControlAdapterBase`1.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+ <summary>
+ Writes the beginning HTML tag to the output stream.
+ The default implementation writes the HtmlRenderer's RenderEndTag
+ output to the output stream.
+ </summary>
+ <param name="writer">The output stream.</param>
+</member>
+<member name="T:Aricie.DNN.UI.Controls.AriciePopupBase">
+ <summary>
+ Permet d'avoir un popup avec les fonctionalités de localisation de DNN, Skin.AddPageMessage et les feuilles de styles de DNN et du skin par défaut
+ </summary>
+ <remarks>Pour utiliser cette classe, il suffit d'en hériter votre aspx</remarks>
+</member>
+<member name="T:Aricie.DNN.UI.ImageHandler">
+ <summary>
+ Http handler that serves images
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.ImageHandler.IsReusable">
+ <summary>
+ Indicates whether the handler is reusable
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.UI.ImageHandler.ProcessRequest(System.Web.HttpContext)">
+ <summary>
+ Request handling
+ </summary>
+ <param name="context"></param>
+ <remarks>The client can pass parameters in the url: width and height</remarks>
+</member>
+<member name="M:Aricie.DNN.UI.WebControls.AricieStandardEditorInfoAdapter.GetEditorInfo(System.Object)">
+ -----------------------------------------------------------------------------
+ <summary>
+ GetEditorInfo builds an EditorInfo object for a propoerty
+ </summary>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:Aricie.DNN.UI.WebControls.AriciePropertyEditorControl.GetGroups(System.Collections.IEnumerable)">
+ <summary>
+ This override set the empty group at the first index of the array.
+ </summary>
+ <param name="arrObjects"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.UI.WebControls.AriciePropertyEditorControl.RetrieveCookieValue(System.String)">
+ <summary>
+ Retrieves the value of a cookie from the response or the request. Tries the response first to see if we already set the value server-side
+ </summary>
+ <param name="cookieName">Name of the cookie</param>
+ <returns></returns>
+ <remarks>If no cookie with this name exists in the response, cookies from the request are used</remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.PropertyEditorSettings.Styler">
+ <summary>
+ Allows tuning PropertyEditor Containers
+ </summary>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.EntityEditorSettings.SectionTemplates">
+ <summary>
+ Injects Data driven Html templates to wrap sections fields
+ </summary>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.EntityEditorSettings.CollectionTemplates">
+ <summary>
+ Injects Data driven Html templates to wrap collection entity editors
+ </summary>
+</member>
+<member name="T:Aricie.DNN.UI.WebControls.EditControls.AricieEditControl">
+ <summary>
+ Base Control to edit a property
+ </summary>
+</member>
+<member name="M:Aricie.DNN.UI.WebControls.EditControls.DecimalEditControl.#ctor">
+ -----------------------------------------------------------------------------
+ <summary>
+ Constructs an IntegerEditControl
+ </summary>
+ <history>
+     [cnurse]	02/22/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.EditControls.DecimalEditControl.StringValue">
+ -----------------------------------------------------------------------------
+ <summary>
+ StringValue is the value of the control expressed as a String
+ </summary>
+ <value>A string representing the Value</value>
+ <history>
+     [cnurse]	02/21/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:Aricie.DNN.UI.WebControls.EditControls.DecimalEditControl.OnDataChanged(System.EventArgs)">
+ -----------------------------------------------------------------------------
+ <summary>
+ OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
+ Event
+ </summary>
+ <history>
+     [cnurse]	02/21/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:Aricie.DNN.UI.WebControls.EditControls.DecimalEditControl.RenderEditMode(System.Web.UI.HtmlTextWriter)">
+ -----------------------------------------------------------------------------
+ <summary>
+ RenderEditMode renders the Edit mode of the control
+ </summary>
+ <param name="writer">A HtmlTextWriter.</param>
+ <history>
+     [cnurse]	02/27/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.AutoCompleteTextBox.UrlWS">
+ <summary>
+ URL Du webService à interroger. Ce dernier doit renvoyer un objet json sous la forme key/value
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.AutoCompleteTextBox.WebserviceMode">
+ <summary>
+ Set webservice mode to GET if necessary. POST is default mode.
+ </summary>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.AutoCompleteTextBox.AutoCompleteTemplate">
+ <summary>
+ Specify autocomplete template for results like "<em>value</em>" for exemple
+ </summary>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.DropDownListMulti.AutoPostBack">
+ <summary>
+ If true, controls will postback on selectedindexchanged
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.DropDownListMulti.DataTextField">
+ <summary>
+ Define the field to show when an item is selected
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.DropDownListMulti.DataValueField">
+ <summary>
+ Define the fields to use as datavalue seperated by ,
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks>White-space characters are automaticaly removed</remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.DropDownListMulti.Columns">
+ <summary>
+ Colums in the grid, can be used to edit HeaderText only if autogenerateColumns=false. If autogenerated=true, You should use HeaderRow to edit a column header.
+ Ie : .Columns(i).HeaderText="NewHeader"
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.DropDownListMulti.HeaderRow">
+ <summary>
+ Headerrow of the grid. Can be used to edit a column title specially when autogeneratecolumns=true.
+ Ie: .HeaderRow.Cells(i).Text="NewHeader"
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.DropDownListMulti.Text">
+ <summary>
+ Text of the selected items
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.DropDownListMulti.SelectedValue">
+ <summary>
+ Return the key fields of selected value separated with ,
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.UI.WebControls.DropDownListMulti.DataBind">
+ <summary>
+ Bind the Dropdownlist
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.UI.WebControls.FolderSelector">
+ <summary>
+ Permet la selection multiple de dossier
+ </summary>
+ <remarks>DataTexField=FolderName et DataValueField=FolderId sont requis pour avoir un comportement par defaut</remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.FolderSelector.RootFolder">
+ <summary>
+ Dossier sur lequel filtrer, ex: myFolder/mySubFolder
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.HtmlInputDate.Trigger">
+ <summary>
+ Generate the trigger (a link) to open the calendar
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.HtmlInputDate.Min">
+ <summary>
+ NbDays from today (+ or - x days) for the min value
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.HtmlInputDate.Max">
+ <summary>
+ NbDays from today (+ or - x days) for the max value
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.HtmlInputDate.Language">
+ <summary>
+ define the language of the calendar (fr by default, en is available)
+ </summary>
+ <value>en/fr</value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.UploadControl.Path">
+ <summary>
+ Chemin de destination du fichier. Le chemin est relatif au portail courant (ex: Upload)
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.UploadControl.Extensions">
+ <summary>
+ Liste des extensions autorisées (ex: *.png;*.jpg)
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Aricie.DNN.UI.WebControls.UploadControl.AllowNewUpload">
+ <summary>
+ Permet de charger un nouveau fichier une fois le chargement terminé.
+ </summary>
+ <value>False par défaut</value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.UI.Attributes.CollectionEditorAttribute.#ctor">
+ <summary>
+ Constructeur simplifié pour ne pas se prendre la tête avec les paramètres dans le désordre
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.UI.Attributes.FileExtensionsAttribute.#ctor(System.String)">
+ <summary>
+ 
+ </summary>
+ <param name="extensions">les extentions autorisées séparées par des virgules</param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.VersionManagement.AricieSharedMustBeAtLeastVersion1_7">
+ <summary>
+ Cette classe n'a pas d'autre objectif que de définir une dépendance sur une classe particulière à la version 1.7 de Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.VersionManagement.AricieSharedMustBeAtLeastVersion1_7_1">
+ <summary>
+ Cette classe n'a pas d'autre objectif que de définir une dépendance sur une classe particulière à la version 1.7.1 de Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.VersionManagement.AricieSharedMustBeAtLeastVersion1_7_8">
+ <summary>
+ This class exists to ensure that a dependant DNN package can target this specific version of Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.VersionManagement.AricieSharedMustBeAtLeastVersion1_8_4">
+ <summary>
+ This class exists to ensure that a dependant DNN package can target this specific version of Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.DNN.VersionManagement.AricieSharedMustBeAtLeastVersion1_8_7">
+ <summary>
+ This class exists to ensure that a dependant DNN package can target this specific version of Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+</members>
+</doc>

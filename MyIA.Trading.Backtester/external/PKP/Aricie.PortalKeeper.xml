@@ -1,0 +1,422 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Aricie.PortalKeeper
+</name>
+</assembly>
+<members>
+<member name="T:My.MyWebExtension">
+ <summary>
+ Module used to define the properties that are available in the My Namespace for Web projects.
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:My.MyWebExtension.Computer">
+ <summary>
+ Returns information about the host computer.
+ </summary>
+</member>
+<member name="P:My.MyWebExtension.User">
+ <summary>
+ Returns information for the current Web user.
+ </summary>
+</member>
+<member name="P:My.MyWebExtension.Request">
+ <summary>
+ Returns Request object.
+ </summary>
+</member>
+<member name="P:My.MyWebExtension.Response">
+ <summary>
+ Returns Response object.
+ </summary>
+</member>
+<member name="P:My.MyWebExtension.Log">
+ <summary>
+ Returns the Asp log object.
+ </summary>
+</member>
+<member name="T:My.Resources.Resources">
+<summary>
+  Une classe de ressource fortement typée destinée, entre autres, à la consultation des chaînes localisées.
+</summary>
+</member>
+<member name="P:My.Resources.Resources.ResourceManager">
+<summary>
+  Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
+</summary>
+</member>
+<member name="P:My.Resources.Resources.Culture">
+<summary>
+  Remplace la propriété CurrentUICulture du thread actuel pour toutes
+  les recherches de ressources à l'aide de cette classe de ressource fortement typée.
+</summary>
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.DataType">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets the Data Type of the Profile Property
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.Length">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets the Length of the Profile Property
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.ModuleDefId">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets the ModuleDefId
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.PortalId">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets the PortalId
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.PropertyCategory">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets the Category of the Profile Property
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.PropertyDefinitionId">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets the Id of the GeneralPropertyDefinition
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.PropertyName">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets the Name of the Profile Property
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.PropertyValue">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets the Value of the Profile Property
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.Required">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets whether the property is required
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.ValidationExpression">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets a Validation Expression (RegEx) for the Profile Property
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.Visible">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets whether the property is visible
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.DefaultVisibility">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets the Default Visibility of the Profile Property
+ </summary>
+ <history>
+     [sbwalker]	06/28/2010	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="P:Aricie.DNN.Modules.PortalKeeper.GeneralPropertyDefinition.Visibility">
+ -----------------------------------------------------------------------------
+ <summary>
+ Gets and sets whether the property is visible
+ </summary>
+ <history>
+     [cnurse]	01/31/2006	created
+ </history>
+ -----------------------------------------------------------------------------
+</member>
+<member name="M:Aricie.DNN.Modules.PortalKeeper.MultipleConnectionsCondition.SetBackTracking(System.Int32,System.String)">
+ <summary>
+ Used for maintaining a list of request sources for each users.
+ </summary>
+ <param name="userId"></param>
+ <param name="key"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Modules.PortalKeeper.MultipleConnectionsCondition.RemoveBackTracking(System.Int32,System.String)">
+ <summary>
+ Removes the specified request source for the specified user.
+ </summary>
+ <param name="userId"></param>
+ <param name="key"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Modules.PortalKeeper.MultipleConnectionsCondition.SetUserLock(System.Int32,System.String)">
+ <summary>
+ Add a lock with the specified source for the specified user.
+ </summary>
+ <param name="userId"></param>
+ <param name="key"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.DNN.Modules.PortalKeeper.MultipleConnectionsCondition.CleanLockAndMatch(System.Int32)">
+ <summary>
+ Remove all locks for the specified user.
+ </summary>
+ <param name="userId"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._divConfig">
+<summary>
+divConfig control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._divDebug">
+<summary>
+divDebug control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._cmdDebug">
+<summary>
+cmdDebug control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._divHostConfig">
+<summary>
+divHostConfig control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._KC">
+<summary>
+KC control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._cmdClearProbes">
+<summary>
+cmdClearProbes control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._divPortalSettings">
+<summary>
+divPortalSettings control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._lblSettings">
+<summary>
+lblSettings control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._KS">
+<summary>
+KS control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._cmdSave">
+<summary>
+cmdSave control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._cmdCancelSettings">
+<summary>
+cmdCancelSettings control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._divUserBot">
+<summary>
+divUserBot control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._ctUserBotEntities">
+<summary>
+ctUserBotEntities control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._divUserBotCmds">
+<summary>
+divUserBotCmds control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._divActionCommands">
+<summary>
+divActionCommands control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._lblBotDefinition">
+<summary>
+lblBotDefinition control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._ctlUserBot">
+<summary>
+ctlUserBot control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._divInstall">
+<summary>
+divInstall control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._cmdInstall">
+<summary>
+cmdInstall control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.KeeperConfig._cmdUninstall">
+<summary>
+cmdUninstall control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.Settings._lblGeneralIntro">
+<summary>
+lblGeneralIntro control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:Aricie.DNN.Modules.PortalKeeper.UI.Settings._ctS">
+<summary>
+ctS control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="M:Aricie.DNN.Modules.PortalKeeper.UI.Settings.UpdateSettings">
+ <summary>
+ Save the module settings in the database
+ </summary>
+</member>
+</members>
+</doc>

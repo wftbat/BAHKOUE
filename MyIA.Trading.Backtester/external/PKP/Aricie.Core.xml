@@ -1,0 +1,1779 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Aricie.Core
+</name>
+</assembly>
+<members>
+<member name="T:Aricie.My.Resources.Resources">
+<summary>
+  Une classe de ressource fortement typée destinée, entre autres, à la consultation des chaînes localisées.
+</summary>
+</member>
+<member name="P:Aricie.My.Resources.Resources.ResourceManager">
+<summary>
+  Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
+</summary>
+</member>
+<member name="P:Aricie.My.Resources.Resources.Culture">
+<summary>
+  Remplace la propriété CurrentUICulture du thread actuel pour toutes
+  les recherches de ressources à l'aide de cette classe de ressource fortement typée.
+</summary>
+</member>
+<member name="P:Aricie.My.Resources.Resources.AriciePropertyEditorControl_RaisePostBackEvent_not_enough_postback_arguments">
+<summary>
+  Recherche une chaîne localisée semblable à not enough postback arguments.
+</summary>
+</member>
+<member name="T:Aricie.VersionManagement.AricieSharedMustBeAtLeastVersion1_7">
+ <summary>
+ Cette classe n'a pas d'autre objectif que de définir une dépendance sur une classe particulière à la version 1.7 de Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.VersionManagement.AricieSharedMustBeAtLeastVersion1_7_1">
+ <summary>
+ Cette classe n'a pas d'autre objectif que de définir une dépendance sur une classe particulière à la version 1.7.1 de Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.VersionManagement.AricieSharedMustBeAtLeastVersion1_7_8">
+ <summary>
+ This class exists to ensure that a dependant DNN package can target this specific version of Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.VersionManagement.AricieSharedMustBeAtLeastVersion1_8_4">
+ <summary>
+ This class exists to ensure that a dependant DNN package can target this specific version of Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.VersionManagement.AricieSharedMustBeAtLeastVersion1_8_7">
+ <summary>
+ This class exists to ensure that a dependant DNN package can target this specific version of Aricie.Shared
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.Collections.AutoInitHybridDictionary`2">
+ <summary>
+ Base class for a Hybrid Dictionary with an automated init hook
+ </summary>
+</member>
+<member name="T:Aricie.Collections.ConvertedCollection`2">
+ <summary>
+ Generic class to wrap a collection of convertible items into their converted counterparts
+ </summary>
+</member>
+<member name="T:Aricie.Collections.ConvertedEnumerable`2">
+ <summary>
+ Automatic Converter Wrapping Enumerable
+ </summary>
+ <remarks>The conversion is performed only on sequential access.</remarks>
+</member>
+<member name="T:Aricie.Collections.CastingEnumerator`2">
+ <summary>
+ Converted Enumerator where the conversion is a cast
+ </summary>
+</member>
+<member name="T:Aricie.Collections.ConvertedEnumerator`2">
+ <summary>
+ utomatic Converter Wrapping Enumerator
+ </summary>
+</member>
+<member name="T:Aricie.Collections.DictionaryComparer`3">
+ <summary>
+ Generic Dictionary comparer for custom sorts
+ </summary>
+</member>
+<member name="T:Aricie.Collections.DualDictionary`2">
+ <summary>
+ Dictionary with double key/value/key index
+ </summary>
+</member>
+<member name="T:Aricie.Collections.HybridDictionary`2">
+ <summary>
+ Generic Dictionary with a dual list/hash table implementation
+ </summary>
+ <remarks>A configured thresold determines when to switch implementations</remarks>
+</member>
+<member name="T:Aricie.Collections.IAutoInitDictionary`2">
+ <summary>
+ Interface for a dicitionary with automated init capabilities
+ </summary>
+</member>
+<member name="T:Aricie.Collections.IReverseLookupDictionary`2">
+ <summary>
+ Interface for a Dictionary with a reversed value/key lookup
+ </summary>
+</member>
+<member name="T:Aricie.Collections.IDualDictionary`2">
+ <summary>
+ Interface for a double indexed dictionary
+ </summary>
+</member>
+<member name="T:Aricie.Collections.ITrie`2">
+ <summary>
+ Interface for a Trie like lookup structure
+ </summary>
+ End Interface
+</member>
+<member name="T:Aricie.Collections.RadixTree`3">
+ <summary>
+ Collection class for a Radix tree
+ </summary>
+ <remarks>It is inherited from a Trie and handles branch condensation automatically.</remarks>
+</member>
+<member name="T:Aricie.Collections.ReverseLookupHybridDictionary`2">
+ <summary>
+ Complete Dual Dictionary with init mechanism
+ </summary>
+</member>
+<member name="T:Aricie.Collections.IKeyedItem`1">
+ <summary>
+ Interface for a item with a key generating mechanism
+ </summary>
+</member>
+<member name="T:Aricie.Collections.SafeKeyValuePair`2">
+ <summary>
+ Fixed KeyValuePair Structure with consistent operator overloads
+ </summary>
+</member>
+<member name="T:Aricie.Collections.SerializableList`1">
+ <summary>
+ Generic List with a self contained sub types generic serialization mechanism
+ </summary>
+</member>
+<member name="T:Aricie.Collections.SerializableSortedList`2">
+ <summary>
+ Generic Sorted List with a self contained sub types generic serialization mechanism
+ </summary>
+</member>
+<member name="T:Aricie.Collections.SerializationDictionaryHelper`2">
+ <summary>
+ Helper classes to deal with the self contained serialization container of type hierarchies
+ </summary>
+</member>
+<member name="T:Aricie.Collections.Trie`3">
+ <summary>
+ Generic class that represents a Trie
+ </summary>
+ <remarks>There are 3 generic arguments of the type of lookup symbols, lookup keys as symbol lists, and content values</remarks>
+ End Class
+</member>
+<member name="T:Aricie.Collections.SerializableDictionary`2">
+ <summary>
+ Generic Serializable Dictionary with a self contained sub types generic serialization mechanism
+ </summary>
+</member>
+<member name="T:Aricie.Collections.SerializableSortedDictionary`2">
+ <summary>
+ Generic Sorted Dictionary with a self contained sub types generic serialization mechanism
+ </summary>
+</member>
+<member name="T:Aricie.UI.WebControls.EditControls.PagedCollection">
+ <summary>
+ Collection wrapper that embed the paginated navigation of a Source Collection
+ </summary>
+ <remarks>The page size and current index are given and computed according to the collection life cycle.</remarks>
+</member>
+<member name="T:Aricie.UI.WebControls.EditControls.PagedList">
+ <summary>
+ List wrapper that embed the paginated navigation of a Source list
+ </summary>
+</member>
+<member name="T:Aricie.CompareIPs">
+ <summary>
+ Helper function that can parse propertly IPAdresses for comparison
+ </summary>
+</member>
+<member name="T:Aricie.ComponentModel.CData">
+ <summary>
+ A class to represent a bloc of CData while being serialize.
+ </summary>
+ <remarks>Implements IConvertible for safe conversion to value types</remarks>
+</member>
+<member name="T:Aricie.ComponentModel.IChildEntity">
+ <summary>
+ Interface for a Simple Hierarchy
+ </summary>
+</member>
+<member name="T:Aricie.ComponentModel.IChildEntity`1">
+ <summary>
+ Simple Interface for a simple Hierarchy
+ </summary>
+</member>
+<member name="T:Aricie.ComponentModel.MainCategoryAttribute">
+ <summary>
+ Attribute to flag main Category within the Component Model Category Attributes of a Class
+ </summary>
+</member>
+<member name="T:Aricie.ComponentModel.DelegateInfo`1">
+ <summary>
+ Wrapper class to serialize and rebuild a delegate. Supports invocation list combination
+ </summary>
+</member>
+<member name="M:Aricie.ComponentModel.XmlAwareContractResolver.CreateProperty(System.Reflection.MemberInfo,Newtonsoft.Json.MemberSerialization)">
+ <summary>
+ Creates a <see cref="T:Newtonsoft.Json.Serialization.JsonProperty" /> for the given <see cref="T:System.Reflection.MemberInfo" />.
+ </summary>
+</member>
+<member name="T:Aricie.ComponentModel.ChangedEventArgs">
+ <summary>
+ Général purpose Eventargs with
+ </summary>
+</member>
+<member name="T:Aricie.Business.Filters.PredicateFilter`1">
+ <summary>
+ IFilter Implementation with a Predicate
+ </summary>
+</member>
+<member name="T:Aricie.Business.Filters.FilterExpression">
+ <summary>
+ IFilter compund Boolean expression
+ </summary>
+</member>
+<member name="T:Aricie.Business.Filters.IFilter">
+ <summary>
+ General Purpose Generics filtering Interface
+ </summary>
+</member>
+<member name="T:Aricie.Business.Filters.SimpleFilter`1">
+ <summary>
+ Simple Reflection based IFilter
+ </summary>
+</member>
+<member name="T:Aricie.Business.SimpleTypeConverter`2">
+ <summary>
+ adapter between IConverter and TypeConverter
+ </summary>
+</member>
+<member name="T:Aricie.Common">
+ <summary>
+ Collection of general purpose helper functions
+ </summary>
+</member>
+<member name="M:Aricie.Common.Reverse(System.String)">
+ <summary>
+ Reverses the specified string.
+ </summary>
+ <param name="input">The string to reverse.</param>
+ <returns>The input string, reversed.</returns>
+ <remarks>This method correctly reverses strings containing supplementary characters
+ (which are encoded with two surrogate code units).</remarks>
+</member>
+<member name="M:Aricie.Common.GetCookieValue(System.String)">
+ <summary>
+ Get The cookie value
+ </summary>
+ <param name="CookieName">The Name of the cookie</param>
+ <returns>The Value of the cookie</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.Common.SetCookieValue(System.String,System.Object,System.Int32)">
+ <summary>
+ Create or update a cookie
+ </summary>
+ <param name="CookieName">The Name of the cookie</param>
+ <param name="CookieValue">The value of the cookie</param>
+ <param name="Duration">The duration of the cookie in days</param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.Common.ShowHasPopup(System.Web.UI.Page,System.String)">
+ <summary>
+ Open the URL in a new window
+ </summary>
+ <param name="CurrentPage">Current Page</param>
+ <param name="Url">Url to open</param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.Common.GetStringHashCode(System.String)">
+ <summary>
+ computes a string's hashcode in a uniform way over x64 and x86 CPUs
+ </summary>
+ <param name="source">La string dont on veux le hashcode</param>
+ <returns>un Entier représentant le hashcode de la string</returns>
+ <remarks>Adaptation en VB de la méthode GetHashCode de la classe String de .Net 32 Bits</remarks>
+</member>
+<member name="M:Aricie.Common.Long2Int(System.Int64)">
+ <summary>
+ converti un long en int en récupérant les 4 octets de droite du long
+ </summary>
+ <param name="longValue">un long</param>
+ <returns>un int constitué des 4 premiers octets du long</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.Common.GetPtr(System.Byte[],System.Int32)">
+ <summary>
+ Retourne un entier selon la position demandé
+ </summary>
+ <param name="sourceBytes">Un tableau d'octets</param>
+ <param name="indexNumPtr">La position désiré</param>
+ <returns>Un entier constitué de des 2 octets à partir de l'index</returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.IO.PipeStream">
+ <summary>
+ PipeStream is a thread-safe read/write data stream for use between two threads in a 
+ single-producer/single-consumer type problem.
+ </summary>
+ <version>2014/12/15 1.2</version>
+ <remarks>2006/10/13 1.0 - initial version.
+ Update on 2008/10/9 1.1 - uses Monitor instead of Manual Reset events for more elegant synchronicity.
+ Update on 2014/12/15 1.2 - bugfix for read method not using offset - thanks Jörgen Sigvardsson, replace NotImplementedExceptions with NotSupportedException</remarks>
+ <license>
+	Copyright (c) 2006 James Kolpack (james dot kolpack at google mail)
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+	associated documentation files (the "Software"), to deal in the Software without restriction, 
+	including without limitation the rights to use, copy, modify, merge, publish, distribute, 
+	sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is 
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in all copies or 
+	substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+	INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
+	PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
+	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT 
+	OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
+	OTHER DEALINGS IN THE SOFTWARE.
+ </license>
+</member>
+<member name="F:Aricie.IO.PipeStream.mBuffer">
+ <summary>
+ Queue of bytes provides the datastructure for transmitting from an
+ input stream to an output stream.
+ </summary>
+ <remarks>Possible more effecient ways to accomplish this.</remarks>
+</member>
+<member name="F:Aricie.IO.PipeStream.mFlushed">
+ <summary>
+ Indicates that the input stream has been flushed and that
+ all remaining data should be written to the output stream.
+ </summary>
+</member>
+<member name="F:Aricie.IO.PipeStream.mMaxBufferLength">
+ <summary>
+ Maximum number of bytes to store in the buffer.
+ </summary>
+</member>
+<member name="F:Aricie.IO.PipeStream.mBlockLastRead">
+ <summary>
+ Setting this to true will cause Read() to block if it appears
+ that it will run out of data.
+ </summary>
+</member>
+<member name="F:Aricie.IO.PipeStream.KB">
+ <summary>
+ Number of bytes in a kilobyte
+ </summary>
+</member>
+<member name="F:Aricie.IO.PipeStream.MB">
+ <summary>
+ Number of bytes in a megabyte
+ </summary>
+</member>
+<member name="M:Aricie.IO.PipeStream.#ctor(System.Int32)">
+ <summary>
+ Initializes a new instance of the <see cref="T:Aricie.IO.PipeStream"/> class.
+ </summary>
+</member>
+<member name="P:Aricie.IO.PipeStream.MaxBufferLength">
+ <summary>
+ Gets or sets the maximum number of bytes to store in the buffer.
+ </summary>
+ <value>The length of the max buffer.</value>
+</member>
+<member name="P:Aricie.IO.PipeStream.BlockLastReadBuffer">
+ <summary>
+ Gets or sets a value indicating whether to block last read method before the buffer is empty.
+ When true, Read() will block until it can fill the passed in buffer and count.
+ When false, Read() will not block, returning all the available buffer data.
+ </summary>
+ <remarks>
+ Setting to true will remove the possibility of ending a stream reader prematurely.
+ </remarks>
+ <value>
+ 	<c>true</c> if block last read method before the buffer is empty; otherwise, <c>false</c>.
+ </value>
+</member>
+<member name="M:Aricie.IO.PipeStream.Dispose(System.Boolean)">
+<summary>
+Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+</summary>
+<filterpriority>2</filterpriority>
+</member>
+<member name="M:Aricie.IO.PipeStream.Flush">
+<summary>
+When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written to the underlying device.
+</summary>
+
+<exception cref="T:System.IO.IOException">An I/O error occurs. </exception><filterpriority>2</filterpriority>
+</member>
+<member name="M:Aricie.IO.PipeStream.Seek(System.Int64,System.IO.SeekOrigin)">
+<summary>
+When overridden in a derived class, sets the position within the current stream.
+</summary>
+<returns>
+The new position within the current stream.
+</returns>
+<param name="offset">A byte offset relative to the origin parameter. </param>
+<param name="origin">A value of type <see cref="T:System.IO.SeekOrigin"></see> indicating the reference point used to obtain the new position. </param>
+<exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+<exception cref="T:System.NotSupportedException">The stream does not support seeking, such as if the stream is constructed from a pipe or console output. </exception>
+<exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception><filterpriority>1</filterpriority>
+</member>
+<member name="M:Aricie.IO.PipeStream.SetLength(System.Int64)">
+<summary>
+When overridden in a derived class, sets the length of the current stream.
+</summary>
+<param name="value">The desired length of the current stream in bytes. </param>
+<exception cref="T:System.NotSupportedException">The stream does not support both writing and seeking, such as if the stream is constructed from a pipe or console output. </exception>
+<exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+<exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception><filterpriority>2</filterpriority>
+</member>
+<member name="M:Aricie.IO.PipeStream.Read(System.Byte[],System.Int32,System.Int32)">
+<summary>
+When overridden in a derived class, reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
+</summary>
+<returns>
+The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.
+</returns>
+<param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the current stream. </param>
+<param name="count">The maximum number of bytes to be read from the current stream. </param>
+<param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between offset and (offset + count - 1) replaced by the bytes read from the current source. </param>
+<exception cref="T:System.ArgumentException">The sum of offset and count is larger than the buffer length. </exception>
+<exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+<exception cref="T:System.NotSupportedException">The stream does not support reading. </exception>
+<exception cref="T:System.ArgumentNullException">buffer is null. </exception>
+<exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+<exception cref="T:System.ArgumentOutOfRangeException">offset or count is negative. </exception><filterpriority>1</filterpriority>
+</member>
+<member name="M:Aricie.IO.PipeStream.ReadAvailable(System.Int32)">
+ <summary>
+ Returns true if there are 
+ </summary>
+ <param name="count"></param>
+ <returns></returns>
+</member>
+<member name="M:Aricie.IO.PipeStream.Write(System.Byte[],System.Int32,System.Int32)">
+<summary>
+When overridden in a derived class, writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
+</summary>
+<param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream. </param>
+<param name="count">The number of bytes to be written to the current stream. </param>
+<param name="buffer">An array of bytes. This method copies count bytes from buffer to the current stream. </param>
+<exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+<exception cref="T:System.NotSupportedException">The stream does not support writing. </exception>
+<exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+<exception cref="T:System.ArgumentNullException">buffer is null. </exception>
+<exception cref="T:System.ArgumentException">The sum of offset and count is greater than the buffer length. </exception>
+<exception cref="T:System.ArgumentOutOfRangeException">offset or count is negative. </exception><filterpriority>1</filterpriority>
+</member>
+<member name="P:Aricie.IO.PipeStream.CanRead">
+<summary>
+When overridden in a derived class, gets a value indicating whether the current stream supports reading.
+</summary>
+<returns>
+true if the stream supports reading; otherwise, false.
+</returns>
+<filterpriority>1</filterpriority>
+</member>
+<member name="P:Aricie.IO.PipeStream.CanSeek">
+<summary>
+When overridden in a derived class, gets a value indicating whether the current stream supports seeking.
+</summary>
+<returns>
+true if the stream supports seeking; otherwise, false.
+</returns>
+<filterpriority>1</filterpriority>
+</member>
+<member name="P:Aricie.IO.PipeStream.CanWrite">
+<summary>
+When overridden in a derived class, gets a value indicating whether the current stream supports writing.
+</summary>
+<returns>
+true if the stream supports writing; otherwise, false.
+</returns>
+<filterpriority>1</filterpriority>
+</member>
+<member name="P:Aricie.IO.PipeStream.Length">
+<summary>
+When overridden in a derived class, gets the length in bytes of the stream.
+</summary>
+<returns>
+A long value representing the length of the stream in bytes.
+</returns>
+
+<exception cref="T:System.NotSupportedException">A class derived from Stream does not support seeking. </exception>
+<exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception><filterpriority>1</filterpriority>
+</member>
+<member name="P:Aricie.IO.PipeStream.Position">
+<summary>
+When overridden in a derived class, gets or sets the position within the current stream.
+</summary>
+<returns>
+The current position within the stream.
+</returns>
+<exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+<exception cref="T:System.NotSupportedException">The stream does not support seeking. </exception>
+<exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception><filterpriority>1</filterpriority>
+</member>
+<member name="T:Aricie.IO.PipeStreamBlock">
+ <summary>
+ Contains a block of queued data
+ </summary>
+</member>
+<member name="T:Aricie.IO.BaseResponseFilter">
+ <summary>
+ Used as an http response filter to modify the contents of the output html.
+ </summary>
+</member>
+<member name="M:Aricie.IO.BaseResponseFilter.Write(System.Byte[],System.Int32,System.Int32)">
+ <summary>
+ Appends the bytes written to our string builder
+ </summary>
+ <param name="objBuffer"></param>
+ <param name="offset"></param>
+ <param name="count"></param>
+</member>
+<member name="M:Aricie.IO.BaseResponseFilter.Flush">
+ <summary>
+ Before the contents are flushed to the stream, the output is inspected and altered
+ and then written to the stream.
+ </summary>
+</member>
+<member name="T:Aricie.IO.ThrottledStream">
+ <summary>
+ Class for streaming data with throttling support.
+ </summary>
+ <remarks>Improved from http://www.codeproject.com/Articles/18243/Bandwidth-throttling</remarks>
+</member>
+<member name="F:Aricie.IO.ThrottledStream.Infinite">
+ <summary>
+ A constant used to specify an infinite number of bytes that can be transferred per second.
+ </summary>
+</member>
+<member name="F:Aricie.IO.ThrottledStream._baseStream">
+ <summary>
+ The base stream.
+ </summary>
+</member>
+<member name="F:Aricie.IO.ThrottledStream._maximumBytesPerSecond">
+ <summary>
+ The maximum bytes per second that can be transferred through the base stream.
+ </summary>
+</member>
+<member name="F:Aricie.IO.ThrottledStream._byteCount">
+ <summary>
+ The number of bytes that has been transferred since the last throttle.
+ </summary>
+</member>
+<member name="F:Aricie.IO.ThrottledStream._RemainingUnthrottledBytes">
+ <summary>
+ The start time in milliseconds of the last throttle.
+ </summary>
+</member>
+<member name="P:Aricie.IO.ThrottledStream.MaximumBytesPerSecond">
+ <summary>
+ Gets or sets the maximum bytes per second that can be transferred through the base stream.
+ </summary>
+ <value>The maximum bytes per second.</value>
+ <exception cref="T:System.ArgumentOutOfRangeException">Value is negative. </exception>
+</member>
+<member name="P:Aricie.IO.ThrottledStream.CanRead">
+ <summary>
+ Gets a value indicating whether the current stream supports reading.
+ </summary>
+ <returns>true if the stream supports reading; otherwise, false.</returns>
+</member>
+<member name="P:Aricie.IO.ThrottledStream.CanSeek">
+ <summary>
+ Gets a value indicating whether the current stream supports seeking.
+ </summary>
+ <value></value>
+ <returns>true if the stream supports seeking; otherwise, false.</returns>
+</member>
+<member name="P:Aricie.IO.ThrottledStream.CanWrite">
+ <summary>
+ Gets a value indicating whether the current stream supports writing.
+ </summary>
+ <value></value>
+ <returns>true if the stream supports writing; otherwise, false.</returns>
+</member>
+<member name="P:Aricie.IO.ThrottledStream.Length">
+ <summary>
+ Gets the length in bytes of the stream.
+ </summary>
+ <value></value>
+ <returns>A long value representing the length of the stream in bytes.</returns>
+ <exception cref="T:System.NotSupportedException">The base stream does not support seeking. </exception>
+ <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+</member>
+<member name="P:Aricie.IO.ThrottledStream.Position">
+ <summary>
+ Gets or sets the position within the current stream.
+ </summary>
+ <value></value>
+ <returns>The current position within the stream.</returns>
+ <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+ <exception cref="T:System.NotSupportedException">The base stream does not support seeking. </exception>
+ <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+</member>
+<member name="M:Aricie.IO.ThrottledStream.#ctor(System.IO.Stream)">
+ <summary>
+ Initializes a new instance of the ThrottledStream class with an
+ infinite amount of bytes that can be processed.
+ </summary>
+ <param name="baseStream">The base stream.</param>
+</member>
+<member name="M:Aricie.IO.ThrottledStream.#ctor(System.IO.Stream,System.Int64)">
+ <summary>
+ Initializes a new instance of the ThrottledStream class.
+ </summary>
+ <param name="baseStream">The base stream.</param>
+ <param name="maximumBytesPerSecond">The maximum bytes per second that can be transferred through the base stream.</param>
+ <exception cref="T:System.ArgumentNullException">Thrown when baseStream is a null reference.</exception>
+ <exception cref="T:System.ArgumentOutOfRangeException">Thrown when <see cref="P:Aricie.IO.ThrottledStream.MaximumBytesPerSecond"/> is a negative value.</exception>
+</member>
+<member name="M:Aricie.IO.ThrottledStream.Flush">
+ <summary>
+ Clears all buffers for this stream and causes any buffered data to be written to the underlying device.
+ </summary>
+ <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
+</member>
+<member name="M:Aricie.IO.ThrottledStream.Read(System.Byte[],System.Int32,System.Int32)">
+ <summary>
+ Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
+ </summary>
+ <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between offset and (offset + count - 1) replaced by the bytes read from the current source.</param>
+ <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the current stream.</param>
+ <param name="count">The maximum number of bytes to be read from the current stream.</param>
+ <returns>
+ The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.
+ </returns>
+ <exception cref="T:System.ArgumentException">The sum of offset and count is larger than the buffer length. </exception>
+ <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+ <exception cref="T:System.NotSupportedException">The base stream does not support reading. </exception>
+ <exception cref="T:System.ArgumentNullException">buffer is null. </exception>
+ <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+ <exception cref="T:System.ArgumentOutOfRangeException">offset or count is negative. </exception>
+</member>
+<member name="M:Aricie.IO.ThrottledStream.Seek(System.Int64,System.IO.SeekOrigin)">
+ <summary>
+ Sets the position within the current stream.
+ </summary>
+ <param name="offset">A byte offset relative to the origin parameter.</param>
+ <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin"></see> indicating the reference point used to obtain the new position.</param>
+ <returns>
+ The new position within the current stream.
+ </returns>
+ <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+ <exception cref="T:System.NotSupportedException">The base stream does not support seeking, such as if the stream is constructed from a pipe or console output. </exception>
+ <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+</member>
+<member name="M:Aricie.IO.ThrottledStream.SetLength(System.Int64)">
+ <summary>
+ Sets the length of the current stream.
+ </summary>
+ <param name="value">The desired length of the current stream in bytes.</param>
+ <exception cref="T:System.NotSupportedException">The base stream does not support both writing and seeking, such as if the stream is constructed from a pipe or console output. </exception>
+ <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+ <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+</member>
+<member name="M:Aricie.IO.ThrottledStream.Write(System.Byte[],System.Int32,System.Int32)">
+ <summary>
+ Writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
+ </summary>
+ <param name="buffer">An array of bytes. This method copies count bytes from buffer to the current stream.</param>
+ <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream.</param>
+ <param name="count">The number of bytes to be written to the current stream.</param>
+ <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+ <exception cref="T:System.NotSupportedException">The base stream does not support writing. </exception>
+ <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
+ <exception cref="T:System.ArgumentNullException">buffer is null. </exception>
+ <exception cref="T:System.ArgumentException">The sum of offset and count is greater than the buffer length. </exception>
+ <exception cref="T:System.ArgumentOutOfRangeException">offset or count is negative. </exception>
+</member>
+<member name="M:Aricie.IO.ThrottledStream.ToString">
+ <summary>
+ Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+ </summary>
+ <returns>
+ A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+ </returns>
+</member>
+<member name="M:Aricie.IO.ThrottledStream.Throttle(System.Int64)">
+ <summary>
+ Throttles for the specified buffer size in bytes.
+ </summary>
+ <param name="bufferSizeInBytes">The buffer size in bytes.</param>
+</member>
+<member name="M:Aricie.IO.ThrottledStream.Reset">
+ <summary>
+ Will reset the bytecount to 0 and reset the start time to the current time.
+ </summary>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.ReadSecureStringToBytes(System.Security.SecureString,System.Text.Encoding)">
+ <summary>
+ Retrieves, (and then zero's,) a character array from the SecureString.
+ Then optionally URL encodes the characters and returns an encoded byte array.
+ Make sure to zero out the byte array when you're done with it.
+ </summary>
+ <param name="secure">The SecureString to be retrieved.</param>
+ <param name="encodingFormat">The encoding format used to retrieve the byte array. The default is UTF-8.</param>
+ <returns></returns>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.CSPCreateNewKey(System.String,Aricie.Security.Cryptography.RsaKeySize,System.Boolean,System.Boolean)">
+ <summary>
+ Creates a new key/pair in the RSA key container at the machine level with the specified key size.
+ </summary>
+ <param name="keyContainerName">The name of the key to create.</param>
+ <param name="keySize">The size of the key to create.</param>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.CSPExportPublicKeyToXML(System.String)">
+ <summary>
+ Exports the key/pair specified.
+ </summary>
+ <param name="keyContainerName">The key container name to export the public key from.</param>
+ <returns>Returns the public key for the specified key container name.</returns>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.CSPExportPublicAndPrivateKeyToXML(System.String)">
+ <summary>
+ Export Public and Private Key to XML
+ </summary>
+ <param name="keyContainerName">The key container to export.</param>
+ <returns>Returns the xml which can be shared between PCs. ** Warning ** It is best to keep the private key secure and never expose this!</returns>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.CSPImportFromXml(System.String,Aricie.Security.Cryptography.RsaKeySize,System.String,System.Boolean)">
+ <summary>
+ On another computer this can be used to create the key/pair used to decrypt information. Note this will not allow you
+ to "encrypt" unless you are importing the full data. It will allow the target PC to decrypt any data encrypted by the original
+ generator of the key.
+ </summary>
+ <param name="keyContainerName">The key container name to inject this key into.</param>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.CSPEncrypt(System.Byte[],System.String,Aricie.Security.Cryptography.AsymmetricEncryptionType)">
+ <summary>
+ Encrypted the specified data.
+ </summary>
+ <param name="objBytes">The bytes to encrypt</param>
+ <param name="keyContainerName">The key name to use</param>
+ <returns>Returns the encrypted bytes.</returns>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.CSPDecrypt(System.Byte[],System.String,Aricie.Security.Cryptography.AsymmetricEncryptionType)">
+ <summary>
+ Decrypts the bytes specified.
+ </summary>
+ <param name="objBytes">The bytes to decrypt</param>
+ <param name="keyContainerName">The key name to use</param>
+ <returns>Returns the decrypted bytes.</returns>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.CSPEncryptString(System.String,System.String,Aricie.Security.Cryptography.AsymmetricEncryptionType)">
+ <summary>
+ Encryptes a string using the supplied key. Encoding is done using RSA encryption.
+ </summary>
+ <param name="data">String that must be encrypted.</param>
+ <param name="keyContainerName">Encryptionkey.</param>
+ <returns>A string representing a byte array separated by a minus sign.</returns>
+ <exception cref="T:System.ArgumentException">Occurs when stringToEncrypt or key is null or empty.</exception>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.CSPDecryptString(System.String,System.String,Aricie.Security.Cryptography.AsymmetricEncryptionType)">
+ <summary>
+ Decrypts a string using the supplied key. Decoding is done using RSA encryption.
+ </summary>
+ <param name="data">String that must be decrypted.</param>
+ <param name="keyContainerName">Decryptionkey.</param>
+ <returns>The decrypted string or null if decryption failed.</returns>
+ <exception cref="T:System.ArgumentException">Occurs when stringToDecrypt or key is null or empty.</exception>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.SignXml(System.Xml.XmlDocument,System.Security.Cryptography.AsymmetricAlgorithm,System.String[])">
+ <summary>
+ SIGN AN XML DOCUMENT USING THE PRIVATE KEY
+ </summary>
+ <param name="Doc">XML DOCUMENT TO BE SHOULD SIGNED</param>
+ <param name="PrivateKey">PRIVATE RSA KEY USED TO SIGN XML</param>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.VerifyXml(System.Xml.XmlDocument,System.Security.Cryptography.AsymmetricAlgorithm)">
+ <summary>
+ VERIFY A SIGNED XML DOCUMENT
+ </summary>
+ <param name="Doc">SIGNED XML DOCUMENT</param>
+ <param name="PublicKey">PUBLIC KEY TO VERIFY SIGNATURE AGAINST</param>
+ <returns></returns>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.EncryptXml(System.Xml.XmlDocument,System.String,System.String,System.Security.Cryptography.RSA,System.String)">
+ <summary>
+ Encrypts a Xml Document
+ </summary>
+ <remarks>Example of use: 
+ Encrypt(xmlDoc, "creditcard", "EncryptedElement1", rsaKey, "rsaKey");
+ </remarks>
+</member>
+<member name="M:Aricie.Security.Cryptography.CryptoHelper.DecryptXml(System.Xml.XmlDocument,System.Object,System.String)">
+ <summary>
+ Decrypts a Xml Document
+ </summary>
+ <remarks>Example of use: 
+ Decrypt(xmlDoc, rsaKey, "rsaKey");
+ </remarks>
+</member>
+<member name="T:Aricie.Security.SecurityExtensions">
+ <summary>
+ Provides extension methods that deal with
+ string encryption/decryption and
+ <see cref="T:System.Security.SecureString"/> encapsulation.
+ </summary>
+</member>
+<member name="F:Aricie.Security.SecurityExtensions.Scope">
+ <summary>
+ Specifies the data protection scope of the DPAPI.
+ </summary>
+</member>
+<member name="M:Aricie.Security.SecurityExtensions.Encrypt(System.String,Aricie.Security.ProtectedMode)">
+ <summary>
+ Encrypts a given password and returns the encrypted data
+ as a base64 string.
+ </summary>
+ <param name="plainText">An unencrypted string that needs
+ to be secured.</param>
+ <returns>A base64 encoded string that represents the encrypted
+ binary data.
+ </returns>
+ <remarks>This solution is not really secure as we are
+ keeping strings in memory. If runtime protection is essential,
+ <see cref="T:System.Security.SecureString"/> should be used.</remarks>
+ <exception cref="T:System.ArgumentNullException">If <paramref name="plainText"/>
+ is a null reference.</exception>
+</member>
+<member name="M:Aricie.Security.SecurityExtensions.Decrypt(System.String,Aricie.Security.ProtectedMode)">
+ <summary>
+ Decrypts a given string.
+ </summary>
+ <param name="cipher">A base64 encoded string that was created
+ through the "CryptoHelper.Encrypt(string,ProtectedMode)" or
+ "Encrypt(SecureString)" extension methods.</param>
+ <returns>The decrypted string.</returns>
+ <remarks>Keep in mind that the decrypted string remains in memory
+ and makes your application vulnerable per se. If runtime protection
+ is essential, <see cref="T:System.Security.SecureString"/> should be used.</remarks>
+ <exception cref="T:System.ArgumentNullException">If <paramref name="cipher"/>
+ is a null reference.</exception>
+</member>
+<member name="M:Aricie.Security.SecurityExtensions.Encrypt(System.Security.SecureString,Aricie.Security.ProtectedMode)">
+ <summary>
+ Encrypts the contents of a secure string.
+ </summary>
+ <param name="value">An unencrypted string that needs
+ to be secured.</param>
+ <returns>A base64 encoded string that represents the encrypted
+ binary data.
+ </returns>
+ <exception cref="T:System.ArgumentNullException">If <paramref name="value"/>
+ is a null reference.</exception>
+</member>
+<member name="M:Aricie.Security.SecurityExtensions.DecryptSecure(System.String,Aricie.Security.ProtectedMode)">
+ <summary>
+ Decrypts a base64 encrypted string and returns the decrpyted data
+ wrapped into a <see cref="T:System.Security.SecureString"/> instance.
+ </summary>
+ <param name="cipher">A base64 encoded string that was created
+ through the Encrypt(string) or
+ "Encrypt(SecureString)" extension methods.</param>
+ <returns>The decrypted string, wrapped into a
+ <see cref="T:System.Security.SecureString"/> instance.</returns>
+ <exception cref="T:System.ArgumentNullException">If <paramref name="cipher"/>
+ is a null reference.</exception>
+</member>
+<member name="M:Aricie.Security.SecurityExtensions.ToSecureString(System.Collections.Generic.IEnumerable{System.Char},System.Boolean)">
+ <summary>
+ Wraps a managed string into a <see cref="T:System.Security.SecureString"/> 
+ instance.
+ </summary>
+ <param name="value">A string or char sequence that 
+ should be encapsulated.</param>
+ <returns>A <see cref="T:System.Security.SecureString"/> that encapsulates the
+ submitted value.</returns>
+ <exception cref="T:System.ArgumentNullException">If <paramref name="value"/>
+ is a null reference.</exception>
+</member>
+<member name="M:Aricie.Security.SecurityExtensions.UnwrapToString(System.Security.SecureString)">
+ <summary>
+ Unwraps the contents of a secured string and
+ returns the contained value.
+ </summary>
+ <param name="value"></param>
+ <returns></returns>
+ <remarks>Be aware that the unwrapped managed string can be
+ extracted from memory.</remarks>
+ <exception cref="T:System.ArgumentNullException">If <paramref name="value"/>
+ is a null reference.</exception>
+</member>
+<member name="M:Aricie.Security.SecurityExtensions.IsNullOrEmpty(System.Security.SecureString)">
+ <summary>
+ Checks whether a <see cref="T:System.Security.SecureString"/> is either
+ null or has a <see cref="P:System.Security.SecureString.Length"/> of 0.
+ </summary>
+ <param name="value">The secure string to be inspected.</param>
+ <returns>True if the string is either null or empty.</returns>
+</member>
+<member name="M:Aricie.Security.SecurityExtensions.Matches(System.Security.SecureString,System.Security.SecureString)">
+ <summary>
+ Performs bytewise comparison of two secure strings.
+ </summary>
+ <param name="value"></param>
+ <param name="other"></param>
+ <returns>True if the strings are equal.</returns>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.#ctor(Aricie.Security.SerializableSecureString,System.Boolean)">
+ <summary>
+     Initialize new instance 
+ </summary>
+ <param name="instance"></param>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.#ctor(System.Security.Cryptography.X509Certificates.X509Certificate2,System.Security.Cryptography.X509Certificates.X509Store)">
+ <summary>
+     Externally supplied certificate constructor
+     This is likely the production constructor of choice
+     Certificate is installed in specified store if it is not already there
+ </summary>
+ <param name="cert"></param>
+ <param name="store"></param>
+</member>
+<member name="F:Aricie.Security.SerializableSecureString._autoGenerated">
+ <summary>
+     Set true by testing constructor, this causes the IDispose implementation
+     to purge the autogenerated constructor and its key from the machine
+ </summary>
+</member>
+<member name="F:Aricie.Security.SerializableSecureString.Content">
+ <summary>
+     The wrappered SecureString
+ </summary>
+</member>
+<member name="P:Aricie.Security.SerializableSecureString.Value">
+ <summary>
+     Moves Content into and out of serialization streams
+ </summary>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.LoadCertificateContext(System.Xml.XmlDocument)">
+ <summary>
+ Fill in the remainder of the serialization schema
+ </summary>
+ <param name="doc">The outgoing serialization document</param>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.UnloadCertificateContext(System.Xml.XmlDocument)">
+ <summary>
+ Repopulate class members from the incoming document
+ </summary>
+ <param name="doc">the incoming serialization document</param>
+ <returns>ReadOnly condition for new Content</returns>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.Initialize(System.String)">
+ <summary>
+     Clear and load initial data into the SecureString
+ </summary>
+ <param name="clearText"></param>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.Append(System.String)">
+ <summary>
+     Append to current SecureString content
+     Throws ReadOnlyContentException if SecureString has been locked
+ </summary>
+ <param name="clearText">text to append</param>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.Extract">
+ <summary>
+     Retrieve the data currently within the SecureString
+     Caller has the responsibility for keeping this data hopefully
+     in a GC0 collection usage.
+ </summary>
+ <returns>ClearText from SecureString</returns>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.MakeReadOnly">
+ <summary>
+     Seal the SecureString from further modification
+ </summary>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.IsReadOnly">
+ <summary>
+     Check read only state of SecureString
+ </summary>
+ <returns>false if data can be added</returns>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.CloneData">
+ <summary>
+     Return a copy of the internal SecureString
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Aricie.Security.SerializableSecureString.Dispose">
+ <summary>
+     Used for housekeeping the autogenerated certificates in test runs
+ </summary>
+</member>
+<member name="T:Aricie.Cryptography.SAMLAction">
+ <summary>
+ SAML Actions
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.SAMLAction.SAMLRequest">
+ <summary>
+ Request
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.SAMLAction.SAMLResponse">
+ <summary>
+ Response
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.Version">
+ <summary>
+ SAML Version
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.ASSERTION">
+ <summary>
+ The XML namespace of the SAML 2.0 assertion schema.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.PROTOCOL">
+ <summary>
+ The XML namespace of the SAML 2.0 protocol schema
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.METADATA">
+ <summary>
+ The XML namespace of the SAML 2.0 metadata schema
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.SAML_NAMESPACES">
+ <summary>
+ All the namespaces defined and reserved by the SAML 2.0 standard
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.XMLDSIG">
+ <summary>
+ The XML namespace of XmlDSig
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.XENC">
+ <summary>
+ The XML namespace of XmlEnc
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.DEFAULTNAMEIDFORMAT">
+ <summary>
+ The default value of the Format property for a NameID element
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.METADATA_MIMETYPE">
+ <summary>
+ The mime type that must be used when publishing a metadata document.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.DKSAML20_CLAIMTYPE_PREFIX">
+ <summary>
+ A mandatory prefix for translating arbitrary saml2.0 claim names to saml1.1 attributes
+ </summary>
+</member>
+<member name="T:Aricie.Cryptography.Saml20Constants.NameIdentifierFormats">
+ <summary>
+ Formats of nameidentifiers
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.NameIdentifierFormats.Unspecified">
+ <summary>
+ urn for Unspecified name identifier format
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.NameIdentifierFormats.Email">
+ <summary>
+ urn for Email name identifier format
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.NameIdentifierFormats.X509SubjectName">
+ <summary>
+ urn for X509SubjectName name identifier format
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.NameIdentifierFormats.Windows">
+ <summary>
+ urn for Windows name identifier format
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.NameIdentifierFormats.Kerberos">
+ <summary>
+ urn for Kerberos name identifier format
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.NameIdentifierFormats.Entity">
+ <summary>
+ urn for Entity name identifier format
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.NameIdentifierFormats.Persistent">
+ <summary>
+ urn for Persistent name identifier format
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.NameIdentifierFormats.Transient">
+ <summary>
+ urn for Transient name identifier format
+ </summary>
+</member>
+<member name="T:Aricie.Cryptography.Saml20Constants.ProtocolBindings">
+ <summary>
+ Protocol bindings
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.ProtocolBindings.HTTP_Redirect">
+ <summary>
+ HTTP Redirect protocol binding
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.ProtocolBindings.HTTP_Post">
+ <summary>
+ HTTP Post protocol binding
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.ProtocolBindings.HTTP_Artifact">
+ <summary>
+ HTTP Artifact protocol binding
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.ProtocolBindings.HTTP_SOAP">
+ <summary>
+ HTTP SOAP  protocol binding
+ </summary>
+</member>
+<member name="T:Aricie.Cryptography.Saml20Constants.SubjectConfirmationMethods">
+ <summary>
+ Subject confirmation methods
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.SubjectConfirmationMethods.HolderOfKey">
+ <summary>
+ Holder of key confirmation method
+ </summary>
+</member>
+<member name="T:Aricie.Cryptography.Saml20Constants.Reasons">
+ <summary>
+ Logout reasons
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.Reasons.User">
+ <summary>
+ Specifies that the message is being sent because the principal wishes to terminate the indicated session.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.Reasons.Admin">
+ <summary>
+ Specifies that the message is being sent because an administrator wishes to terminate the indicated
+ session for that principal.
+ </summary>
+</member>
+<member name="T:Aricie.Cryptography.Saml20Constants.StatusCodes">
+ <summary>
+ Status codes
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.Success">
+ <summary>
+ The request succeeded.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.Requester">
+ <summary>
+ The request could not be performed due to an error on the part of the requester.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.Responder">
+ <summary>
+ The request could not be performed due to an error on the part of the SAML responder or SAML authority.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.VersionMismatch">
+ <summary>
+ The SAML responder could not process the request because the version of the request message was incorrect.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.AuthnFailed">
+ <summary>
+ The responding provider was unable to successfully authenticate the principal.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.InvalidAttrNameOrValue">
+ <summary>
+ Unexpected or invalid content was encountered within a &lt;saml:Attribute&gt; or &lt;saml:AttributeValue&gt; element.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.InvalidNameIdPolicy">
+ <summary>
+ The responding provider cannot or will not support the requested name identifier policy.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.NoAuthnContext">
+ <summary>
+ The specified authentication context requirements cannot be met by the responder.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.NoAvailableIDP">
+ <summary>
+ Used by an intermediary to indicate that none of the supported identity provider &lt;Loc&gt; elements in an
+ &lt;IDPList&gt; can be resolved or that none of the supported identity providers are available.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.NoPassive">
+ <summary>
+ Indicates the responding provider cannot authenticate the principal passively, as has been requested.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.NoSupportedIDP">
+ <summary>
+ Used by an intermediary to indicate that none of the identity providers in an &lt;IDPList&gt; are
+ supported by the intermediary.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.PartialLogout">
+ <summary>
+ Used by a session authority to indicate to a session participant that it was not able to propagate logout
+ to all other session participants.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.ProxyCountExceeded">
+ <summary>
+ Indicates that a responding provider cannot authenticate the principal directly and is not permitted to
+ proxy the request further.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.RequestDenied">
+ <summary>
+ The SAML responder or SAML authority is able to process the request but has chosen not to respond.
+ This status code MAY be used when there is concern about the security context of the request
+ message or the sequence of request messages received from a particular requester.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.RequestUnsupported">
+ <summary>
+ The SAML responder or SAML authority does not support the request.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.RequestVersionDeprecated">
+ <summary>
+ The SAML responder cannot process any requests with the protocol version specified in the request.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.RequestVersionTooHigh">
+ <summary>
+ The SAML responder cannot process the request because the protocol version specified in the
+ request message is a major upgrade from the highest protocol version supported by the responder.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.RequestVersionTooLow">
+ <summary>
+ The SAML responder cannot process the request because the protocol version specified in the
+ request message is too low.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.ResourceNotRecognized">
+ <summary>
+ The resource value provided in the request message is invalid or unrecognized.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.TooManyResponses">
+ <summary>
+ The response message would contain more elements than the SAML responder is able to return.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.UnknownAttrProfile">
+ <summary>
+ An entity that has no knowledge of a particular attribute profile has been presented with an attribute
+ drawn from that profile.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.UnknownPrincipal">
+ <summary>
+ The responding provider does not recognize the principal specified or implied by the request.
+ </summary>
+</member>
+<member name="F:Aricie.Cryptography.Saml20Constants.StatusCodes.UnsupportedBinding">
+ <summary>
+ The SAML responder cannot properly fulfill the request using the protocol binding specified in the
+ request.
+ </summary>
+</member>
+<member name="T:Aricie.Providers.ConverterProviderBase">
+ <summary>
+ Base class for a init based implementation of IConverterProvider
+ </summary>
+</member>
+<member name="T:Aricie.Providers.DefaultServiceProvider">
+ <summary>
+ Default System provider concrete implementation with minimal service support.
+ </summary>
+ <remarks>The caching set is implemented as a local singleton dictionary</remarks>
+</member>
+<member name="T:Aricie.Providers.IConverterProvider">
+ <summary>
+ Interface to provide a series of conversion capabilities
+ </summary>
+</member>
+<member name="T:Aricie.Providers.SystemServiceProvider">
+ <summary>
+ System provider that provides infrastructure services
+ </summary>
+</member>
+<member name="M:Aricie.Services.CacheHelper.SetCacheDependant``1(System.Object,System.String,System.String[])">
+ <summary>
+ 
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="obj"></param>
+ <param name="dependency"></param>
+ <param name="args"></param>
+ <remarks> YSDF: cette fonction était commentée je l'ai decommentée
+ </remarks>
+ 
+</member>
+<member name="T:Aricie.Services.ValidationCallBackInfo">
+ <summary>
+ Stamp class for callback monitoring
+ </summary>
+</member>
+<member name="T:Aricie.Services.FileHelper">
+ <summary>
+ Helper class for file operations
+ </summary>
+</member>
+<member name="M:Aricie.Services.FileHelper.ReadFileText(System.String)">
+ <summary>
+ Read Text File using file Encoding
+ </summary>
+ <param name="filePath"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.Services.FileHelper.GetFileEncoding(System.String)">
+ <summary>
+ Return File Encoding (UTF8, ANSI, etc)
+ </summary>
+ <param name="filePath"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.Services.FileHelper.DownloadFile(System.String,System.Web.HttpResponse@)">
+ <summary>
+ Propose to download file to the user 
+ </summary>
+ <param name="filePath">absolute path of file to download</param>
+ <param name="response">http response to write the file to</param>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.Services.FileHelper.DownloadFile(System.String,System.Web.HttpResponse@,System.Web.HttpServerUtility)">
+ <summary>
+ Propose to download file to the user 
+ </summary>
+ <param name="filePath">absolute path of file to download</param>
+ <param name="response">http response to write the file to</param>
+ <param name="server">http server to control the timeout if needed</param>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.Services.ObjectExtensions">
+ <summary>
+ A Utility class used to merge the properties of
+ heterogenious objects
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.MergeTypes(System.Object,System.Object)">
+ <summary>
+ Merge two different object instances into a single
+ object which is a super-set
+ of the properties of both objects
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.CreateType(System.String,System.ComponentModel.PropertyDescriptor[])">
+ <summary>
+ Create a new Type definition from the list
+ of PropertyDescriptors
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.CreateInstance(System.String,System.Object,System.Object)">
+ <summary>
+ Instantiates an instance of an existing Type from cache
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.GetProperties(System.Object,System.Object)">
+ <summary>
+ Merge PropertyDescriptors for both objects
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.GetTypes(System.ComponentModel.PropertyDescriptor[])">
+ <summary>
+ Get the type of each property
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.MergeValues(System.Object,System.Object)">
+ <summary>
+ Merge the values of the two types into an object array
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.InitializeAssembly">
+ <summary>
+ Initialize static objects
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.CreateTypeBuilder(System.String)">
+ <summary>
+ Create a type builder with the specified name
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.BuildCtor(System.Reflection.Emit.TypeBuilder,System.Reflection.Emit.FieldBuilder[],System.Type[])">
+ <summary>
+ Define/emit the ctor and ctor body
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.BuildFields(System.Reflection.Emit.TypeBuilder,System.ComponentModel.PropertyDescriptor[])">
+ <summary>
+ Define fields based on the list of PropertyDescriptors
+ </summary>
+</member>
+<member name="M:Aricie.Services.ObjectExtensions.BuildProperties(System.Reflection.Emit.TypeBuilder,System.Reflection.Emit.FieldBuilder[])">
+ <summary>
+ Build a list of Properties to match the list of private fields
+ </summary>
+</member>
+<member name="T:Aricie.Services.ReflectionHelper">
+ <summary>
+ Global Helper with many Reflection related methods.
+ </summary>
+</member>
+<member name="M:Aricie.Services.ReflectionHelper.GetProperty(System.Type,System.String,System.Object)">
+ <summary>
+ Renvoie la propriété d'un objet
+ </summary>
+ <param name="t">Le type de l'objet sur lequel on travaille</param>
+ <param name="propertyName">Nom de la propriété</param>
+ <param name="target">Cible de l'accès à la propriété</param>
+ <returns>L'objet retourné par l'accès à la propriété de l'objet cible</returns>
+ <remarks>Straight rip de DNN pour besoin d'abstraction Jean-Sylvain</remarks>
+</member>
+<member name="M:Aricie.Services.ReflectionHelper.GetProperty(System.Object,System.String)">
+ <summary>
+ Renvoie la propriété d'un objet sans donner son type 
+ </summary>
+ <param name="target">Objet dont on veut récupérer la propriété</param>
+ <param name="propertyName">Nom de la propriété</param>
+ <returns>Valeur de la propriété pour l'objet cible</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.Services.ReflectionHelper.GetProperty``1(System.Object,System.String)">
+ <summary>
+  Renvoie la propriété typée d'un objet sans donner son type 
+ </summary>
+ <param name="target">Objet dont on veut récupérer la propriété</param>
+ <param name="propertyName">Nom de la propriété</param>
+ <returns>Valeur de la propriété castée pour l'objet cible</returns>
+ <remarks>Une exception est lancée s'il y la propriété n'est pas du bon type</remarks>
+</member>
+<member name="M:Aricie.Services.ReflectionHelper.GetMemberSignature(System.Reflection.MemberInfo,System.Boolean)">
+ <summary>
+ Return the member declaration as a string.
+ </summary>
+ <param name="member">The Member</param>
+ <returns>Member signature</returns>
+</member>
+<member name="M:Aricie.Services.ReflectionHelper.GetEventSignature(System.Reflection.EventInfo,System.Boolean)">
+ <summary>
+ Return the Event declaration as a string.
+ </summary>
+ <param name="objEvent">The Event</param>
+ <returns>Event signature</returns>
+</member>
+<member name="M:Aricie.Services.ReflectionHelper.GetPropertySignature(System.Reflection.PropertyInfo,System.Boolean)">
+ <summary>
+ Return the Property signature as a string.
+ </summary>
+ <param name="prop">The Property</param>
+ <param name="callable">Return as an callable string(public void a(string b) would return a(b))</param>
+ <returns>Property signature</returns>
+</member>
+<member name="M:Aricie.Services.ReflectionHelper.GetSignature(System.Reflection.MethodBase,System.Boolean)">
+ <summary>
+ Return the method signature as a string.
+ </summary>
+ <param name="method">The Method</param>
+ <param name="callable">Return as an callable string(public void a(string b) would return a(b))</param>
+ <returns>Method signature</returns>
+</member>
+<member name="M:Aricie.Services.ReflectionHelper.IsMainObjectSerializable(System.Object)">
+ <summary>
+ Permet de vérifier si la chaine d'objets dont descend l'objet passé en paramètre est sérialisable
+ </summary>
+ <param name="obj"></param>
+ <returns>Booléen indiquant si l'objet est sérialisable</returns>
+ <remarks>Mis en place pour contourner le problème sur les objets héritants de ContentItem qui n'est plus sérialisable depuis DNN 5.6</remarks>
+</member>
+<member name="M:Aricie.Services.ReflectionHelper.GetSerializer``1">
+ <summary>
+ Create a type specific XmlSerializer.
+ </summary>
+ <typeparam name="T"> the type to build an XmlSerializer for</typeparam>
+ <returns>the XmlSerializer specific to T</returns>
+ <remarks>Si le type est un générics, les types parametres sont ajoutés en extra type</remarks>
+</member>
+<member name="M:Aricie.Services.ReflectionHelper.AddSubtypes(System.Xml.XmlWriter,System.Type)">
+ <summary>
+ that method is a (dirty?) hack to minimize the number of xmlserializers that have to be generated, specifically for the serializablelist class.
+ Since a global list of subtypes is maintained, it is included once for each generic type argument to create a complete serializer once at deserialization time.
+ The method works only if the xmlwriter was created by the method below. 
+ </summary>
+ <returns>true if the subtypes have not been included yet, false otherwise</returns>
+</member>
+<member name="T:Aricie.Text.EncodingHelper">
+ <summary>
+ Helper to retrieve and encoding based on the dedicated enumeration
+ </summary>
+</member>
+<member name="T:Aricie.Text.SimpleEncoding">
+ <summary>
+ Enumeration wrapped around common encodings
+ </summary>
+</member>
+<member name="T:Aricie.STimeSpan">
+ <summary>
+ Serializable and Display friendly class for a Timespan value
+ </summary>
+</member>
+<member name="M:Aricie.TypeHandler.StrToInt(System.String,System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="str"></param>
+ <param name="DefaultValue">Valeur par défaut à retourner (0 si non spécifié)</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Aricie.Web.UI.Controls.Pager">
+ <summary>
+ Pager WebControl with multiple capabilities such as thesaurus type pages.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._itemCount">
+ <summary>
+ Gets or sets total number of rows.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._currentIndex">
+ <summary>
+ Gets or sets current page index.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._pageSize">
+ <summary>
+ Gets or sets page size (results per page).
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._pageCount">
+ <summary>
+ Gets or sets the total number of pages.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._showFirstLast">
+ <summary>
+ Gets or sets the value that indicates whether the Next and Last clause is rendered as UI on page.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._enableSSC">
+ <summary>
+ Gets or sets the value that indicates whether the SmartShortcuts are rendered as UI on page.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._sscRatio">
+ <summary>
+ Gets or sets the value that will be used to calculate SmartShortcuts.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._maxSmartShortCutCount">
+ <summary>
+ Gets or sets maximum number of SmartShortcuts that can be rendered.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._sscThreshold">
+ <summary>
+ Gets or sets a value that to have the SmartShortcuts rendered, the page count must be greater that this value.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._firstCompactedPageCount">
+ <summary>
+ Gets or sets the number of rendered page numbers in compact mode.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._notCompactedPageCount">
+ <summary>
+ Gets or sets the number of rendered page numbers in standard mode.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._altEnabled">
+ <summary>
+ Gets or sets a value that indicates whether Pager renders Alt tooltip.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._infoCellVisible">
+ <summary>
+ Gets or sets a value that indicates whether Pager information cell is rendered.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._generateGoToSection">
+ <summary>
+ Gets or sets a value that indicats whether GoTo section is rendered.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._generateHiddenHyperlinks">
+ <summary>
+ Gets or sets a value that indicates whether hidden hyperlinks should render.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._queryStringParameterName">
+ <summary>
+ Gets or sets the hidden hyperlinks' QueryString parameter name.
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._GO">
+ <summary>
+ Gets or sets the text caption displayed as "go" in the pager control.
+ Default value: go
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._OF">
+ <summary>
+ Gets or sets the text caption displayed as "of" in the pager control.
+ Default value: of
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._FROM">
+ <summary>
+ Gets or sets the text caption displayed as "from" in the pager control.
+ Default value: From
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._PAGE">
+ <summary>
+ Gets or sets the text caption displayed as "page" in the pager control.
+ Default value: Page
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._TO">
+ <summary>
+ Gets or sets the text caption displayed as "to" in the pager control.
+ Default value: to
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._SHOWING_RESULT">
+ <summary>
+ Gets or sets the text caption displayed as "Showing Results" in the pager control.
+ Default value: Showing Results
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._SHOW_RESULT">
+ <summary>
+ Gets or sets the text caption displayed as "Show Result" in the pager control.
+ Default value: Show Result
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._BACK_TO_FIRST">
+ <summary>
+ Gets or sets the text caption displayed as "to First Page" in the pager control.
+ Default value: to First Page
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._GO_TO_LAST">
+ <summary>
+ Gets or sets the text caption displayed as "to Last Page" in the pager control.
+ Default value: to Last Page
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._BACK_TO_PAGE">
+ <summary>
+ Gets or sets the text caption displayed as "Back to Page" in the pager control.
+ Default value: Back to Page
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._NEXT_TO_PAGE">
+ <summary>
+ Gets or sets the text caption displayed as "Next to Page" in the pager control.
+ Default value: Next to Page
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._LAST">
+ <summary>
+ Gets or sets the text caption displayed as "Last Page" in the pager control.
+ Default value: &gt;&gt;
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._FIRST">
+ <summary>
+ Gets or sets the text caption displayed as "First Page" in the pager control.
+ Default value: &lt;&lt;
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._previous">
+ <summary>
+ Gets or sets the text caption displayed as "Previous Page" in the pager control.
+ Default value: &lt;
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._next">
+ <summary>
+ Gets or sets the text caption displayed as "Next Page" in the pager control.
+ Default value: &gt;
+ </summary>
+</member>
+<member name="F:Aricie.Web.UI.Controls.Pager._rightToLeft">
+ <summary>
+ Gets or sets a value that indicates whether pager control should render RTL or LTR.
+ </summary>
+</member>
+<member name="T:Aricie.Web.UI.Controls.AdvancedGridView">
+ <summary>
+ Enhanced gridview with advanced grouping capabilities additional creation row.
+ </summary>
+</member>
+<member name="T:Aricie.Web.UI.Controls.GridViewGrouping.GridViewHelper">
+ <summary>
+ Helper class for implementing GridView items grouping
+ </summary>
+</member>
+<member name="M:Aricie.Web.UI.ControlHelper.FindParentControlRecursive(System.Web.UI.Control,System.Type[])">
+ <summary>
+ Find the first of the parent controls matching with the types specified in parameters
+ </summary>
+ <param name="startControl">control to start the search for parent controls</param>
+ <param name="parentTypes">types of the parent controls to find</param>
+ <returns>First Matching Parent, nothing if not found</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.Web.UI.ControlHelper.FindControlRecursive(System.Web.UI.Control,System.String)">
+ <summary>
+ Recherche un controle par son id dans toute l'arborescence enfant de startingControl
+ </summary>
+ <param name="startingControl">Controle parent de l'arborescence</param>
+ <param name="id">Id du controle à chercher</param>
+ <returns>controle trouvé</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Aricie.Web.UI.ControlHelper.FindControlRecursive(System.Web.UI.Control,System.String,System.Boolean)">
+ <summary>
+ Recherche un controle par son id dans toute l'arborescence enfant de startingControl
+ </summary>
+ <param name="startingControl">Controle parent de l'arborescence</param>
+ <param name="id">Id du controle à chercher</param>
+ <returns>controle trouvé</returns>
+ <remarks></remarks>
+</member>
+</members>
+</doc>
