@@ -15,15 +15,15 @@ namespace MyIA.Trading.Converter
     public class TradeConverter
     {
 
-        public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD2.csv.gz";
+        public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD.csv.gz";
 
         public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\daily\btcusd_trade.zip";
 
-        public DateTime StartDate { get; set; } = new DateTime(2014, 12, 1);
+        public DateTime StartDate { get; set; } = new DateTime(2011, 12, 1);
 
-        public DateTime EndDate { get; set; } = new DateTime(2018, 8, 14);
+        public DateTime EndDate { get; set; } = new DateTime(2024, 8, 14);
 
-        public double SkipRatio { get; set; } = 0.2;
+        public double SkipRatio { get; set; } = 00;
 
         public TradingDataType TargetTradingDataType { get; set; } = TradingDataType.Tickbars;
 
