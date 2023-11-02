@@ -11,6 +11,7 @@ L'objectif de cette évaluation est de développer un algorithme de trading en u
    - Une fois les équipes formées, choisissez un nom pour votre équipe, et  inscrivez-le sur le document correspondant à votre classe :
      - [Inscriptions pour le groupe 1](https://docs.google.com/spreadsheets/d/1KBHn4QDCMmkiWtkpTGSLgjkgAjoj4SEB/edit?usp=sharing&ouid=113270325295686005611&rtpof=true&sd=true)
      - [Inscriptions pour le groupe 2](https://docs.google.com/spreadsheets/d/1o1Mh6gHBxKG2i1J4C9u8iXQqAW3cC3vS/edit?usp=sharing&ouid=113270325295686005611&rtpof=true&sd=true)
+     
      Vous utiliserez votre nom d'équipe dans la dénomination des fichiers ou des répertoires que vous ajouterez au dépôt
    - Chaque équipe doit développer un algorithme de trading unique avec Lean. S'inspirer des 500+ exemples fournis par Lean est permis, mais reproduire un exemple existant ne sera pas accepté.
 
