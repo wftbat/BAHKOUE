@@ -30,7 +30,7 @@ namespace QuantConnect.Algorithm.CSharp
     /// <meta name="tag" content="using data" />
     /// <meta name="tag" content="using quantconnect" />
     /// <meta name="tag" content="trading and orders" />
-    public class JsboigeBasicTemplateCryptoAlgorithm : QCAlgorithm, IRegressionAlgorithmDefinition
+    public class JsboigeCryptoAlgorithm : QCAlgorithm, IRegressionAlgorithmDefinition
     {
         private ExponentialMovingAverage _fast;
         private ExponentialMovingAverage _slow;
