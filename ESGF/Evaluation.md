@@ -25,7 +25,7 @@ L'objectif de cette évaluation est de développer un algorithme de trading en u
    - Profitez de cette configuration pour explorer des opportunités d'innovation et d'adaptation.
 
 4. **Source des Données**:
-   - Utilisez le convertisseur fourni pour construire des données de backtesting à partir de dumps de trades de cryptomonnaies provenant de [BitcoinCharts](https://api.bitcoincharts.com/v1/csv/).
+   - Utilisez le convertisseur fourni pour construire des données de backtesting à partir de dumps de trades de cryptomonnaies provenant de [ce répertoire](https://drive.google.com/drive/folders/1oQXXynQ0BaSuiyyZVyXyfzNxyD1Xh73S?usp=sharing).
    - Ces données seront la base principale de vos backtests.
 
 5. **Exigences de Soumission**:
