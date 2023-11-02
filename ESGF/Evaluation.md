@@ -60,13 +60,25 @@ L'objectif de cette évaluation est de développer un algorithme de trading en u
 
 ## Suggestions Avancées
 
-Pour donner à vos projets un avantage distinctif et potentiellement obtenir une meilleure note, envisagez d'explorer les options avancées suivantes fournies par Lean :
+Pour donner à vos projets un avantage distinctif et potentiellement obtenir une meilleure note, envisagez d'explorer les options avancées et approfondies suivantes:
 
-1. **Framework de Haut Niveau de Lean**: Au lieu de passer des ordres explicitement, utilisez le framework de haut niveau de Lean. Cette approche vous permet de définir des objectifs de portefeuille basés sur les Alpha/insights de votre algorithme.
-   
-2. **Lanceur d'Optimisation**: Utilisez le lanceur d'optimisation de Lean pour affiner les hyperparamètres de votre algorithme. Un algorithme bien ajusté peut souvent surpasser ses homologues.
-   
-3. **Apprentissage Automatique**: Intégrez l'apprentissage automatique à votre stratégie. Lean fournit des exemples utilisant des Machines à Vecteurs de Support (SVM) avec Accord.Net. Incorporer l'apprentissage automatique peut donner à votre stratégie de trading une robustesse et une adaptabilité que les algorithmes traditionnels pourraient ne pas avoir.
+1. **Framework de Haut Niveau de Lean**: Plutôt que de passer des ordres explicitement, adoptez le framework de haut niveau de Lean. Cette méthode vous permet de définir des objectifs de portefeuille basés sur les Alpha/insights de votre algorithme.
+
+2. **Gestion du Risque**: Comprenez et intégrez activement des techniques de gestion des risques dans votre stratégie. Examinez des mesures comme le ratio de Sharpe, les drawdowns maximaux, et autres métriques pour évaluer le risque par rapport au rendement.
+
+3. **Optimisation & Prévention de la Sur-Optimisation**: Tout en utilisant le lanceur d'optimisation de Lean pour ajuster les hyperparamètres, soyez conscient du risque de sur-optimisation. Assurez-vous que votre algorithme n'est pas trop bien ajusté aux données historiques.
+
+4. **Adaptabilité & Événements de Marché**: Réfléchissez à la manière dont votre algorithme peut s'adapter aux changements du marché et comment il gérerait de grands événements du marché ou des anomalies.
+
+5. **Apprentissage Automatique**: Envisagez d'intégrer des techniques d'apprentissage automatique. Lean offre des exemples avec des Machines à Vecteurs de Support (SVM) via Accord.Net. Cela peut ajouter une robustesse et une adaptabilité à votre stratégie.
+
+6. **Benchmarking**: Comparez les performances de votre algorithme à un benchmark pertinent pour mettre en évidence ses avantages et ses défis.
+
+7. **Tests hors échantillon**: Séparez vos données en ensembles d'apprentissage et de test pour évaluer les performances de votre algorithme dans des conditions plus proches du monde réel.
+
+8. **Interactions avec l'Ecosystème Lean**: Utilisez les fonctionnalités supplémentaires de Lean, telles que les notifications et la journalisation, pour améliorer la traçabilité et la compréhension de votre algorithme.
+
+9. **Aspects Fondamentaux & Techniques**: Intégrez des données non seulement techniques, mais aussi fondamentales, pour influencer vos décisions de trading. Pensez aux actualités, aux indicateurs macroéconomiques, et à d'autres sources d'information pertinentes.
 
 
 ## Option Alternative
