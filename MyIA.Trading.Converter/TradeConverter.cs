@@ -15,17 +15,17 @@ namespace MyIA.Trading.Converter
     public class TradeConverter
     {
 
-        public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD.csv.gz";
+        public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\coinbaseUSD.csv.gz";
 
-        public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\daily\btcusd_trade.zip";
+        public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD2.csv.gz"; //@"..\..\..\..\Data\crypto\bitstamp\daily\btcusd_trade.zip";
 
-        public DateTime StartDate { get; set; } = new DateTime(2016, 1, 1);
+        public DateTime StartDate { get; set; } = new DateTime(2014, 12, 1);
 
-        public DateTime EndDate { get; set; } = new DateTime(2019, 1, 1);
+        public DateTime EndDate { get; set; } = new DateTime(2018, 8, 14);
 
         public double SkipRatio { get; set; } = 0.2;
 
-        public TradingDataType TargetTradingDataType { get; set; } = TradingDataType.Tickbars;
+        public TradingDataType TargetTradingDataType { get; set; } = TradingDataType.Trades;
 
         public TimeSpan TickbarsPeriod { get; set; } = TimeSpan.FromDays(1);
 
@@ -34,7 +34,7 @@ namespace MyIA.Trading.Converter
 
         public bool RandomPeriodStart { get; set; } = true;
 
-        public int ConversionsNb { get; set; } = 5;
+        public int ConversionsNb { get; set; } = 1;
 
         public string OutputPrefix { get; set; } = "{0}_";
 
@@ -74,7 +74,7 @@ namespace MyIA.Trading.Converter
             {
                 var tickbars = trades.ToTickbars(this.TickbarsPeriod, this.RandomPeriodStart);
                 logger($"converted  {trades.Count} trades to {tickbars.Count} tickbars");
-                if (this.DynamicFilePrefix!="")
+                if (!string.IsNullOrEmpty(this.DynamicFilePrefix))
                 {
                     var interpolationDictionary = new Dictionary<string, object>();
                     interpolationDictionary["tickBar"] = tickbars[0];
@@ -186,6 +186,7 @@ namespace MyIA.Trading.Converter
             var origCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo(sConfig.Culture);
             var strExtension = strOutputPath.GetRawExtensionUpper();
+           
             var newOutputPath = strOutputPath;
             if (!string.IsNullOrEmpty(filePrefix))
             {
@@ -211,6 +212,10 @@ namespace MyIA.Trading.Converter
                         var compressionLessPath = strOutputPath.Substring(0, strOutputPath.Length - Path.GetExtension(strOutputPath).Length);
                         inArchiveFileName = Path.GetFileName(compressionLessPath);
                         strExtension = inArchiveFileName.GetRawExtensionUpper();
+                        if (string.IsNullOrEmpty(strExtension))
+                        {
+                            strExtension = "CSV";
+                        }
                         objExitStream = new MemoryStream();
 
                         //logger($"Decompressed {InputFile}");

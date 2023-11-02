@@ -1,9 +1,15 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Dynamic.Core.CustomTypeProviders;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Web;
 using Utf8Json.Formatters;
 
 namespace MyIA.Trading.Converter
@@ -159,18 +165,25 @@ namespace MyIA.Trading.Converter
         }
 
 
-        private static Regex _InterpolateRegex = new Regex(@"{(.+?)}", RegexOptions.Compiled);
+        private static readonly Regex s_interpolateRegex = new(@"{(\D.+?)}", RegexOptions.Compiled);
 
-        private static Dictionary<string, Delegate> _CachedIntepolationExpressions = new Dictionary<string, Delegate>();
+        private static ConcurrentDictionary<string, Delegate> s_cachedInterpolationLinqExpressions = new();
 
-        public static string Interpolate(this string value, Dictionary<string, Object> context)
+        /// <summary>
+        /// Most advanced interpolation that uses DynamicLinq to parse and compile a lambda expression at runtime.
+        /// </summary>
+        /// <remarks>
+        /// Warning: Please be careful when using this feature as it can be a security risk if the input is not sanitized.
+        /// Note that this is mitigated because templating capabilities only apply to their own level in a hierarchy of nested templates, they won't affect the inner template nor user inputs.
+        /// </remarks>
+        public static string Interpolate(this string value, Dictionary<string, object> context)
         {
-            return _InterpolateRegex.Replace(value,
+            return s_interpolateRegex.Replace(value,
                 match =>
                 {
                     var matchToken = match.Groups[1].Value;
                     var key = $"{value}/{matchToken}";
-                    if (!_CachedIntepolationExpressions.TryGetValue(key, out var tokenDelegate))
+                    if (!s_cachedInterpolationLinqExpressions.TryGetValue(key, out var tokenDelegate))
                     {
                         var parameters = new List<ParameterExpression>(context.Count);
                         foreach (var contextObject in context)
@@ -178,15 +191,69 @@ namespace MyIA.Trading.Converter
                             var p = Expression.Parameter(contextObject.Value.GetType(), contextObject.Key);
                             parameters.Add(p);
                         }
-                        var e = System.Linq.Dynamic.Core.DynamicExpressionParser.ParseLambda(parameters.ToArray(), null, matchToken);
+
+                        ParsingConfig config = new();
+                        config.CustomTypeProvider = new CustomDynamicTypeProvider(context, config.CustomTypeProvider);
+
+                        var e = System.Linq.Dynamic.Core.DynamicExpressionParser.ParseLambda(config, parameters.ToArray(), null, matchToken);
                         tokenDelegate = e.Compile();
-                        _CachedIntepolationExpressions[key] = tokenDelegate;
+                        s_cachedInterpolationLinqExpressions[key] = tokenDelegate;
                     }
+
                     return (tokenDelegate.DynamicInvoke(context.Values.ToArray()) ?? "").ToString();
                 });
         }
 
+
+        private sealed class CustomDynamicTypeProvider : IDynamicLinkCustomTypeProvider
+        {
+            private readonly Dictionary<string, object> _context;
+
+            public CustomDynamicTypeProvider(Dictionary<string, object> context, IDynamicLinkCustomTypeProvider dynamicLinkCustomTypeProvider)
+            {
+                this._context = context;
+                this.DefaultProvider = dynamicLinkCustomTypeProvider;
+            }
+
+            public IDynamicLinkCustomTypeProvider DefaultProvider { get; set; }
+
+            public HashSet<Type> GetCustomTypes()
+            {
+                HashSet<Type> types = this.DefaultProvider.GetCustomTypes();
+                types.Add(typeof(string));
+                types.Add(typeof(Regex));
+                types.Add(typeof(RegexOptions));
+                types.Add(typeof(CultureInfo));
+                types.Add(typeof(HttpUtility));
+                types.Add(typeof(Enumerable));
+                foreach (var contextObject in this._context)
+                {
+                    types.Add(contextObject.Value.GetType());
+                }
+
+                return types;
+            }
+
+            public Dictionary<Type, List<MethodInfo>> GetExtensionMethods()
+            {
+                return this.DefaultProvider.GetExtensionMethods();
+            }
+
+            public Type? ResolveType(string typeName)
+            {
+                return this.DefaultProvider.ResolveType(typeName);
+            }
+
+            public Type? ResolveTypeBySimpleName(string simpleTypeName)
+            {
+                return this.DefaultProvider.ResolveTypeBySimpleName(simpleTypeName);
+            }
+        }
+
+
     }
+
+   
 
 
 }
