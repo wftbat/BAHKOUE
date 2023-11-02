@@ -15,9 +15,9 @@ namespace MyIA.Trading.Converter
     public class TradeConverter
     {
 
-        public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\coinbaseUSD.csv.gz";
+        public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD2.csv.gz";
 
-        public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD2.csv.gz"; //@"..\..\..\..\Data\crypto\bitstamp\daily\btcusd_trade.zip";
+        public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\daily\btcusd_trade.zip";
 
         public DateTime StartDate { get; set; } = new DateTime(2014, 12, 1);
 
@@ -25,14 +25,14 @@ namespace MyIA.Trading.Converter
 
         public double SkipRatio { get; set; } = 0.2;
 
-        public TradingDataType TargetTradingDataType { get; set; } = TradingDataType.Trades;
+        public TradingDataType TargetTradingDataType { get; set; } = TradingDataType.Tickbars;
 
         public TimeSpan TickbarsPeriod { get; set; } = TimeSpan.FromDays(1);
 
         public string DynamicFilePrefix { get; set; }// = "{tickBar.ToStringInvariant(\"yyyyMMdd\")}_";
 
 
-        public bool RandomPeriodStart { get; set; } = true;
+        public bool RandomPeriodStart { get; set; } = false;
 
         public int ConversionsNb { get; set; } = 1;
 
@@ -46,6 +46,7 @@ namespace MyIA.Trading.Converter
             Json = JsonSerializationType.Utf8,
             Xml = XmlSerializationType.XmlSerializer,
             Compression = new CompressionConfig(){ Library = CompressionLibrary.SevenZipExtractor, Level = CompressionLevel.Normal }
+            
         };
 
         public SerializationConfig SerializationConfig { get; set; } = new SerializationConfig()
@@ -55,7 +56,9 @@ namespace MyIA.Trading.Converter
             Csv = CsvSerializationType.FlatFiles,
             Json = JsonSerializationType.Utf8,
             Xml = XmlSerializationType.XmlSerializer,
-            Compression = new CompressionConfig() { Library = CompressionLibrary.SevenZipSharp, Level = CompressionLevel.Fast }
+            Compression = new CompressionConfig() { Library = CompressionLibrary.SevenZipSharp, Level = CompressionLevel.Fast },
+            IncludeHeader = false,
+            DateTimeFormat = "yyyyMMdd HH:mm"
         };
 
         //public async Task Process(Action<string> logger)
@@ -237,7 +240,7 @@ namespace MyIA.Trading.Converter
                             else
                             {
                                 var tickbars = data.Cast<Tickbar>().ToList();
-                                tickbars.SaveCsv(objExitStream, sConfig.Csv);
+                                tickbars.SaveCsv(objExitStream, sConfig);
                                 logger($"Serialized {data.Count} tickbars to csv using {sConfig.Csv}");
                             }
                             break;

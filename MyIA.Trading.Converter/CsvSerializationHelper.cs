@@ -87,12 +87,12 @@ namespace MyIA.Trading.Converter
             }
         }
 
-        public static void SaveCsv(this List<Tickbar> input, Stream exitStream, CsvSerializationType serializationType)
+        public static void SaveCsv(this List<Tickbar> input, Stream exitStream, SerializationConfig serializationConfig)
         {
-            switch (serializationType)
+            switch (serializationConfig.Csv)
             {
                 case CsvSerializationType.FlatFiles:
-                    input.SaveFlatFiles(exitStream);
+                    input.SaveFlatFiles(exitStream, serializationConfig);
                     break;
                 case CsvSerializationType.TinyCsv:
                     throw new NotSupportedException();
@@ -104,7 +104,7 @@ namespace MyIA.Trading.Converter
                     throw new NotSupportedException();
                 //break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(serializationType), serializationType, null);
+                    throw new ArgumentOutOfRangeException(nameof(serializationConfig), serializationConfig, null);
             }
         }
 
@@ -142,7 +142,7 @@ namespace MyIA.Trading.Converter
             var mapper = GetFlatFilesMapperTrade();
 
             using var objReader = new StreamReader(entryStream);
-            var options = new SeparatedValueOptions() { FormatProvider = CultureInfo.InvariantCulture, IsFirstRecordSchema = false };
+            var options = new DelimitedOptions() { FormatProvider = CultureInfo.InvariantCulture, IsFirstRecordSchema = false };
             return mapper.Read(objReader, options).ToList();
         }
 
@@ -159,23 +159,41 @@ namespace MyIA.Trading.Converter
         {
             var mapper = GetFlatFilesMapperTrade();
             using var writer = new StreamWriter(exitStream, leaveOpen:true);
-            var options = new SeparatedValueOptions() { IsFirstRecordSchema = true };
+            var options = new DelimitedOptions() { IsFirstRecordSchema = true };
             mapper.Write(writer, input, options);
         }
        
 
-        private static void SaveFlatFiles(this List<Tickbar> input, Stream exitStream)
+        private static void SaveFlatFiles(this List<Tickbar> input, Stream exitStream, SerializationConfig serializationConfig)
         {
-            var mapper = GetFlatFilesMapperTickbar();
+            var mapper = GetFlatFilesMapperTickbar(serializationConfig);
             using var writer = new StreamWriter(exitStream, leaveOpen: true);
-            var options = new SeparatedValueOptions() { IsFirstRecordSchema = true };
+            DelimitedOptions options;
+            //if (!string.IsNullOrEmpty(serializationConfig.DateTimeFormat))
+            //{
+            //    var customDateFormat = new DateTimeFormatInfo
+            //    {
+            //        ShortDatePattern = serializationConfig.DateTimeFormat,
+            //        LongTimePattern = ""
+            //    };
+            //    options = new DelimitedOptions() { IsFirstRecordSchema = serializationConfig.IncludeHeader, FormatProvider = customDateFormat };
+            //}
+            //else
+            //{
+            //    options = new DelimitedOptions() { IsFirstRecordSchema = serializationConfig.IncludeHeader};
+            //}
+            options = new DelimitedOptions() { IsFirstRecordSchema = serializationConfig.IncludeHeader };
             mapper.Write(writer, input, options);
         }
 
-        private static ISeparatedValueTypeMapper<Tickbar> GetFlatFilesMapperTickbar()
+        private static IDelimitedTypeMapper<Tickbar> GetFlatFilesMapperTickbar(SerializationConfig serializationConfig)
         {
-            var mapper = SeparatedValueTypeMapper.Define<Tickbar>();
-            mapper.Property(c => c.DateTime);
+            var mapper = DelimitedTypeMapper.Define<Tickbar>();
+            var dateTimeProp = mapper.Property(c => c.DateTime);
+            if (!string.IsNullOrEmpty(serializationConfig.DateTimeFormat))
+            {
+                dateTimeProp.OutputFormat(serializationConfig.DateTimeFormat);
+            }
             mapper.Property(c => c.Open);
             mapper.Property(c => c.High);
             mapper.Property(c => c.Low);
@@ -184,9 +202,9 @@ namespace MyIA.Trading.Converter
             return mapper;
         }
 
-        private static ISeparatedValueTypeMapper<Trade> GetFlatFilesMapperTrade()
+        private static IDelimitedTypeMapper<Trade> GetFlatFilesMapperTrade()
         {
-            var mapper = SeparatedValueTypeMapper.Define<Trade>();
+            var mapper = DelimitedTypeMapper.Define<Trade>();
             mapper.Property(c => c.UnixTime);
             mapper.Property(c => c.Price);
             mapper.Property(c => c.Amount);

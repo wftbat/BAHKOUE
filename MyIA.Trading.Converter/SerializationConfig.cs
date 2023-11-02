@@ -1,4 +1,4 @@
-﻿using SevenZip;
+using SevenZip;
 
 namespace MyIA.Trading.Converter
 {
@@ -16,6 +16,11 @@ namespace MyIA.Trading.Converter
         public XmlSerializationType Xml { get; set; }
 
         public CompressionConfig Compression { get; set; }
+
+
+        public bool IncludeHeader { get; set; }
+
+        public string DateTimeFormat { get; set; }
 
     }
 
