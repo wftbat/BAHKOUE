@@ -8,6 +8,12 @@
 
 ----------
 
+## Evaluation ESGF ##
+
+Dans le cadre du cours trading algorithmique, l'évaluation prendra la forme d'un projet de groupe de développement d'un algorithme sous Lean.
+Le sujet est proposé dans le [document suivant](./ESGF/Evaluation.md).
+
+
 ## Introduction ##
 
 Lean Engine is an open-source algorithmic trading engine built for easy strategy research, backtesting and live trading. We integrate with common data providers and brokerages so you can quickly deploy algorithmic trading strategies.
