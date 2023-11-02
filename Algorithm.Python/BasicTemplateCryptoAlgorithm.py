@@ -30,11 +30,11 @@ class BasicTemplateCryptoAlgorithm(QCAlgorithm):
         # Although typically real brokerages as GDAX only support a single account currency,
         # here we add both USD and EUR to demonstrate how to handle non-USD account currencies.
         # Set Strategy Cash (USD)
-        self.SetCash(10000)
+        self.SetCash(20000)
 
         # Set Strategy Cash (EUR)
         # EUR/USD conversion rate will be updated dynamically
-        self.SetCash("EUR", 10000)
+        self.SetCash("EUR", 20000)
 
         # Add some coins as initial holdings
         # When connected to a real brokerage, the amount specified in SetCash
