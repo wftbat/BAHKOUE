@@ -40,23 +40,19 @@ namespace QuantConnect.Algorithm.CSharp
         /// </summary>
         public override void Initialize()
         {
-            SetStartDate(2018, 4, 4); // Set Start Date
-            SetEndDate(2018, 4, 4); // Set End Date
+            SetStartDate(2018, 1, 1); // Set Start Date
+            SetEndDate(2018, 12, 31); // Set End Date
 
             // Although typically real brokerages as GDAX only support a single account currency,
             // here we add both USD and EUR to demonstrate how to handle non-USD account currencies.
             // Set Strategy Cash (USD)
             SetCash(10000);
 
-            // Set Strategy Cash (EUR)
-            // EUR/USD conversion rate will be updated dynamically
-            SetCash("EUR", 10000);
-
+            
             // Add some coins as initial holdings
             // When connected to a real brokerage, the amount specified in SetCash
             // will be replaced with the amount in your actual account.
             SetCash("BTC", 1m);
-            SetCash("ETH", 5m);
 
             SetBrokerageModel(BrokerageName.GDAX, AccountType.Cash);
 
@@ -66,10 +62,8 @@ namespace QuantConnect.Algorithm.CSharp
             // DefaultOrderProperties = new GDAXOrderProperties { PostOnly = true };
 
             // Find more symbols here: http://quantconnect.com/data
-            AddCrypto("BTCUSD");
-            AddCrypto("ETHUSD");
-            AddCrypto("BTCEUR");
-            var symbol = AddCrypto("LTCUSD").Symbol;
+           
+            var symbol = AddCrypto("BTCUSD").Symbol;
 
             // create two moving averages
             _fast = EMA(symbol, 30, Resolution.Minute);
@@ -82,26 +76,13 @@ namespace QuantConnect.Algorithm.CSharp
         /// <param name="data">Slice object keyed by symbol containing the stock data</param>
         public override void OnData(Slice data)
         {
-            if (Portfolio.CashBook["EUR"].ConversionRate == 0
-                || Portfolio.CashBook["BTC"].ConversionRate == 0
-                || Portfolio.CashBook["ETH"].ConversionRate == 0
-                || Portfolio.CashBook["LTC"].ConversionRate == 0)
+            if (Portfolio.CashBook["BTC"].ConversionRate == 0)
             {
-                Log($"EUR conversion rate: {Portfolio.CashBook["EUR"].ConversionRate}");
                 Log($"BTC conversion rate: {Portfolio.CashBook["BTC"].ConversionRate}");
-                Log($"LTC conversion rate: {Portfolio.CashBook["LTC"].ConversionRate}");
-                Log($"ETH conversion rate: {Portfolio.CashBook["ETH"].ConversionRate}");
 
                 throw new Exception("Conversion rate is 0");
             }
-            if (Time.Hour == 1 && Time.Minute == 0)
-            {
-                // Sell all ETH holdings with a limit order at 1% above the current price
-                var limitPrice = Math.Round(Securities["ETHUSD"].Price * 1.01m, 2);
-                var quantity = Portfolio.CashBook["ETH"].Amount;
-                LimitOrder("ETHUSD", -quantity, limitPrice);
-            }
-            else if (Time.Hour == 2 && Time.Minute == 0)
+            if (Time.Hour == 2 && Time.Minute == 0)
             {
                 // Submit a buy limit order for BTC at 5% below the current price
                 var usdTotal = Portfolio.CashBook["USD"].Amount;
@@ -110,70 +91,10 @@ namespace QuantConnect.Algorithm.CSharp
                 var quantity = usdTotal * 0.5m / limitPrice;
                 LimitOrder("BTCUSD", quantity, limitPrice);
             }
-            else if (Time.Hour == 2 && Time.Minute == 1)
-            {
-                // Get current USD available, subtracting amount reserved for buy open orders
-                var usdTotal = Portfolio.CashBook["USD"].Amount;
-                var usdReserved = Transactions.GetOpenOrders(x => x.Direction == OrderDirection.Buy && x.Type == OrderType.Limit)
-                    .Where(x => x.Symbol == "BTCUSD" || x.Symbol == "ETHUSD")
-                    .Sum(x => x.Quantity * ((LimitOrder) x).LimitPrice);
-                var usdAvailable = usdTotal - usdReserved;
-
-                // Submit a marketable buy limit order for ETH at 1% above the current price
-                var limitPrice = Math.Round(Securities["ETHUSD"].Price * 1.01m, 2);
-
-                // use all of our available USD
-                var quantity = usdAvailable / limitPrice;
-
-                // this order will be rejected for insufficient funds
-                LimitOrder("ETHUSD", quantity, limitPrice);
-
-                // use only half of our available USD
-                quantity = usdAvailable * 0.5m / limitPrice;
-                LimitOrder("ETHUSD", quantity, limitPrice);
-            }
             else if (Time.Hour == 11 && Time.Minute == 0)
             {
                 // Liquidate our BTC holdings (including the initial holding)
                 SetHoldings("BTCUSD", 0m);
-            }
-            else if (Time.Hour == 12 && Time.Minute == 0)
-            {
-                // Submit a market buy order for 1 BTC using EUR
-                Buy("BTCEUR", 1m);
-
-                // Submit a sell limit order at 10% above market price
-                var limitPrice = Math.Round(Securities["BTCEUR"].Price * 1.1m, 2);
-                LimitOrder("BTCEUR", -1, limitPrice);
-            }
-            else if (Time.Hour == 13 && Time.Minute == 0)
-            {
-                // Cancel the limit order if not filled
-                Transactions.CancelOpenOrders("BTCEUR");
-            }
-            else if (Time.Hour > 13)
-            {
-                // To include any initial holdings, we read the LTC amount from the cashbook
-                // instead of using Portfolio["LTCUSD"].Quantity
-
-                if (_fast > _slow)
-                {
-                    if (Portfolio.CashBook["LTC"].Amount == 0)
-                    {
-                        Buy("LTCUSD", 10);
-                    }
-                }
-                else
-                {
-                    if (Portfolio.CashBook["LTC"].Amount > 0)
-                    {
-                        // The following two statements currently behave differently if we have initial holdings:
-                        // https://github.com/QuantConnect/Lean/issues/1860
-
-                        Liquidate("LTCUSD");
-                        // SetHoldings("LTCUSD", 0);
-                    }
-                }
             }
         }
 
