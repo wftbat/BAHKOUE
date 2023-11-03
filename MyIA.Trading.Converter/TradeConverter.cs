@@ -15,13 +15,13 @@ namespace MyIA.Trading.Converter
     public class TradeConverter
     {
 
-        public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD2.csv.gz";
+        public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD.csv.gz";
 
         public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\minute\btcusd\trade.zip";
 
-        public DateTime StartDate { get; set; } = new DateTime(2016, 10, 6);
+        public DateTime StartDate { get; set; } = new DateTime(2016, 1, 1);
 
-        public DateTime EndDate { get; set; } = new DateTime(2016, 11, 14);
+        public DateTime EndDate { get; set; } = new DateTime(2016, 12, 31);
 
         public double SkipRatio { get; set; } = 0;
 
@@ -214,9 +214,16 @@ namespace MyIA.Trading.Converter
                 }
             }
             var objDirectory = new FileInfo(newOutputPath).Directory;
-            if (!objDirectory.Exists)
+            var dirsToCreate = new List<DirectoryInfo>();
+            while (!objDirectory.Exists)
             {
-                objDirectory.Create();
+                dirsToCreate.Add(objDirectory);
+                objDirectory = objDirectory.Parent;
+            }
+            dirsToCreate.Reverse();
+            foreach (DirectoryInfo dir in dirsToCreate)
+            {
+                dir.Create();
             }
             using var objFileStream = File.Create(newOutputPath);
             switch (strExtension)
