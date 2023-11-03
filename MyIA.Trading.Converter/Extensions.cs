@@ -82,29 +82,7 @@ namespace MyIA.Trading.Converter
 
             var firstTradeTime = input.First().Time;
 
-            DateTime startPeriod;
-
-            if (period == TimeSpan.FromDays(1))
-            {
-                startPeriod = new DateTime(firstTradeTime.Year, firstTradeTime.Month, firstTradeTime.Day);
-            }
-            else if (period == TimeSpan.FromHours(1))
-            {
-                startPeriod = new DateTime(firstTradeTime.Year, firstTradeTime.Month, firstTradeTime.Day, firstTradeTime.Hour, 0, 0);
-            }
-            else if (period == TimeSpan.FromMinutes(1))
-            {
-                startPeriod = new DateTime(firstTradeTime.Year, firstTradeTime.Month, firstTradeTime.Day, firstTradeTime.Hour, firstTradeTime.Minute, 0);
-            }
-            else if (period == TimeSpan.FromSeconds(1))
-            {
-                startPeriod = new DateTime(firstTradeTime.Year, firstTradeTime.Month, firstTradeTime.Day, firstTradeTime.Hour, firstTradeTime.Minute, firstTradeTime.Second);
-            }
-            else
-            {
-                // fallback to previous logic or throw exception
-                startPeriod = firstTradeTime;
-            }
+            var startPeriod = firstTradeTime.GetPeriodStart(period);
 
             var startIdx = 0;
             if (randomPeriodStart)
@@ -132,6 +110,38 @@ namespace MyIA.Trading.Converter
             }
 
             return toReturn;
+        }
+
+        private static DateTime GetPeriodStart(this DateTime firstTradeTime, TimeSpan period )
+        {
+            DateTime startPeriod;
+
+            if (period == TimeSpan.FromDays(1))
+            {
+                startPeriod = new DateTime(firstTradeTime.Year, firstTradeTime.Month, firstTradeTime.Day);
+            }
+            else if (period == TimeSpan.FromHours(1))
+            {
+                startPeriod = new DateTime(firstTradeTime.Year, firstTradeTime.Month, firstTradeTime.Day, firstTradeTime.Hour,
+                    0, 0);
+            }
+            else if (period == TimeSpan.FromMinutes(1))
+            {
+                startPeriod = new DateTime(firstTradeTime.Year, firstTradeTime.Month, firstTradeTime.Day, firstTradeTime.Hour,
+                    firstTradeTime.Minute, 0);
+            }
+            else if (period == TimeSpan.FromSeconds(1))
+            {
+                startPeriod = new DateTime(firstTradeTime.Year, firstTradeTime.Month, firstTradeTime.Day, firstTradeTime.Hour,
+                    firstTradeTime.Minute, firstTradeTime.Second);
+            }
+            else
+            {
+                // fallback to previous logic or throw exception
+                startPeriod = firstTradeTime;
+            }
+
+            return startPeriod;
         }
 
         public static Tickbar ToTickbar(this List<Trade> input, DateTime dateTime)
