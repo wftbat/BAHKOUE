@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using CsvHelper;
 using FileHelpers;
@@ -189,17 +190,34 @@ namespace MyIA.Trading.Converter
         private static IDelimitedTypeMapper<Tickbar> GetFlatFilesMapperTickbar(SerializationConfig serializationConfig)
         {
             var mapper = DelimitedTypeMapper.Define<Tickbar>();
-            var dateTimeProp = mapper.Property(c => c.DateTime);
-            if (!string.IsNullOrEmpty(serializationConfig.DateTimeFormat))
+
+            if (serializationConfig.DateAsMillisecondsFromEpoch)
             {
-                dateTimeProp.OutputFormat(serializationConfig.DateTimeFormat);
+                mapper.CustomMapping(new Int32Column("DateTime"))
+                    .WithWriter(tickbar => (int)MillisecondsSinceMidnight(tickbar.DateTime));
             }
+            else
+            {
+                var dateTimeProp = mapper.Property(c => c.DateTime);
+                if (!string.IsNullOrEmpty(serializationConfig.DateTimeFormat))
+                {
+
+                    dateTimeProp.OutputFormat(serializationConfig.DateTimeFormat);
+                }
+            }
+
             mapper.Property(c => c.Open);
             mapper.Property(c => c.High);
             mapper.Property(c => c.Low);
             mapper.Property(c => c.Close);
             mapper.Property(c => c.Volume);
             return mapper;
+        }
+
+        private static long MillisecondsSinceMidnight(DateTime dateTime)
+        {
+            TimeSpan timeOfDay = dateTime.TimeOfDay;
+            return (long)timeOfDay.TotalMilliseconds;
         }
 
         private static IDelimitedTypeMapper<Trade> GetFlatFilesMapperTrade()
@@ -253,4 +271,35 @@ namespace MyIA.Trading.Converter
         }
 
     }
+
+
+    //public class MillisecondsDateTimeFormatter : IFormatProvider
+    //{
+    //    private readonly DateTime periodStart;
+
+    //    public MillisecondsDateTimeFormatter(DateTime periodStart)
+    //    {
+    //        this.periodStart = periodStart;
+    //    }
+
+    //    public string Format(object value)
+    //    {
+    //        if (!(value is DateTime))
+    //            throw new ArgumentException("Value must be a DateTime object.");
+
+    //        var dateTime = (DateTime)value;
+    //        var millis = (dateTime - this.periodStart).TotalMilliseconds;
+    //        return millis.ToString("F0", CultureInfo.InvariantCulture); // Pas de décimales
+    //    }
+
+    //    public object Parse(string value)
+    //    {
+    //        if (!long.TryParse(value, out long millis))
+    //            throw new ArgumentException("Value must be a long representing milliseconds.");
+
+    //        return this.periodStart.AddMilliseconds(millis);
+    //    }
+    //}
+
+
 }
