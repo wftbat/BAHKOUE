@@ -170,19 +170,6 @@ namespace MyIA.Trading.Converter
             var mapper = GetFlatFilesMapperTickbar(serializationConfig);
             using var writer = new StreamWriter(exitStream, leaveOpen: true);
             DelimitedOptions options;
-            //if (!string.IsNullOrEmpty(serializationConfig.DateTimeFormat))
-            //{
-            //    var customDateFormat = new DateTimeFormatInfo
-            //    {
-            //        ShortDatePattern = serializationConfig.DateTimeFormat,
-            //        LongTimePattern = ""
-            //    };
-            //    options = new DelimitedOptions() { IsFirstRecordSchema = serializationConfig.IncludeHeader, FormatProvider = customDateFormat };
-            //}
-            //else
-            //{
-            //    options = new DelimitedOptions() { IsFirstRecordSchema = serializationConfig.IncludeHeader};
-            //}
             options = new DelimitedOptions() { IsFirstRecordSchema = serializationConfig.IncludeHeader };
             mapper.Write(writer, input, options);
         }
@@ -271,35 +258,5 @@ namespace MyIA.Trading.Converter
         }
 
     }
-
-
-    //public class MillisecondsDateTimeFormatter : IFormatProvider
-    //{
-    //    private readonly DateTime periodStart;
-
-    //    public MillisecondsDateTimeFormatter(DateTime periodStart)
-    //    {
-    //        this.periodStart = periodStart;
-    //    }
-
-    //    public string Format(object value)
-    //    {
-    //        if (!(value is DateTime))
-    //            throw new ArgumentException("Value must be a DateTime object.");
-
-    //        var dateTime = (DateTime)value;
-    //        var millis = (dateTime - this.periodStart).TotalMilliseconds;
-    //        return millis.ToString("F0", CultureInfo.InvariantCulture); // Pas de décimales
-    //    }
-
-    //    public object Parse(string value)
-    //    {
-    //        if (!long.TryParse(value, out long millis))
-    //            throw new ArgumentException("Value must be a long representing milliseconds.");
-
-    //        return this.periodStart.AddMilliseconds(millis);
-    //    }
-    //}
-
 
 }
