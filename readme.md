@@ -11,7 +11,10 @@
 ## Evaluation ESGF ##
 
 Dans le cadre du cours trading algorithmique, l'évaluation prendra la forme d'un projet de groupe de développement d'un algorithme sous Lean.
+
 Le sujet est proposé dans le [document suivant](./ESGF/Evaluation.md).
+
+Un document a été créé pour vous aider à configurer votre environement pour le développement et le debuggage d'algorithmes en Python sous Lean. Vous le trouverez [ici](./ESGF/Python.md).
 
 
 ## Introduction ##
