@@ -266,6 +266,9 @@ namespace QuantConnect.Brokerages
                 case BrokerageName.Bybit:
                     return new BybitBrokerageModel(accountType);
 
+                case BrokerageName.Bitstamp:
+                    return new BitstampBrokerageModel(accountType);
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(brokerage), brokerage, null);
             }
@@ -350,6 +353,9 @@ namespace QuantConnect.Brokerages
 
                 case BybitBrokerageModel _:
                     return BrokerageName.Bybit;
+
+                case BitstampBrokerageModel _:
+                    return BrokerageName.Bitstamp;
 
                 case DefaultBrokerageModel _:
                     return BrokerageName.Default;
