@@ -5,11 +5,19 @@ using QuantConnect.Indicators;
 using QuantConnect.Data.Market;
 using System;
 using System.Drawing;
+using QuantConnect.Parameters;
 
 namespace QuantConnect
 {
     public class AndreiKolmogorov : QCAlgorithm
     {
+
+        [Parameter("macd-fast")]
+        public int FastPeriodMacd = 12;
+
+        [Parameter("macd-slow")]
+        public int SlowPeriodMacd = 26;
+
         private MovingAverageConvergenceDivergence _macd;
         private Symbol _btcusd;
         private const decimal _tolerance = 0.0025m;
@@ -21,8 +29,8 @@ namespace QuantConnect
 
         public override void Initialize()
         {
-            SetStartDate(2020, 1, 1); // début backtest
-            SetEndDate(2023, 10, 31); // fin backtest
+            SetStartDate(2021, 1, 1); // début backtest
+            SetEndDate(2023, 3, 22); // fin backtest
 
 
             SetBrokerageModel(BrokerageName.Bitstamp, AccountType.Cash);
@@ -32,7 +40,7 @@ namespace QuantConnect
             _btcusd = AddCrypto("BTCUSD", Resolution.Daily).Symbol;
 
 
-            _macd = MACD(_btcusd, 12, 26, 9, MovingAverageType.Exponential, Resolution.Daily, Field.Close);
+            _macd = MACD(_btcusd, FastPeriodMacd, SlowPeriodMacd, 9, MovingAverageType.Exponential, Resolution.Daily, Field.Close);
 
             
             // Dealing with plots
