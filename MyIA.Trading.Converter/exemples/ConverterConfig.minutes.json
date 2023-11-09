@@ -1,8 +1,8 @@
 {
-  "InputFile": "G:\\Dev\\Lean\\Data\\crypto\\bitstamp\\bitstampUSD.csv.gz",
+  "InputFile": "..\\..\\..\\..\\Data\\crypto\\bitstamp\\bitstampUSD.csv.gz",
   "OutputFile": "..\\..\\..\\..\\Data\\crypto\\bitstamp\\minute\\btcusd\\trade.zip",
-  "StartDate": "2018-01-01T00:00:00",
-  "EndDate": "2018-12-31T00:00:00",
+  "StartDate": "2010-01-01T00:00:00",
+  "EndDate": "2024-12-31T00:00:00",
   "SkipRatio": 0,
   "TargetTradingDataType": "Tickbars",
   "TickbarsPeriod": "00:01:00",

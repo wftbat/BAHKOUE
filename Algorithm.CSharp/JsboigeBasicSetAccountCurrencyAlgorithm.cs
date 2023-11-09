@@ -34,7 +34,7 @@ namespace QuantConnect.Algorithm.CSharp
         {
             SetStartDate(2018, 01, 01);  //Set Start Date
             SetEndDate(2018, 12, 31);    //Set End Date
-            SetBrokerageModel(BrokerageName.GDAX, AccountType.Cash);
+            SetBrokerageModel(BrokerageName.Bitstamp, AccountType.Cash);
             SetAccountCurrency();
             _btcEur = AddCrypto("BTCEUR", Resolution.Daily).Symbol;
         }
@@ -89,7 +89,7 @@ namespace QuantConnect.Algorithm.CSharp
         /// </summary>
         public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
         {
-            {"Total Trades", "1"},
+            {"Total Trades", "366"},
             {"Average Win", "0%"},
             {"Average Loss", "0%"},
             {"Compounding Annual Return", "0%"},
