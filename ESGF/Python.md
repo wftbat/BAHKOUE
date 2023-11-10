@@ -121,5 +121,6 @@ Vous devriez désormais pouvoir débugger votre code Python comme n'importe quel
 Il est également possible de travailler en Python dans un autre IDE.
 
 Voir ce [fichier de code](../AlgorithmFactory/DebuggerHelper.cs) pour les commandes alternatives à "Visual Studio" dans le fichier config.json
-Et probablement [cette page]([url](https://www.quantconnect.com/docs/v2/lean-cli/projects/autocomplete#07-Imports)https://www.quantconnect.com/docs/v2/lean-cli/projects/autocomplete#07-Imports) pour l'import des symboles nécessaires à l'auto-completion
+
+Et probablement [cette page](https://www.quantconnect.com/docs/v2/lean-cli/projects/autocomplete#07-Imports) pour l'import des symboles nécessaires à l'auto-completion
 
