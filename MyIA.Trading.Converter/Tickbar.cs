@@ -9,7 +9,7 @@ using MessagePack;
 namespace MyIA.Trading.Converter
 {
     [MessagePackObject]
-    public class Tickbar 
+    public class Tickbar
     {
 
         [Key(0)]

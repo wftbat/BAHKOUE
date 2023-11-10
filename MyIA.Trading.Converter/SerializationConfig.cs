@@ -22,6 +22,8 @@ namespace MyIA.Trading.Converter
 
         public string DateTimeFormat { get; set; }
 
+        public bool DateAsMillisecondsFromEpoch { get; set; }
+
     }
 
    
