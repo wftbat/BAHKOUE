@@ -175,7 +175,7 @@ namespace QuantConnect.Statistics
             List<double> listPerformance,
             List<double> listBenchmark,
             decimal startingCapital,
-            int tradingDaysPerYear = 252,
+            int tradingDaysPerYear = 365,
             int? winCount = null,
             int? lossCount = null)
         {
