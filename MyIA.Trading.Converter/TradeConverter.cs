@@ -112,11 +112,6 @@ namespace MyIA.Trading.Converter
                     var currentPrefix = this.DynamicFilePrefix.Interpolate(interpolationDictionary);
                     var currentFileTickBars = new List<Tickbar>();
 
-                    //var customDateFormat = new DateTimeFormatInfo
-                    //{
-                    //    ShortDatePattern = "yyyyMMdd",
-                    //    LongTimePattern = ""
-                    //};
 
                     for (int i = 0; i < tickbars.Count; i++)
                     {
@@ -124,11 +119,6 @@ namespace MyIA.Trading.Converter
                         var newPrefix = this.DynamicFilePrefix.Interpolate(interpolationDictionary);
                         if (newPrefix != currentPrefix)
                         {
-                            //var startDateTime = DateTime.Parse(currentPrefix.Trim('_'), customDateFormat);
-                            //foreach (var objTickbar in currentFileTickBars)
-                            //{
-                            //    objTickbar.PeriodStart = startDateTime;
-                            //}
                             SaveTradingData<Tickbar>(currentFileTickBars, OutputFile, currentPrefix, logger, SerializationConfig);
                             currentPrefix = newPrefix;
                             currentFileTickBars.Clear();

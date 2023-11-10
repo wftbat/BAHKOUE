@@ -20687,7 +20687,7 @@
         "9/5/2022": "12:00:00",
         "11/24/2022": "16:00:00",
         "11/25/2022": "12:15:00",
-        "4/7/2023":  "10:15:00"
+        "4/7/2023": "10:15:00"
       }
     },
     "Future-cme-ETH": {
@@ -28265,7 +28265,7 @@
       "saturday": [],
       "holidays": []
     },
-	"Future-cme-LBR": {
+    "Future-cme-LBR": {
       "dataTimeZone": "UTC",
       "exchangeTimeZone": "America/Chicago",
       "monday": [
@@ -39680,6 +39680,60 @@
       ]
     },
     "Crypto-gdax-[*]": {
+      "dataTimeZone": "UTC",
+      "exchangeTimeZone": "UTC",
+      "sunday": [
+        {
+          "start": "00:00:00",
+          "end": "1.00:00:00",
+          "state": "market"
+        }
+      ],
+      "monday": [
+        {
+          "start": "00:00:00",
+          "end": "1.00:00:00",
+          "state": "market"
+        }
+      ],
+      "tuesday": [
+        {
+          "start": "00:00:00",
+          "end": "1.00:00:00",
+          "state": "market"
+        }
+      ],
+      "wednesday": [
+        {
+          "start": "00:00:00",
+          "end": "1.00:00:00",
+          "state": "market"
+        }
+      ],
+      "thursday": [
+        {
+          "start": "00:00:00",
+          "end": "1.00:00:00",
+          "state": "market"
+        }
+      ],
+      "friday": [
+        {
+          "start": "00:00:00",
+          "end": "1.00:00:00",
+          "state": "market"
+        }
+      ],
+      "saturday": [
+        {
+          "start": "00:00:00",
+          "end": "1.00:00:00",
+          "state": "market"
+        }
+      ],
+      "holidays": []
+    },
+    "Crypto-bitstamp-[*]": {
       "dataTimeZone": "UTC",
       "exchangeTimeZone": "UTC",
       "sunday": [

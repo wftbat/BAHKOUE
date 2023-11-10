@@ -253,6 +253,16 @@ namespace QuantConnect
         }
 
         /// <summary>
+        /// Provides user-facing messages for the <see cref="Brokerages.BitstampBrokerageModel"/> class and its consumers or related classes
+        /// </summary>
+        public static class BitstampBrokerageModel
+        {
+            public static string UnsupportedAccountType = "The Bitstamp brokerage does not currently support Margin trading.";
+
+        }
+
+
+        /// <summary>
         /// Provides user-facing messages for the <see cref="Brokerages.InteractiveBrokersBrokerageModel"/> class and its consumers or related classes
         /// </summary>
         public static class InteractiveBrokersBrokerageModel
