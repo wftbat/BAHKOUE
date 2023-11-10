@@ -33,6 +33,7 @@ namespace QuantConnect
             SetEndDate(2023, 3, 22); // fin backtest
 
 
+
             SetBrokerageModel(BrokerageName.Bitstamp, AccountType.Cash);
 
             SetCash(10000); // capital

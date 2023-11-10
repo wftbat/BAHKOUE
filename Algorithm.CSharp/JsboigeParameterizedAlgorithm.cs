@@ -13,12 +13,16 @@
  * limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 using QuantConnect.Parameters;
 using QuantConnect.Interfaces;
 using QuantConnect.Brokerages;
+using QuantConnect.Data;
+using QuantConnect.Orders.Fees;
+using QuantConnect.Securities;
 
 namespace QuantConnect.Algorithm.CSharp
 {
@@ -33,10 +37,10 @@ namespace QuantConnect.Algorithm.CSharp
         // their values from the job. The values 100 and 200 are just default values that
         // are only used if the parameters do not exist.
         [Parameter("ema-fast")]
-        public int FastPeriod = 100;
+        public int FastPeriod = 18;
 
         [Parameter("ema-slow")]
-        public int SlowPeriod = 150;
+        public int SlowPeriod = 21;
 
         public ExponentialMovingAverage Fast;
         public ExponentialMovingAverage Slow;
@@ -51,38 +55,56 @@ namespace QuantConnect.Algorithm.CSharp
         public override void Initialize()
         {
 
-            SetStartDate(2017, 11, 25); // début backtest
-            SetEndDate(2020, 05, 1); // fin backtest
+            SetStartDate(2017, 12, 15); // début backtest
+            SetEndDate(2022, 11, 20); // fin backtest
+
+            //SetStartDate(2017, 11, 25); // début backtest
+            //SetEndDate(2020, 05, 1); // fin backtest
 
             //SetStartDate(2021, 1, 1); // début backtest
             //SetEndDate(2023, 03, 22); // fin backtest
 
-            this.SetWarmUp(150);
+            this.SetWarmUp(TimeSpan.FromDays(150));
+
+            //SetBenchmark(x => 0);
 
             SetBrokerageModel(BrokerageName.Bitstamp, AccountType.Cash);
 
             SetCash(10000); // capital
-
-            _btcusd = AddCrypto("BTCUSD", Resolution.Daily).Symbol;
-
-            Fast = EMA(_btcusd, FastPeriod);
-            Slow = EMA(_btcusd, SlowPeriod);
+            var btcSecurity = AddCrypto("BTCUSD", Resolution.Daily);
+            
+            _btcusd = btcSecurity.Symbol;
+            
+            Fast = EMA(_btcusd, FastPeriod, Resolution.Daily);
+            Slow = EMA(_btcusd, SlowPeriod, Resolution.Daily);
         }
 
-        public void OnData(TradeBars data)
+        
+        public void OnData(Slice data)
         {
 
             // wait for our indicators to ready
             if (this.IsWarmingUp || !Fast.IsReady || !Slow.IsReady) return;
 
+            string message = "";
             if (!Portfolio.Invested && Fast > Slow*1.001m)
             {
                 SetHoldings(_btcusd, 1);
+                message ="Purchased";
             }
             else if (Portfolio.Invested && Fast < Slow*0.999m)
             {
                 Liquidate(_btcusd);
+                message ="Sold";
             }
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                var endMessage =
+                    $"Time: {data.Time.ToShortDateString()}, Price:  @{data.Bars[_btcusd].Close}$/Btc; Portfolio: {Portfolio.CashBook[Portfolio.CashBook.AccountCurrency].Amount}$, {Portfolio[_btcusd].Quantity}BTCs, Total Value: {Portfolio.TotalPortfolioValue}$, Total Fees: {Portfolio.TotalFees}$";
+                Debug($"{message} {endMessage}");
+            }
+
         }
 
         /// <summary>
