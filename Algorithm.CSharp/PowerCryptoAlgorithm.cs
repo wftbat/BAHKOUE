@@ -30,7 +30,7 @@ namespace QuantConnect.Algorithm.CSharp
     /// <meta name="tag" content="using data" />
     /// <meta name="tag" content="using quantconnect" />
     /// <meta name="tag" content="trading and orders" />
-    public class PowerBasicTemplateCryptoAlgorithm : QCAlgorithm, IRegressionAlgorithmDefinition
+    public class PowerCryptoAlgorithm : QCAlgorithm, IRegressionAlgorithmDefinition
     {
         private ExponentialMovingAverage _fast;
         private ExponentialMovingAverage _slow;
