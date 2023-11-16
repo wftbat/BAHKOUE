@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -226,7 +226,15 @@ namespace MyIA.Trading.Converter
                 {
                     // extract to stream
                     fileName = entry.FileName;
-                    MemoryStream exitStream = new MemoryStream();
+                    Stream exitStream;
+                    if (entry.Size > int.MaxValue)
+                    {
+                        exitStream = new HugeMemoryStream();
+                    }
+                    else
+                    {
+                        exitStream = new MemoryStream((int)entry.Size);
+                    }
                     entry.Extract(exitStream);
                     exitStream.Position = 0;
                     return exitStream;
@@ -250,7 +258,7 @@ namespace MyIA.Trading.Converter
                     inFormat = InArchiveFormat.SevenZip;
                 }
             }
-            using var extractor = new SevenZip.SevenZipExtractor(entryStream, inFormat);
+            using var extractor = new SevenZip.SevenZipExtractor(entryStream, true, inFormat);
             fileName = extractor.ArchiveFileData[0].FileName;
             MemoryStream exitStream = new MemoryStream();
             extractor.ExtractFile(0, exitStream);
@@ -516,6 +524,4 @@ namespace MyIA.Trading.Converter
 
 
     }
-
-
 }

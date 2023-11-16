@@ -15,22 +15,23 @@ namespace MyIA.Trading.Converter
     public class TradeConverter
     {
 
-        public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD2.csv.gz";
+        public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD.csv.gz";
 
-        public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\daily\btcusd_trade.zip";
+        public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\minute\btcusd\trade.zip";
 
-        public DateTime StartDate { get; set; } = new DateTime(2014, 12, 1);
+        public DateTime StartDate { get; set; } = new DateTime(2016, 1, 1);
 
-        public DateTime EndDate { get; set; } = new DateTime(2018, 8, 14);
+        public DateTime EndDate { get; set; } = new DateTime(2016, 12, 31);
 
-        public double SkipRatio { get; set; } = 0.2;
+        public double SkipRatio { get; set; } = 0;
 
         public TradingDataType TargetTradingDataType { get; set; } = TradingDataType.Tickbars;
 
-        public TimeSpan TickbarsPeriod { get; set; } = TimeSpan.FromDays(1);
+        public TimeSpan TickbarsPeriod { get; set; } = TimeSpan.FromMinutes(1);
 
-        public string DynamicFilePrefix { get; set; }// = "{tickBar.ToStringInvariant(\"yyyyMMdd\")}_";
+        public string DynamicFilePrefix { get; set; } = "{tickBar.DateTime.ToString(\"yyyyMMdd\")}_";
 
+        
 
         public bool RandomPeriodStart { get; set; } = false;
 
@@ -57,8 +58,9 @@ namespace MyIA.Trading.Converter
             Json = JsonSerializationType.Utf8,
             Xml = XmlSerializationType.XmlSerializer,
             Compression = new CompressionConfig() { Library = CompressionLibrary.SevenZipSharp, Level = CompressionLevel.Fast },
-            IncludeHeader = false,
-            DateTimeFormat = "yyyyMMdd HH:mm"
+            IncludeHeader = false, 
+            //DateTimeFormat = "yyyyMMdd HH:mm",
+            DateAsMillisecondsFromEpoch = true
         };
 
         //public async Task Process(Action<string> logger)
@@ -83,12 +85,24 @@ namespace MyIA.Trading.Converter
                     interpolationDictionary["tickBar"] = tickbars[0];
                     var currentPrefix = this.DynamicFilePrefix.Interpolate(interpolationDictionary);
                     var currentFileTickBars = new List<Tickbar>();
+
+                    //var customDateFormat = new DateTimeFormatInfo
+                    //{
+                    //    ShortDatePattern = "yyyyMMdd",
+                    //    LongTimePattern = ""
+                    //};
+
                     for (int i = 0; i < tickbars.Count; i++)
                     {
                         interpolationDictionary["tickBar"] = tickbars[i];
                         var newPrefix = this.DynamicFilePrefix.Interpolate(interpolationDictionary);
                         if (newPrefix != currentPrefix)
                         {
+                            //var startDateTime = DateTime.Parse(currentPrefix.Trim('_'), customDateFormat);
+                            //foreach (var objTickbar in currentFileTickBars)
+                            //{
+                            //    objTickbar.PeriodStart = startDateTime;
+                            //}
                             SaveTradingData<Tickbar>(currentFileTickBars, OutputFile, currentPrefix, logger, SerializationConfig);
                             currentPrefix = newPrefix;
                             currentFileTickBars.Clear();
@@ -200,9 +214,16 @@ namespace MyIA.Trading.Converter
                 }
             }
             var objDirectory = new FileInfo(newOutputPath).Directory;
-            if (!objDirectory.Exists)
+            var dirsToCreate = new List<DirectoryInfo>();
+            while (!objDirectory.Exists)
             {
-                objDirectory.Create();
+                dirsToCreate.Add(objDirectory);
+                objDirectory = objDirectory.Parent;
+            }
+            dirsToCreate.Reverse();
+            foreach (DirectoryInfo dir in dirsToCreate)
+            {
+                dir.Create();
             }
             using var objFileStream = File.Create(newOutputPath);
             switch (strExtension)
@@ -267,7 +288,7 @@ namespace MyIA.Trading.Converter
                     {
                         objExitStream.Position = 0;
                         objExitStream.CompressSingleFile(objFileStream, inArchiveFileName, sConfig.Compression, compressionFormat);
-                        logger($"Compressed {inArchiveFileName} to {strOutputPath} with format {compressionFormat} using {sConfig.Compression.Library}");
+                        logger($"Compressed {inArchiveFileName} to {newOutputPath} with format {compressionFormat} using {sConfig.Compression.Library}");
                     }
 
                     break;
