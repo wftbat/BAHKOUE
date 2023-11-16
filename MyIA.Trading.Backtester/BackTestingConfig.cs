@@ -40,12 +40,12 @@ namespace MyIA.Trading.Backtester
 
 
 #if DEBUG
-        //public ConfigMode ConfigMode { get; set; } = ConfigMode.List;
-        public ConfigMode ConfigMode { get; set; } = ConfigMode.Combination;
+        public ConfigMode ConfigMode { get; set; } = ConfigMode.List;
+        //public ConfigMode ConfigMode { get; set; } = ConfigMode.Combination;
 
 #else
-
-        public ConfigMode ConfigMode { get; set; } = ConfigMode.Combination;
+        public ConfigMode ConfigMode { get; set; } = ConfigMode.List;
+        //public ConfigMode ConfigMode { get; set; } = ConfigMode.Combination;
 
 
 #endif
@@ -435,14 +435,28 @@ namespace MyIA.Trading.Backtester
 #if DEBUG
 
 
-                    configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 30000, TestNb = 5000 }, ModelsConfig = new TradingModelsConfig() { ModelType = TradingModelType.AutoML, AutomMlModelConfig = new TradingAutoMlModelConfig() { TrainingTimeout = TimeSpan.FromMinutes(10), OptimizingMetric = MulticlassClassificationMetric.MacroAccuracy} } });
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 30000, TestNb = 5000 }, ModelsConfig = new TradingModelsConfig() { ModelType = TradingModelType.AutoML, AutomMlModelConfig = new TradingAutoMlModelConfig() { TrainingTimeout = TimeSpan.FromMinutes(10), OptimizingMetric = MulticlassClassificationMetric.MacroAccuracy} } });
 
 
-                    configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 1000, TestNb = 500 }, ModelsConfig = new TradingModelsConfig() { ModelType = TradingModelType.AutoML, AutomMlModelConfig = new TradingAutoMlModelConfig() { TrainingTimeout = TimeSpan.FromMinutes(10) } } });
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 1000, TestNb = 500 }, ModelsConfig = new TradingModelsConfig() { ModelType = TradingModelType.AutoML, AutomMlModelConfig = new TradingAutoMlModelConfig() { TrainingTimeout = TimeSpan.FromMinutes(10) } } });
 
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 0.105 } } });
+
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 100 } } });
+
+
+
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 0.0099 } } });
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 0.009901 } } });
+                    configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 0.023 } } });
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 0.023001 } } });
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 0.0701 } } });
                     configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 0.105 } } });
-
-                    configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 100 } } });
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 0.105001 } } });
+                    configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 3 } } });
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 3.000001 } } });
+                    configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 51 } } });
+                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 97 } } });
 
 #else
 

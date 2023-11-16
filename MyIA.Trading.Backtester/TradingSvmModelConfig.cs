@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 using Accord.MachineLearning;
@@ -75,7 +76,8 @@ namespace MyIA.Trading.Backtester
         public override string GetModelName(TradingTrainingDataConfig dataConfig)
         {
             var toREturn = dataConfig.GetSampleTrainName();
-            return $"{toREturn.Substring(0, toREturn.Length - Path.GetExtension(toREturn).Length)}-kernel-{Kernel}-complexity-{Complexity}-Model.bin";
+            var modelName = $"{toREturn.Substring(0, toREturn.Length - Path.GetExtension(toREturn).Length)}-kernel-{Kernel}-complexity-{Complexity}-Model.bin";
+            return modelName;
         }
 
         public override ITradingModel TrainModel(Action<string> logger, TradingTrainingDataConfig dataConfig, ref double testError)
@@ -152,6 +154,7 @@ namespace MyIA.Trading.Backtester
             TradingTrainTestData data = null;
             if (toReturn == null)
             {
+                Debugger.Break();
                 logger($"Training new Model: {modelName}");
                 data = dataConfig.GetTrainingSets(logger);
                 var xTrain = data.Training.GetInputMatrix();

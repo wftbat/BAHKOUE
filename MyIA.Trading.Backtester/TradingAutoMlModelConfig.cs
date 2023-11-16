@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -72,7 +72,8 @@ namespace MyIA.Trading.Backtester
         public override string GetModelName(TradingTrainingDataConfig dataConfig)
         {
             var toREturn = dataConfig.GetSampleTrainName();
-            return $"{toREturn.Substring(0, toREturn.Length - Path.GetExtension(toREturn).Length)}-AutoML-{this.TrainingTimeout.TotalSeconds}s-{this.OptimizingMetric}-Model.bin";
+            var modelName = $"{toREturn.Substring(0, toREturn.Length - Path.GetExtension(toREturn).Length)}-AutoML-{this.TrainingTimeout.TotalSeconds}s-{this.OptimizingMetric}-Model.bin";
+            return modelName;
         }
 
         public override ITradingModel TrainModel(Action<string> logger, TradingTrainingDataConfig dataConfig, ref double testError)
@@ -110,6 +111,7 @@ namespace MyIA.Trading.Backtester
             }
             if (toReturn == null)
             {
+                Debugger.Break();
                 logger($"Training new Model: {modelName}");
                 data = dataConfig.GetTrainingSets(logger);
                 var nbInputs = data.Training.First().Inputs.Count;

@@ -256,7 +256,16 @@ namespace MyIA.Trading.Converter
                         {
                             strExtension = "CSV";
                         }
-                        objExitStream = new MemoryStream();
+
+                        if (data.Count>40000000)
+                        {
+                            objExitStream = new HugeMemoryStream();
+                        }
+                        else
+                        {
+                            objExitStream = new MemoryStream();
+                        }
+                        
 
                         //logger($"Decompressed {InputFile}");
                     }
