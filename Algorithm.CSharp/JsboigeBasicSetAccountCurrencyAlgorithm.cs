@@ -23,7 +23,7 @@ namespace QuantConnect.Algorithm.CSharp
     /// <summary>
     /// Basic algorithm using SetAccountCurrency
     /// </summary>
-    public class JsboigeBasicSetAccountCurrencyAlgorithm : QCAlgorithm, IRegressionAlgorithmDefinition
+    public class JsboigeBasicSetAccountCurrencyAlgorithm : QCAlgorithm
     {
         private Symbol _btcEur;
 
@@ -63,56 +63,6 @@ namespace QuantConnect.Algorithm.CSharp
                 Debug("Sold Stock");
             }
         }
-
-        /// <summary>
-        /// This is used by the regression test system to indicate if the open source Lean repository has the required data to run this algorithm.
-        /// </summary>
-        public bool CanRunLocally { get; } = true;
-
-        /// <summary>
-        /// This is used by the regression test system to indicate which languages this algorithm is written in.
-        /// </summary>
-        public Language[] Languages { get; } = { Language.CSharp, Language.Python };
-
-        /// <summary>
-        /// Data Points count of all timeslices of algorithm
-        /// </summary>
-        public long DataPoints => 4319;
-
-        /// <summary>
-        /// Data Points count of the algorithm history
-        /// </summary>
-        public int AlgorithmHistoryDataPoints => 120;
-
-        /// <summary>
-        /// This is used by the regression test system to indicate what the expected statistics are from running the algorithm
-        /// </summary>
-        public Dictionary<string, string> ExpectedStatistics => new Dictionary<string, string>
-        {
-            {"Total Trades", "366"},
-            {"Average Win", "0%"},
-            {"Average Loss", "0%"},
-            {"Compounding Annual Return", "0%"},
-            {"Drawdown", "0%"},
-            {"Expectancy", "0"},
-            {"Net Profit", "0%"},
-            {"Sharpe Ratio", "0"},
-            {"Probabilistic Sharpe Ratio", "0%"},
-            {"Loss Rate", "0%"},
-            {"Win Rate", "0%"},
-            {"Profit-Loss Ratio", "0"},
-            {"Alpha", "0"},
-            {"Beta", "0"},
-            {"Annual Standard Deviation", "0"},
-            {"Annual Variance", "0"},
-            {"Information Ratio", "0"},
-            {"Tracking Error", "0"},
-            {"Treynor Ratio", "0"},
-            {"Total Fees", "€298.35"},
-            {"Estimated Strategy Capacity", "€85000.00"},
-            {"Lowest Capacity Asset", "BTCEUR XJ"},
-            {"Portfolio Turnover", "107.64%"},
-            {"OrderListHash", "2ba443899dcccc79dc0f04441f797bf9"}
-        };
+       
     }
 }
