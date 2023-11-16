@@ -18,6 +18,7 @@ using QuantConnect.Brokerages;
 using QuantConnect.Algorithm.Framework.Selection;
 using QuantConnect.Indicators;
 using System;
+using QuantConnect.Orders;
 
 namespace QuantConnect.Algorithm.CSharp
 {
@@ -47,7 +48,7 @@ namespace QuantConnect.Algorithm.CSharp
             InitPeriod();
 
             //Capital initial
-            SetCash(100000);
+            SetCash(10000);
 
             //Definition de notre univers
 
@@ -64,7 +65,7 @@ namespace QuantConnect.Algorithm.CSharp
             ROC(_btcusd, 1, Resolution.Daily).Updated += (s, e) => _window.Add((double)e.Value);
 
             Schedule.On(DateRules.Every(DayOfWeek.Monday),
-                TimeRules.AfterMarketOpen(_btcusd, 10),
+                TimeRules.Midnight,
                 TrainAndTrade);
 
             SetWarmUp(_window.Size, Resolution.Daily);
@@ -102,7 +103,37 @@ namespace QuantConnect.Algorithm.CSharp
             var value = svm.Compute(new[] {last});
             if (value.IsNaNOrZero()) return;
 
-            SetHoldings("SPY", Math.Sign(value));
+            SetHoldings(_btcusd,  Math.Max(Math.Sign(value), 0));
+        }
+
+
+        public override void OnOrderEvent(OrderEvent orderEvent)
+        {
+
+            if (orderEvent.Status == OrderStatus.Filled)
+            {
+
+                string message = "";
+                if (orderEvent.Quantity < 0)
+                {
+                    message = "Sold";
+                }
+                else
+                {
+                    message = "Purchased";
+                }
+
+                var endMessage =
+                    $"{orderEvent.UtcTime.ToShortDateString()}, Price:  @{this.CurrentSlice.Bars[_btcusd].Close:N3}$/Btc; Portfolio: {Portfolio.CashBook[Portfolio.CashBook.AccountCurrency].Amount:N3}$, {Portfolio[_btcusd].Quantity}BTCs, Total Value: {Portfolio.TotalPortfolioValue:N3}$, Total Fees: {Portfolio.TotalFees:N3}$";
+                //We skip small adjusting orders
+                if (orderEvent.AbsoluteFillQuantity * orderEvent.FillPrice > 100)
+                {
+                    Log($"{message} {endMessage}");
+                }
+
+
+            }
+
         }
 
 
@@ -123,8 +154,7 @@ namespace QuantConnect.Algorithm.CSharp
             //SetEndDate(2020, 07, 26); // fin backtest 9945
 
 
-            //SetStartDate(2017, 12, 15); // début backtest 17478
-            SetStartDate(2018, 01, 30);
+            SetStartDate(2017, 12, 15); // début backtest 17478
             SetEndDate(2022, 12, 12); // fin backtest 17209
 
             //SetStartDate(2017, 11, 25); // début backtest 8718
