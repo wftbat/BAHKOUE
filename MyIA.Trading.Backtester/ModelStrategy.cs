@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Accord.MachineLearning;
-using Aricie.DNN.Modules.PortalKeeper.BitCoin;
+using MyIA.Trading.Backtester;
 
 namespace MyIA.Trading.Backtester
 {
@@ -17,6 +17,7 @@ namespace MyIA.Trading.Backtester
         public ITradingModel Model { get; set; }
 
         private DateTime _TargetTime = DateTime.MinValue;
+
         protected Order TargetOrder;
 
         private DateTime _WeeklyTargetMarket = DateTime.MinValue;

@@ -154,7 +154,6 @@ namespace MyIA.Trading.Backtester
             TradingTrainTestData data = null;
             if (toReturn == null)
             {
-                Debugger.Break();
                 logger($"Training new Model: {modelName}");
                 data = dataConfig.GetTrainingSets(logger);
                 var xTrain = data.Training.GetInputMatrix();

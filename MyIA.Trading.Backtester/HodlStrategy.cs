@@ -1,4 +1,4 @@
-﻿using Aricie.DNN.Modules.PortalKeeper.BitCoin;
+﻿using MyIA.Trading.Backtester;
 
 namespace MyIA.Trading.Backtester
 {

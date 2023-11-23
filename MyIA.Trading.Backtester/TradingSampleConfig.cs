@@ -20,7 +20,7 @@ namespace MyIA.Trading.Backtester
 
         //public string Filename { get; set; } = Path.Combine(Environment.CurrentDirectory, "data\\bitstampUSD.csv");
 
-        public string Filename { get; set; } = @"B:\TradingTests\bitstampUSD.bin.7z";
+        public string Filename { get; set; } = @"A:\TradingTests\bitstampUSD.bin.7z";
 
 
         public string GetRootFolder()
@@ -170,7 +170,7 @@ namespace MyIA.Trading.Backtester
             var percentThresold = threshold / 100;
             var toReturn = new List<KeyValuePair<int, Trade>>();
             var currentMaxTrade = new KeyValuePair<int, Trade>(0, trades[0]);
-            var currentMinTrade = new KeyValuePair<int,Trade>(0, trades[0]);
+            var currentMinTrade = new KeyValuePair<int, Trade>(0, trades[0]);
             for (int currentTradeIndex = 0; currentTradeIndex < trades.Count; currentTradeIndex++)
             {
                 var currentTrade = new KeyValuePair<int, Trade>(currentTradeIndex, trades[currentTradeIndex]);
@@ -322,11 +322,11 @@ namespace MyIA.Trading.Backtester
             int closestIndex;
             if (searchup)
             {
-                closestIndex = trades.BinarySearch(idx, trades.Count - idx, new Trade { UnixTime = (int)targetTime.ConvertToUnixTimestamp() }, Comparer<Trade>.Create(new Comparison<Trade>(CompareBitcoinTrades)));
+                closestIndex = trades.BinarySearch(idx, trades.Count - idx, new Trade { UnixTime = (int)targetTime.ConvertToUnixTimestamp() }, Comparer<Trade>.Create(new Comparison<Trade>(CompareTrades)));
             }
             else
             {
-                closestIndex = trades.BinarySearch(new Trade { UnixTime = (int)targetTime.ConvertToUnixTimestamp() }, Comparer<Trade>.Create(new Comparison<Trade>(CompareBitcoinTrades)));
+                closestIndex = trades.BinarySearch(new Trade { UnixTime = (int)targetTime.ConvertToUnixTimestamp() }, Comparer<Trade>.Create(new Comparison<Trade>(CompareTrades)));
             }
 
             if (closestIndex < 0)
@@ -355,7 +355,7 @@ namespace MyIA.Trading.Backtester
         }
 
 
-        public  TradingSample CreateInput(List<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade> trades, int idx)
+        public  TradingSample CreateInput(List<OrderTrade> trades, int idx)
         {
             var toReturn = new TradingSample();
             toReturn.TargetTrade = new Trade()
@@ -388,28 +388,28 @@ namespace MyIA.Trading.Backtester
             return toReturn;
         }
 
-        public static int CompareTrades(Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade x, Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade y)
+        public static int CompareOrderTrades(OrderTrade x, OrderTrade y)
         {
             return x.Time.CompareTo(y.Time);
         }
 
-        public static int CompareBitcoinTrades(Trade x, Trade y)
+        public static int CompareTrades(Trade x, Trade y)
         {
             return x.UnixTime.CompareTo(y.UnixTime);
         }
 
-        public static Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade SearchTrade(List<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade> trades, int idx, DateTime targetTime, bool searchup)
+        public static OrderTrade SearchTrade(List<OrderTrade> trades, int idx, DateTime targetTime, bool searchup)
         {
             //var utcTargetTime = Aricie.Common.ConvertToUnixTimestamp(targetTime);// ((DateTimeOffset) targetTime.ToUniversalTime()).ToUnixTimeSeconds();
 
             int closestIndex;
             if (searchup)
             {
-                closestIndex = trades.BinarySearch(idx, trades.Count - idx, new Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade { Time = targetTime }, Comparer<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade>.Create(new Comparison<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade>(CompareTrades)));
+                closestIndex = trades.BinarySearch(idx, trades.Count - idx, new MyIA.Trading.Backtester.OrderTrade { Time = targetTime }, Comparer<MyIA.Trading.Backtester.OrderTrade>.Create(new Comparison<MyIA.Trading.Backtester.OrderTrade>(CompareOrderTrades)));
             }
             else
             {
-                closestIndex = trades.BinarySearch(new Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade { Time = targetTime }, Comparer<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade>.Create(new Comparison<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade>(CompareTrades)));
+                closestIndex = trades.BinarySearch(new MyIA.Trading.Backtester.OrderTrade { Time = targetTime }, Comparer<MyIA.Trading.Backtester.OrderTrade>.Create(new Comparison<MyIA.Trading.Backtester.OrderTrade>(CompareOrderTrades)));
             }
 
             if (closestIndex < 0)

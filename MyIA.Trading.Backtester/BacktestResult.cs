@@ -46,6 +46,45 @@ namespace MyIA.Trading.Backtester
         public string Trade28 { get; set; }
         public string Trade29 { get; set; }
         public string Trade30 { get; set; }
+        public string Trade31 { get; set; }
+        public string Trade32 { get; set; }
+        public string Trade33 { get; set; }
+        public string Trade34 { get; set; }
+        public string Trade35 { get; set; }
+        public string Trade36 { get; set; }
+        public string Trade37 { get; set; }
+        public string Trade38 { get; set; }
+        public string Trade39 { get; set; }
+        public string Trade40 { get; set; }
+        public string Trade41 { get; set; }
+        public string Trade42 { get; set; }
+        public string Trade43 { get; set; }
+        public string Trade44 { get; set; }
+        public string Trade45 { get; set; }
+        public string Trade46 { get; set; }
+        public string Trade47 { get; set; }
+        public string Trade48 { get; set; }
+        public string Trade49 { get; set; }
+        public string Trade50 { get; set; }
+        public string Trade51 { get; set; }
+        public string Trade52 { get; set; }
+        public string Trade53 { get; set; }
+        public string Trade54 { get; set; }
+        public string Trade55 { get; set; }
+        public string Trade56 { get; set; }
+        public string Trade57 { get; set; }
+        public string Trade58 { get; set; }
+        public string Trade59 { get; set; }
+        public string Trade60 { get; set; }
+        public string Trade61 { get; set; }
+        public string Trade62 { get; set; }
+        public string Trade63 { get; set; }
+        public string Trade64 { get; set; }
+        public string Trade65 { get; set; }
+        public string Trade66 { get; set; }
+        public string Trade67 { get; set; }
+        public string Trade68 { get; set; }
+        public string Trade69 { get; set; }
 
 
 

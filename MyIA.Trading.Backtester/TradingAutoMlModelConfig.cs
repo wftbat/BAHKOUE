@@ -111,7 +111,6 @@ namespace MyIA.Trading.Backtester
             }
             if (toReturn == null)
             {
-                Debugger.Break();
                 logger($"Training new Model: {modelName}");
                 data = dataConfig.GetTrainingSets(logger);
                 var nbInputs = data.Training.First().Inputs.Count;

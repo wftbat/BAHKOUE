@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Accord.MachineLearning;
-using Aricie.DNN.Modules.PortalKeeper.BitCoin;
+using MyIA.Trading.Backtester;
 using Aricie.Services;
 using FileHelpers;
 using Newtonsoft.Json;
@@ -96,7 +96,7 @@ namespace MyIA.Trading.Backtester
 
                     logger("building history");
                     var tradeHistory = objTrades.Select(objTrade =>
-                            new Trade()
+                            new OrderTrade()
                             {
                                 Amount = objTrade.Amount, Price = objTrade.Price, UnixTime = objTrade.UnixTime
                             })
@@ -105,12 +105,13 @@ namespace MyIA.Trading.Backtester
 
 
                     var objExchange = new ExchangeInfo()
-                        {AskCommission = 0.2M, BidCommission = 0.2M, MinOrderAmount = 0, AmountDecil = 4};
+                        {AskCommission = 0.3M, BidCommission = 0.3M, MinOrderAmount = 0, AmountDecil = 4};
                     var initialWallet = new Wallet()
                     {
                         PrimarySymbol = "BTC",
                         SecondarySymbol = "USD",
-                        PrimaryBalance = 1M
+                        PrimaryBalance = 0,
+                        SecondaryBalance = 10000,
                     };
 
                     var objWallet = Aricie.Services.ReflectionHelper.CloneObject(initialWallet);
@@ -290,7 +291,124 @@ namespace MyIA.Trading.Backtester
                                     : "",
                                 Trade30 = (objSetting.Results.Trades.Count > 29)
                                     ? $" {objSetting.Results.Trades[29].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[29].Amount}@{objSetting.Results.Trades[29].Price}"
-                                    : ""
+                                    : "",
+                                Trade31 = (objSetting.Results.Trades.Count > 30)
+                                    ? $" {objSetting.Results.Trades[30].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[30].Amount}@{objSetting.Results.Trades[30].Price}"
+                                    : "",
+                                Trade32 = (objSetting.Results.Trades.Count > 31)
+                                    ? $" {objSetting.Results.Trades[31].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[31].Amount}@{objSetting.Results.Trades[31].Price}"
+                                    : "",
+                                Trade33 = (objSetting.Results.Trades.Count > 32)
+                                    ? $" {objSetting.Results.Trades[32].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[32].Amount}@{objSetting.Results.Trades[32].Price}"
+                                    : "",
+                                Trade34 = (objSetting.Results.Trades.Count > 33)
+                                    ? $" {objSetting.Results.Trades[33].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[33].Amount}@{objSetting.Results.Trades[33].Price}"
+                                    : "",
+                                Trade35 = (objSetting.Results.Trades.Count > 34)
+                                    ? $" {objSetting.Results.Trades[34].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[34].Amount}@{objSetting.Results.Trades[34].Price}"
+                                    : "",
+                                Trade36 = (objSetting.Results.Trades.Count > 35)
+                                    ? $" {objSetting.Results.Trades[35].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[35].Amount}@{objSetting.Results.Trades[35].Price}"
+                                    : "",
+                                Trade37 = (objSetting.Results.Trades.Count > 36)
+                                    ? $" {objSetting.Results.Trades[36].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[36].Amount}@{objSetting.Results.Trades[36].Price}"
+                                    : "",
+                                Trade38 = (objSetting.Results.Trades.Count > 37)
+                                    ? $" {objSetting.Results.Trades[37].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[37].Amount}@{objSetting.Results.Trades[37].Price}"
+                                    : "",
+                                Trade39 = (objSetting.Results.Trades.Count > 38)
+                                    ? $" {objSetting.Results.Trades[38].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[38].Amount}@{objSetting.Results.Trades[38].Price}"
+                                    : "",
+                                Trade40 = (objSetting.Results.Trades.Count > 39)
+                                    ? $" {objSetting.Results.Trades[39].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[39].Amount}@{objSetting.Results.Trades[39].Price}"
+                                    : "",
+                                Trade41 = (objSetting.Results.Trades.Count > 40)
+                                    ? $" {objSetting.Results.Trades[40].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[40].Amount}@{objSetting.Results.Trades[40].Price}"
+                                    : "",
+                                Trade42 = (objSetting.Results.Trades.Count > 41)
+                                    ? $" {objSetting.Results.Trades[41].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[41].Amount}@{objSetting.Results.Trades[41].Price}"
+                                    : "",
+                                Trade43 = (objSetting.Results.Trades.Count > 42)
+                                    ? $" {objSetting.Results.Trades[42].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[42].Amount}@{objSetting.Results.Trades[42].Price}"
+                                    : "",
+                                Trade44 = (objSetting.Results.Trades.Count > 43)
+                                    ? $" {objSetting.Results.Trades[43].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[43].Amount}@{objSetting.Results.Trades[43].Price}"
+                                    : "",
+                                Trade45 = (objSetting.Results.Trades.Count > 44)
+                                    ? $" {objSetting.Results.Trades[44].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[44].Amount}@{objSetting.Results.Trades[44].Price}"
+                                    : "",
+                                Trade46 = (objSetting.Results.Trades.Count > 45)
+                                    ? $" {objSetting.Results.Trades[45].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[45].Amount}@{objSetting.Results.Trades[45].Price}"
+                                    : "",
+                                Trade47 = (objSetting.Results.Trades.Count > 46)
+                                    ? $" {objSetting.Results.Trades[46].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[46].Amount}@{objSetting.Results.Trades[46].Price}"
+                                    : "",
+                                Trade48 = (objSetting.Results.Trades.Count > 47)
+                                    ? $" {objSetting.Results.Trades[47].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[47].Amount}@{objSetting.Results.Trades[47].Price}"
+                                    : "",
+                                Trade49 = (objSetting.Results.Trades.Count > 48)
+                                    ? $" {objSetting.Results.Trades[48].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[48].Amount}@{objSetting.Results.Trades[48].Price}"
+                                    : "",
+                                Trade50 = (objSetting.Results.Trades.Count > 49)
+                                    ? $" {objSetting.Results.Trades[49].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[49].Amount}@{objSetting.Results.Trades[49].Price}"
+                                    : "",
+                                Trade51 = (objSetting.Results.Trades.Count > 50)
+                                    ? $" {objSetting.Results.Trades[50].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[50].Amount}@{objSetting.Results.Trades[50].Price}"
+                                    : "",
+                                Trade52 = (objSetting.Results.Trades.Count > 51)
+                                    ? $" {objSetting.Results.Trades[51].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[51].Amount}@{objSetting.Results.Trades[51].Price}"
+                                    : "",
+                                Trade53 = (objSetting.Results.Trades.Count > 52)
+                                    ? $" {objSetting.Results.Trades[52].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[52].Amount}@{objSetting.Results.Trades[52].Price}"
+                                    : "",
+                                Trade54 = (objSetting.Results.Trades.Count > 53)
+                                    ? $" {objSetting.Results.Trades[53].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[53].Amount}@{objSetting.Results.Trades[53].Price}"
+                                    : "",
+                                Trade55 = (objSetting.Results.Trades.Count > 54)
+                                    ? $" {objSetting.Results.Trades[54].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[54].Amount}@{objSetting.Results.Trades[54].Price}"
+                                    : "",
+                                Trade56 = (objSetting.Results.Trades.Count > 55)
+                                    ? $" {objSetting.Results.Trades[55].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[55].Amount}@{objSetting.Results.Trades[55].Price}"
+                                    : "",
+                                Trade57 = (objSetting.Results.Trades.Count > 56)
+                                    ? $" {objSetting.Results.Trades[56].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[56].Amount}@{objSetting.Results.Trades[56].Price}"
+                                    : "",
+                                Trade58 = (objSetting.Results.Trades.Count > 57)
+                                    ? $" {objSetting.Results.Trades[57].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[57].Amount}@{objSetting.Results.Trades[57].Price}"
+                                    : "",
+                                Trade59 = (objSetting.Results.Trades.Count > 58)
+                                    ? $" {objSetting.Results.Trades[58].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[58].Amount}@{objSetting.Results.Trades[58].Price}"
+                                    : "",
+                                Trade60 = (objSetting.Results.Trades.Count > 59)
+                                    ? $" {objSetting.Results.Trades[59].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[59].Amount}@{objSetting.Results.Trades[59].Price}"
+                                    : "",
+                                Trade61 = (objSetting.Results.Trades.Count > 60)
+                                    ? $" {objSetting.Results.Trades[60].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[60].Amount}@{objSetting.Results.Trades[60].Price}"
+                                    : "",
+                                Trade62 = (objSetting.Results.Trades.Count > 61)
+                                    ? $" {objSetting.Results.Trades[61].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[61].Amount}@{objSetting.Results.Trades[61].Price}"
+                                    : "",
+                                Trade63 = (objSetting.Results.Trades.Count > 62)
+                                    ? $" {objSetting.Results.Trades[62].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[62].Amount}@{objSetting.Results.Trades[62].Price}"
+                                    : "",
+                                Trade64 = (objSetting.Results.Trades.Count > 63)
+                                    ? $" {objSetting.Results.Trades[63].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[63].Amount}@{objSetting.Results.Trades[63].Price}"
+                                    : "",
+                                Trade65 = (objSetting.Results.Trades.Count > 64)
+                                    ? $" {objSetting.Results.Trades[64].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[64].Amount}@{objSetting.Results.Trades[64].Price}"
+                                    : "",
+                                Trade66 = (objSetting.Results.Trades.Count > 65)
+                                    ? $" {objSetting.Results.Trades[65].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[65].Amount}@{objSetting.Results.Trades[65].Price}"
+                                    : "",
+                                Trade67 = (objSetting.Results.Trades.Count > 66)
+                                    ? $" {objSetting.Results.Trades[66].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[66].Amount}@{objSetting.Results.Trades[66].Price}"
+                                    : "",
+                                Trade68 = (objSetting.Results.Trades.Count > 67)
+                                    ? $" {objSetting.Results.Trades[67].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[67].Amount}@{objSetting.Results.Trades[67].Price}"
+                                    : "",
+                                Trade69 = (objSetting.Results.Trades.Count > 68)
+                                    ? $" {objSetting.Results.Trades[68].Time.ToString(CultureInfo.InvariantCulture)}: {objSetting.Results.Trades[68].Amount}@{objSetting.Results.Trades[68].Price}"
+                                    : "",
                             });
 
 
@@ -508,7 +626,7 @@ namespace MyIA.Trading.Backtester
 
 
             var tradeHistory = objTrades.Select(objTrade =>
-                 new Trade() { Amount = objTrade.Amount, Price = objTrade.Price, UnixTime = objTrade.UnixTime }).ToList();
+                 new OrderTrade() { Amount = objTrade.Amount, Price = objTrade.Price, UnixTime = objTrade.UnixTime }).ToList();
 
 
             //this.Simulation.StartDate = tradeHistory[0].Time;
@@ -557,7 +675,7 @@ namespace MyIA.Trading.Backtester
 
             logger("building history");
             var tradeHistory = objTrades.Select(objTrade =>
-                new Trade() { Amount = objTrade.Amount, Price = objTrade.Price, UnixTime = objTrade.UnixTime }).ToList();
+                new OrderTrade() { Amount = objTrade.Amount, Price = objTrade.Price, UnixTime = objTrade.UnixTime }).ToList();
             logger("built historic trades");
 
 

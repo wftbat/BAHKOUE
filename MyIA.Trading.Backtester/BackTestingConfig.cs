@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Aricie.DNN.Modules.PortalKeeper.BitCoin;
+using MyIA.Trading.Backtester;
 using Aricie.Services;
 using Microsoft.ML.AutoML;
 
@@ -109,18 +109,18 @@ namespace MyIA.Trading.Backtester
 
 #if DEBUG
 
-            new FileBasedSimulation(){DatasourcePath =@"B:\TradingTests\krakenEUR.bin.7z", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
-            //new FileBasedSimulation(){DatasourcePath =@"B:\TradingTests\bitstampUSD.bin.7z", StartDate = new DateTime(2015, 1, 1), EndDate = new DateTime(2018, 1, 1),},
-            //new FileBasedSimulation(){DatasourcePath =@"B:\TradingTests\zaifJPY.2018-2020.0.5.bin.lz4", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
-            //new FileBasedSimulation(){DatasourcePath =@"B:\TradingTests\bitstampUSD.bin.7z", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
-            //new FileBasedSimulation(){DatasourcePath =@"B:\TradingTests\krakenEUR.bin.7z", StartDate = new DateTime(2015, 1, 1), EndDate = new DateTime(2018, 1, 1),},
+            new FileBasedSimulation(){DatasourcePath =@"A:\TradingTests\krakenEUR.bin.7z", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
+            //new FileBasedSimulation(){DatasourcePath =@"A:\TradingTests\bitstampUSD.bin.7z", StartDate = new DateTime(2015, 1, 1), EndDate = new DateTime(2018, 1, 1),},
+            //new FileBasedSimulation(){DatasourcePath =@"A:\TradingTests\zaifJPY.2018-2020.0.5.bin.lz4", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
+            //new FileBasedSimulation(){DatasourcePath =@"A:\TradingTests\bitstampUSD.bin.7z", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
+            //new FileBasedSimulation(){DatasourcePath =@"A:\TradingTests\krakenEUR.bin.7z", StartDate = new DateTime(2015, 1, 1), EndDate = new DateTime(2018, 1, 1),},
 
 #else
-            new FileBasedSimulation(){DatasourcePath =@"B:\TradingTests\krakenEUR.bin.7z", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
-            new FileBasedSimulation(){DatasourcePath =@"B:\TradingTests\bitstampUSD.bin.7z", StartDate = new DateTime(2015, 1, 1), EndDate = new DateTime(2018, 1, 1),},
-            new FileBasedSimulation(){DatasourcePath =@"B:\TradingTests\zaifJPY.2018-2020.0.5.bin.lz4", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
-            new FileBasedSimulation(){DatasourcePath =@"B:\TradingTests\bitstampUSD.bin.7z", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
-            new FileBasedSimulation(){DatasourcePath =@"B:\TradingTests\krakenEUR.bin.7z", StartDate = new DateTime(2015, 1, 1), EndDate = new DateTime(2018, 1, 1),},
+            new FileBasedSimulation(){DatasourcePath =@"A:\TradingTests\krakenEUR.bin.7z", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
+            new FileBasedSimulation(){DatasourcePath =@"A:\TradingTests\bitstampUSD.bin.7z", StartDate = new DateTime(2015, 1, 1), EndDate = new DateTime(2018, 1, 1),},
+            new FileBasedSimulation(){DatasourcePath =@"A:\TradingTests\zaifJPY.2018-2020.0.5.bin.lz4", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
+            new FileBasedSimulation(){DatasourcePath =@"A:\TradingTests\bitstampUSD.bin.7z", StartDate = new DateTime(2018, 1, 1), EndDate = new DateTime(2020, 5, 1),},
+            new FileBasedSimulation(){DatasourcePath =@"A:\TradingTests\krakenEUR.bin.7z", StartDate = new DateTime(2015, 1, 1), EndDate = new DateTime(2018, 1, 1),},
 
 
 #endif
@@ -435,10 +435,10 @@ namespace MyIA.Trading.Backtester
 #if DEBUG
 
 
-                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 30000, TestNb = 5000 }, ModelsConfig = new TradingModelsConfig() { ModelType = TradingModelType.AutoML, AutomMlModelConfig = new TradingAutoMlModelConfig() { TrainingTimeout = TimeSpan.FromMinutes(10), OptimizingMetric = MulticlassClassificationMetric.MacroAccuracy} } });
+                    configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 30000, TestNb = 5000 }, ModelsConfig = new TradingModelsConfig() { ModelType = TradingModelType.AutoML, AutomMlModelConfig = new TradingAutoMlModelConfig() { TrainingTimeout = TimeSpan.FromMinutes(10), OptimizingMetric = MulticlassClassificationMetric.MacroAccuracy } } });
 
 
-                    //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 1000, TestNb = 500 }, ModelsConfig = new TradingModelsConfig() { ModelType = TradingModelType.AutoML, AutomMlModelConfig = new TradingAutoMlModelConfig() { TrainingTimeout = TimeSpan.FromMinutes(10) } } });
+                    configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 1000, TestNb = 500 }, ModelsConfig = new TradingModelsConfig() { ModelType = TradingModelType.AutoML, AutomMlModelConfig = new TradingAutoMlModelConfig() { TrainingTimeout = TimeSpan.FromMinutes(10) } } });
 
                     //configList.Add(new TradingTrainingConfig() { DataConfig = new TradingTrainingDataConfig() { OutputPrediction = TimeSpan.FromHours(48), OutputThresold = 10, TrainNb = 16000 }, ModelsConfig = new TradingModelsConfig() { SvmModelConfig = new TradingSvmModelConfig() { Kernel = KnownKernel.NormalizedPolynomial3, Complexity = 0.105 } } });
 
