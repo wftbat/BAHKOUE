@@ -11,6 +11,15 @@ using Newtonsoft.Json;
 
 namespace MyIA.Trading.Backtester
 {
+    public enum SamplingMode
+    {
+        // Slices are taken at intervals reducing exponentially using TimeCoef from LeftWindow to MinSlice
+        Exponential,
+        // Slices are taken at constants intervals using TimeCoef from LeftWindow
+        Constant,
+    }
+
+
     [DelimitedRecord(",")]
     public class TradingSampleConfig
     {
@@ -34,27 +43,31 @@ namespace MyIA.Trading.Backtester
 
         public bool UseFastRandom { get; set; } = true;
 
-        public TimeSpan LeftWindow { get; set; } = TimeSpan.FromDays(50);
+        public TimeSpan LeftWindow { get; set; } = TimeSpan.FromDays(30);
+
+        public SamplingMode SamplingMode { get; set; } = SamplingMode.Constant;
+
+        public TimeSpan ConstantSliceSpan { get; set; } = TimeSpan.FromDays(1);
 
         public Decimal TimeCoef { get; set; } = 0.7M;
 
         public TimeSpan MinSlice { get; set; } = TimeSpan.FromMinutes(1);
 
         public  List<TimeSpan> PredictionTimes =>  new List<TimeSpan>( new []{
-            TimeSpan.FromMinutes(5),
-            TimeSpan.FromMinutes(10),
-            TimeSpan.FromMinutes(20),
-            TimeSpan.FromMinutes(30),
+            //TimeSpan.FromMinutes(5),
+            //TimeSpan.FromMinutes(10),
+            //TimeSpan.FromMinutes(20),
+            //TimeSpan.FromMinutes(30),
             TimeSpan.FromHours(1),
-            TimeSpan.FromHours(2),
-            TimeSpan.FromHours(3),
-            TimeSpan.FromHours(4),
-            TimeSpan.FromHours(5),
+            //TimeSpan.FromHours(2),
+            //TimeSpan.FromHours(3),
+            //TimeSpan.FromHours(4),
+            //TimeSpan.FromHours(5),
             TimeSpan.FromHours(6),
-            TimeSpan.FromHours(7),
-            TimeSpan.FromHours(8),
-            TimeSpan.FromHours(9),
-            TimeSpan.FromHours(10),
+            //TimeSpan.FromHours(7),
+            //TimeSpan.FromHours(8),
+            //TimeSpan.FromHours(9),
+            //TimeSpan.FromHours(10),
             TimeSpan.FromHours(12),
             TimeSpan.FromDays(1),
             TimeSpan.FromDays(2),
@@ -75,7 +88,7 @@ namespace MyIA.Trading.Backtester
 
         public string GetSamplesFileName()
         {
-            return $"{GetRootFolder()}Samples-Coef{TimeCoef.ToString(CultureInfo.InvariantCulture)}-Days{LeftWindow.Days}.bin.lz4";
+            return $"{GetRootFolder()}Samples-Mode{SamplingMode}-Coef{TimeCoef.ToString(CultureInfo.InvariantCulture)}-Days{LeftWindow.Days}.bin.lz4";
         }
 
         private static readonly Dictionary<string, List<TradingSample>> _samplesByConfig = new Dictionary<string, List<TradingSample>>();
@@ -242,7 +255,18 @@ namespace MyIA.Trading.Backtester
                     return null;
                 }
                 toReturn.Inputs.Add(newInput);
-                currentSlice = TimeSpan.FromTicks(Convert.ToInt64(currentSlice.Ticks * this.TimeCoef));
+
+                switch (SamplingMode)
+                {
+                    case SamplingMode.Exponential:
+                        currentSlice = TimeSpan.FromTicks(Convert.ToInt64(currentSlice.Ticks * this.TimeCoef));
+                        break;
+                    case SamplingMode.Constant:
+                        currentSlice = currentSlice - ConstantSliceSpan;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
 
             }
 
@@ -381,7 +405,18 @@ namespace MyIA.Trading.Backtester
                     Price = newInput.Price,
                     UnixTime = (int)newInput.UnixTime
                 });
-                currentSlice = TimeSpan.FromTicks(Convert.ToInt64(currentSlice.Ticks * this.TimeCoef));
+                switch (SamplingMode)
+                {
+                    case SamplingMode.Exponential:
+                        currentSlice = TimeSpan.FromTicks(Convert.ToInt64(currentSlice.Ticks * this.TimeCoef));
+                        break;
+                    case SamplingMode.Constant:
+                        currentSlice = currentSlice - ConstantSliceSpan;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
 
             }
 
@@ -409,7 +444,7 @@ namespace MyIA.Trading.Backtester
             }
             else
             {
-                closestIndex = trades.BinarySearch(new MyIA.Trading.Backtester.OrderTrade { Time = targetTime }, Comparer<MyIA.Trading.Backtester.OrderTrade>.Create(new Comparison<MyIA.Trading.Backtester.OrderTrade>(CompareOrderTrades)));
+                closestIndex = trades.BinarySearch(0, idx, new MyIA.Trading.Backtester.OrderTrade { Time = targetTime }, Comparer<MyIA.Trading.Backtester.OrderTrade>.Create(new Comparison<MyIA.Trading.Backtester.OrderTrade>(CompareOrderTrades)));
             }
 
             if (closestIndex < 0)
@@ -437,4 +472,6 @@ namespace MyIA.Trading.Backtester
         }
 
     }
+
+   
 }

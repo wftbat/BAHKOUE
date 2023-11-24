@@ -319,54 +319,59 @@ namespace MyIA.Trading.Backtester
         public double GetOutputData(TradingSample objSample)
         {
             var percentageThreshold = OutputThresold / 100;
-            if (PredictionMode == PredictionMode.Peak)
-            {
-                var peakTime = objSample.TargetTrade.Time.Add(OutputPrediction);
-                var nextPeak = objSample.Peaks[OutputThresold];
-                if (nextPeak.Time < peakTime)
-                {
 
-                    if (nextPeak.Price / objSample.TargetTrade.Price > (1 + percentageThreshold))
+            DateTime peakTime;
+            switch (PredictionMode)
+            {
+                case PredictionMode.Exact:
+                    var exactPrediction = objSample.Outputs[this.OutputPrediction];
+                    if (exactPrediction.Price / objSample.TargetTrade.Price > (1 + percentageThreshold))
                     {
                         return 1;
                     }
 
-                    if (nextPeak.Price / objSample.TargetTrade.Price < (1 - percentageThreshold))
+                    if (exactPrediction.Price / objSample.TargetTrade.Price < (1 - percentageThreshold))
                     {
                         return 2;
                     }
-                }
-            }
-
-            if (PredictionMode == PredictionMode.ThresholdPeak)
-            {
-                var peakTime = objSample.TargetTrade.Time.Add(OutputPrediction);
-                var nextThresholdPeak = objSample.ThresholdPeaks[OutputThresold];
-                if (nextThresholdPeak.Time < peakTime)
-                {
-                    if (nextThresholdPeak.Price / objSample.TargetTrade.Price > (1 + percentageThreshold))
+                    break;
+                case PredictionMode.Peak:
+                    peakTime = objSample.TargetTrade.Time.Add(OutputPrediction);
+                    var nextPeak = objSample.Peaks[OutputThresold];
+                    if (nextPeak.Time < peakTime)
                     {
-                        return 1;
-                    }
 
-                    if (nextThresholdPeak.Price / objSample.TargetTrade.Price < (1 - percentageThreshold))
+                        if (nextPeak.Price / objSample.TargetTrade.Price > (1 + percentageThreshold))
+                        {
+                            return 1;
+                        }
+
+                        if (nextPeak.Price / objSample.TargetTrade.Price < (1 - percentageThreshold))
+                        {
+                            return 2;
+                        }
+                    }
+                    break;
+                case PredictionMode.ThresholdPeak:
+                    peakTime = objSample.TargetTrade.Time.Add(OutputPrediction);
+                    var nextThresholdPeak = objSample.ThresholdPeaks[OutputThresold];
+                    if (nextThresholdPeak.Time < peakTime)
                     {
-                        return 2;
+                        if (nextThresholdPeak.Price / objSample.TargetTrade.Price > (1 + percentageThreshold))
+                        {
+                            return 1;
+                        }
+
+                        if (nextThresholdPeak.Price / objSample.TargetTrade.Price < (1 - percentageThreshold))
+                        {
+                            return 2;
+                        }
                     }
-                }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
-
-            var exactPrediction = objSample.Outputs[this.OutputPrediction];
-            if (exactPrediction.Price / objSample.TargetTrade.Price > (1 + percentageThreshold))
-            {
-                return 1;
-            }
-
-            if (exactPrediction.Price / objSample.TargetTrade.Price < (1 - percentageThreshold))
-            {
-                return 2;
-            }
 
             return 0;
 
