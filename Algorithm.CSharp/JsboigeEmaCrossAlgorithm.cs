@@ -36,14 +36,14 @@ namespace QuantConnect.Algorithm.CSharp
     public class JsboigeEmaCrossAlgorithm : QCAlgorithm
     {
         //L'attribut Parameter permet de définir les paramètres dans le fichier de configuration, et d'utiliser une optimisation
-        public int FastPeriod = 30;
+        private int FastPeriod = 30;
 
-        public int SlowPeriod = 40;
+        private int SlowPeriod = 40;
 
 
-        public decimal UpCrossMargin = 1.001m;
+        private decimal UpCrossMargin = 1.001m;
 
-        public decimal DownCrossMargin = 0.999m;
+        private decimal DownCrossMargin = 0.999m;
 
         private Resolution _resolution = Resolution.Daily;
 
