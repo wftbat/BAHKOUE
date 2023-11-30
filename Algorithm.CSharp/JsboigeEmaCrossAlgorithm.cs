@@ -45,7 +45,7 @@ namespace QuantConnect.Algorithm.CSharp
 
         public decimal DownCrossMargin = 0.999m;
 
-
+        private Resolution _resolution = Resolution.Daily;
 
         public ExponentialMovingAverage Fast;
         public ExponentialMovingAverage Slow;
@@ -76,12 +76,12 @@ namespace QuantConnect.Algorithm.CSharp
             SetBrokerageModel(BrokerageName.Bitstamp, AccountType.Cash);
 
             SetCash(10000); // capital
-            var btcSecurity = AddCrypto("BTCUSD", Resolution.Daily);
+            var btcSecurity = AddCrypto("BTCUSD", _resolution);
 
             _btcusd = btcSecurity.Symbol;
 
-            Fast = EMA(_btcusd, FastPeriod, Resolution.Daily);
-            Slow = EMA(_btcusd, SlowPeriod, Resolution.Daily);
+            Fast = this.EMA(_btcusd, FastPeriod, _resolution);
+            Slow = EMA(_btcusd, SlowPeriod, _resolution);
 
             // Dealing with plots
             var stockPlot = new Chart(_ChartName);
