@@ -32,6 +32,13 @@ pip install pandas==1.4.3
 pip install wrapt==1.14.1
 ```
 
+La commande suivante installe les packages Python nécessaires à l'obtention de l'intellisense dans vos environnements de développement
+
+```bash
+pip install --upgrade quantconnect-stubs
+```
+
+
 ## Mise à jour des variables d'environnement.
 
 La documentation officielle indique qu'il faut ajouter le chemin complet du fichier "Lean/Launcher/bin/Debug//venv/python38.dll" à la variable d'environnement PYTHONNET_PYDLL.
