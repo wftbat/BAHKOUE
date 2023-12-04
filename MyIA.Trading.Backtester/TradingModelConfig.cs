@@ -15,7 +15,7 @@ namespace MyIA.Trading.Backtester
     public abstract class TradingModelConfig
     {
 
-        public TimeSpan TrainingTimeout { get; set; } = TimeSpan.FromSeconds(500);
+        public TimeSpan TrainingTimeout { get; set; } = TimeSpan.FromSeconds(20);
 
         public abstract string GetModelName(TradingTrainingDataConfig dataConfig);
 

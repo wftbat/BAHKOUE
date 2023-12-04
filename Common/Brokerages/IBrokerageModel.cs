@@ -175,7 +175,7 @@ namespace QuantConnect.Brokerages
         /// Gets the shortable provider
         /// </summary>
         /// <returns>Shortable provider</returns>
-        IShortableProvider GetShortableProvider();
+        IShortableProvider GetShortableProvider(Security security);
     }
 
     /// <summary>
@@ -233,8 +233,8 @@ namespace QuantConnect.Brokerages
                 case BrokerageName.Zerodha:
                     return new ZerodhaBrokerageModel(accountType);
 
-                case BrokerageName.Atreyu:
-                    return new AtreyuBrokerageModel(accountType);
+                case BrokerageName.Axos:
+                    return new AxosClearingBrokerageModel(accountType);
 
                 case BrokerageName.TradingTechnologies:
                     return new TradingTechnologiesBrokerageModel(accountType);
@@ -265,6 +265,12 @@ namespace QuantConnect.Brokerages
 
                 case BrokerageName.Bybit:
                     return new BybitBrokerageModel(accountType);
+
+                case BrokerageName.Eze:
+                    return new EzeBrokerageModel(accountType);
+
+                case BrokerageName.Bitstamp:
+                    return new BitstampBrokerageModel(accountType);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(brokerage), brokerage, null);
@@ -318,8 +324,8 @@ namespace QuantConnect.Brokerages
                 case ZerodhaBrokerageModel _:
                     return BrokerageName.Zerodha;
 
-                case AtreyuBrokerageModel _:
-                    return BrokerageName.Atreyu;
+                case AxosClearingBrokerageModel _:
+                    return BrokerageName.Axos;
 
                 case TradingTechnologiesBrokerageModel _:
                     return BrokerageName.TradingTechnologies;
@@ -350,6 +356,12 @@ namespace QuantConnect.Brokerages
 
                 case BybitBrokerageModel _:
                     return BrokerageName.Bybit;
+
+                case EzeBrokerageModel _:
+                    return BrokerageName.Eze;
+
+                case BitstampBrokerageModel _:
+                    return BrokerageName.Bitstamp;
 
                 case DefaultBrokerageModel _:
                     return BrokerageName.Default;

@@ -103,7 +103,7 @@ namespace MyIA.Trading.Converter
                     var currentTickBar = (currentTickTrades.ToTickbar(tickBarDate));
                     toReturn.Add(currentTickBar);
                     currentTickTrades.Clear();
-                    currentTarget = currentTarget.Add(period);
+                    currentTarget = objTrade.Time.GetPeriodStart(period).Add(period);
                 }
 
                 currentTickTrades.Add(objTrade);

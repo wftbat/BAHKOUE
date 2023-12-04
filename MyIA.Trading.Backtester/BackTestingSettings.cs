@@ -2,7 +2,7 @@ using System;
 using Accord.MachineLearning;
 using Accord.MachineLearning.VectorMachines;
 using Accord.Statistics.Kernels;
-using Aricie.DNN.Modules.PortalKeeper.BitCoin;
+using MyIA.Trading.Backtester;
 using Newtonsoft.Json;
 
 namespace MyIA.Trading.Backtester

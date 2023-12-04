@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
@@ -92,6 +92,7 @@ namespace MyIA.Trading.Converter
         }
 
         //public static async Task<List<T>> DeserializeBinaryList<T>(this Stream entryStream, BinarySerializationType serializationType)
+        [System.Diagnostics.DebuggerHidden]
         public static List<T> DeserializeBinaryList<T>(this Stream entryStream, BinarySerializationType serializationType)
         {
             switch (serializationType)
@@ -200,6 +201,7 @@ namespace MyIA.Trading.Converter
             return binarySerializer.Read<T>(entryStream);
         }
 
+        [System.Diagnostics.DebuggerHidden]
         private static List<T> DeserializeListApexFormatter<T>(this Stream entryStream)
         {
             var apexSettings = new Settings().MarkSerializable(typeof(T)).MarkSerializable(typeof(List<T>));

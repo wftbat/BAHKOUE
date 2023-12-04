@@ -17,7 +17,14 @@ namespace MyIA.Trading.Converter
 
         public string InputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\bitstampUSD.csv.gz";
 
-        public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\minute\btcusd\trade.zip";
+        //Pour Daily
+        public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\daily\btceur_trade.zip";
+
+        //Pour Minutes
+        //public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\minute\btcusd\trade.zip";
+
+        //Pour Secondes
+        //public string OutputFile { get; set; } = @"..\..\..\..\Data\crypto\bitstamp\seconde\btcusd\trade.zip";
 
         public DateTime StartDate { get; set; } = new DateTime(2016, 1, 1);
 
@@ -27,11 +34,23 @@ namespace MyIA.Trading.Converter
 
         public TradingDataType TargetTradingDataType { get; set; } = TradingDataType.Tickbars;
 
-        public TimeSpan TickbarsPeriod { get; set; } = TimeSpan.FromMinutes(1);
+        //Pour Daily
+        public TimeSpan TickbarsPeriod { get; set; } = TimeSpan.FromDays(1);
 
-        public string DynamicFilePrefix { get; set; } = "{tickBar.DateTime.ToString(\"yyyyMMdd\")}_";
+        //Pour Minutes
+        //public TimeSpan TickbarsPeriod { get; set; } = TimeSpan.FromMinutes(1);
 
-        
+        //Pour Secondes
+        //public TimeSpan TickbarsPeriod { get; set; } = TimeSpan.FromSeconds(1);
+
+        //Pour Daily
+        public string DynamicFilePrefix { get; set; }
+
+        //Pour Minutes
+        //Pour Secondes
+        //public string DynamicFilePrefix { get; set; } = "{tickBar.DateTime.ToString(\"yyyyMMdd\")}_";
+
+
 
         public bool RandomPeriodStart { get; set; } = false;
 
@@ -58,9 +77,16 @@ namespace MyIA.Trading.Converter
             Json = JsonSerializationType.Utf8,
             Xml = XmlSerializationType.XmlSerializer,
             Compression = new CompressionConfig() { Library = CompressionLibrary.SevenZipSharp, Level = CompressionLevel.Fast },
-            IncludeHeader = false, 
-            //DateTimeFormat = "yyyyMMdd HH:mm",
-            DateAsMillisecondsFromEpoch = true
+            IncludeHeader = false,
+            //Pour Daily
+            DateTimeFormat = "yyyyMMdd HH:mm",
+
+            //Pour Daily
+            DateAsMillisecondsFromEpoch = false
+
+            //Pour Minutes
+            //Pour Secondes
+            //DateAsMillisecondsFromEpoch = true
         };
 
         //public async Task Process(Action<string> logger)
@@ -86,11 +112,6 @@ namespace MyIA.Trading.Converter
                     var currentPrefix = this.DynamicFilePrefix.Interpolate(interpolationDictionary);
                     var currentFileTickBars = new List<Tickbar>();
 
-                    //var customDateFormat = new DateTimeFormatInfo
-                    //{
-                    //    ShortDatePattern = "yyyyMMdd",
-                    //    LongTimePattern = ""
-                    //};
 
                     for (int i = 0; i < tickbars.Count; i++)
                     {
@@ -98,11 +119,6 @@ namespace MyIA.Trading.Converter
                         var newPrefix = this.DynamicFilePrefix.Interpolate(interpolationDictionary);
                         if (newPrefix != currentPrefix)
                         {
-                            //var startDateTime = DateTime.Parse(currentPrefix.Trim('_'), customDateFormat);
-                            //foreach (var objTickbar in currentFileTickBars)
-                            //{
-                            //    objTickbar.PeriodStart = startDateTime;
-                            //}
                             SaveTradingData<Tickbar>(currentFileTickBars, OutputFile, currentPrefix, logger, SerializationConfig);
                             currentPrefix = newPrefix;
                             currentFileTickBars.Clear();
@@ -240,7 +256,16 @@ namespace MyIA.Trading.Converter
                         {
                             strExtension = "CSV";
                         }
-                        objExitStream = new MemoryStream();
+
+                        if (data.Count>40000000)
+                        {
+                            objExitStream = new HugeMemoryStream();
+                        }
+                        else
+                        {
+                            objExitStream = new MemoryStream();
+                        }
+                        
 
                         //logger($"Decompressed {InputFile}");
                     }

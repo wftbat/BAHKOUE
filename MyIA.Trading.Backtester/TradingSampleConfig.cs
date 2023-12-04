@@ -11,6 +11,15 @@ using Newtonsoft.Json;
 
 namespace MyIA.Trading.Backtester
 {
+    public enum SamplingMode
+    {
+        // Slices are taken at intervals reducing exponentially using TimeCoef from LeftWindow to MinSlice
+        Exponential,
+        // Slices are taken at constants intervals using TimeCoef from LeftWindow
+        Constant,
+    }
+
+
     [DelimitedRecord(",")]
     public class TradingSampleConfig
     {
@@ -20,7 +29,7 @@ namespace MyIA.Trading.Backtester
 
         //public string Filename { get; set; } = Path.Combine(Environment.CurrentDirectory, "data\\bitstampUSD.csv");
 
-        public string Filename { get; set; } = @"B:\TradingTests\bitstampUSD.bin.7z";
+        public string Filename { get; set; } = @"A:\TradingTests\bitstampUSD.bin.7z";
 
 
         public string GetRootFolder()
@@ -34,27 +43,31 @@ namespace MyIA.Trading.Backtester
 
         public bool UseFastRandom { get; set; } = true;
 
-        public TimeSpan LeftWindow { get; set; } = TimeSpan.FromDays(50);
+        public TimeSpan LeftWindow { get; set; } = TimeSpan.FromDays(30);
+
+        public SamplingMode SamplingMode { get; set; } = SamplingMode.Constant;
+
+        public TimeSpan ConstantSliceSpan { get; set; } = TimeSpan.FromDays(1);
 
         public Decimal TimeCoef { get; set; } = 0.7M;
 
         public TimeSpan MinSlice { get; set; } = TimeSpan.FromMinutes(1);
 
         public  List<TimeSpan> PredictionTimes =>  new List<TimeSpan>( new []{
-            TimeSpan.FromMinutes(5),
-            TimeSpan.FromMinutes(10),
-            TimeSpan.FromMinutes(20),
-            TimeSpan.FromMinutes(30),
+            //TimeSpan.FromMinutes(5),
+            //TimeSpan.FromMinutes(10),
+            //TimeSpan.FromMinutes(20),
+            //TimeSpan.FromMinutes(30),
             TimeSpan.FromHours(1),
-            TimeSpan.FromHours(2),
-            TimeSpan.FromHours(3),
-            TimeSpan.FromHours(4),
-            TimeSpan.FromHours(5),
+            //TimeSpan.FromHours(2),
+            //TimeSpan.FromHours(3),
+            //TimeSpan.FromHours(4),
+            //TimeSpan.FromHours(5),
             TimeSpan.FromHours(6),
-            TimeSpan.FromHours(7),
-            TimeSpan.FromHours(8),
-            TimeSpan.FromHours(9),
-            TimeSpan.FromHours(10),
+            //TimeSpan.FromHours(7),
+            //TimeSpan.FromHours(8),
+            //TimeSpan.FromHours(9),
+            //TimeSpan.FromHours(10),
             TimeSpan.FromHours(12),
             TimeSpan.FromDays(1),
             TimeSpan.FromDays(2),
@@ -75,7 +88,7 @@ namespace MyIA.Trading.Backtester
 
         public string GetSamplesFileName()
         {
-            return $"{GetRootFolder()}Samples-Coef{TimeCoef.ToString(CultureInfo.InvariantCulture)}-Days{LeftWindow.Days}.bin.lz4";
+            return $"{GetRootFolder()}Samples-Mode{SamplingMode}-Coef{TimeCoef.ToString(CultureInfo.InvariantCulture)}-Days{LeftWindow.Days}.bin.lz4";
         }
 
         private static readonly Dictionary<string, List<TradingSample>> _samplesByConfig = new Dictionary<string, List<TradingSample>>();
@@ -170,7 +183,7 @@ namespace MyIA.Trading.Backtester
             var percentThresold = threshold / 100;
             var toReturn = new List<KeyValuePair<int, Trade>>();
             var currentMaxTrade = new KeyValuePair<int, Trade>(0, trades[0]);
-            var currentMinTrade = new KeyValuePair<int,Trade>(0, trades[0]);
+            var currentMinTrade = new KeyValuePair<int, Trade>(0, trades[0]);
             for (int currentTradeIndex = 0; currentTradeIndex < trades.Count; currentTradeIndex++)
             {
                 var currentTrade = new KeyValuePair<int, Trade>(currentTradeIndex, trades[currentTradeIndex]);
@@ -242,7 +255,18 @@ namespace MyIA.Trading.Backtester
                     return null;
                 }
                 toReturn.Inputs.Add(newInput);
-                currentSlice = TimeSpan.FromTicks(Convert.ToInt64(currentSlice.Ticks * this.TimeCoef));
+
+                switch (SamplingMode)
+                {
+                    case SamplingMode.Exponential:
+                        currentSlice = TimeSpan.FromTicks(Convert.ToInt64(currentSlice.Ticks * this.TimeCoef));
+                        break;
+                    case SamplingMode.Constant:
+                        currentSlice = currentSlice - ConstantSliceSpan;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
 
             }
 
@@ -322,11 +346,11 @@ namespace MyIA.Trading.Backtester
             int closestIndex;
             if (searchup)
             {
-                closestIndex = trades.BinarySearch(idx, trades.Count - idx, new Trade { UnixTime = (int)targetTime.ConvertToUnixTimestamp() }, Comparer<Trade>.Create(new Comparison<Trade>(CompareBitcoinTrades)));
+                closestIndex = trades.BinarySearch(idx, trades.Count - idx, new Trade { UnixTime = (int)targetTime.ConvertToUnixTimestamp() }, Comparer<Trade>.Create(new Comparison<Trade>(CompareTrades)));
             }
             else
             {
-                closestIndex = trades.BinarySearch(new Trade { UnixTime = (int)targetTime.ConvertToUnixTimestamp() }, Comparer<Trade>.Create(new Comparison<Trade>(CompareBitcoinTrades)));
+                closestIndex = trades.BinarySearch(new Trade { UnixTime = (int)targetTime.ConvertToUnixTimestamp() }, Comparer<Trade>.Create(new Comparison<Trade>(CompareTrades)));
             }
 
             if (closestIndex < 0)
@@ -355,7 +379,7 @@ namespace MyIA.Trading.Backtester
         }
 
 
-        public  TradingSample CreateInput(List<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade> trades, int idx)
+        public  TradingSample CreateInput(List<OrderTrade> trades, int idx)
         {
             var toReturn = new TradingSample();
             toReturn.TargetTrade = new Trade()
@@ -381,35 +405,46 @@ namespace MyIA.Trading.Backtester
                     Price = newInput.Price,
                     UnixTime = (int)newInput.UnixTime
                 });
-                currentSlice = TimeSpan.FromTicks(Convert.ToInt64(currentSlice.Ticks * this.TimeCoef));
+                switch (SamplingMode)
+                {
+                    case SamplingMode.Exponential:
+                        currentSlice = TimeSpan.FromTicks(Convert.ToInt64(currentSlice.Ticks * this.TimeCoef));
+                        break;
+                    case SamplingMode.Constant:
+                        currentSlice = currentSlice - ConstantSliceSpan;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
 
             }
 
             return toReturn;
         }
 
-        public static int CompareTrades(Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade x, Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade y)
+        public static int CompareOrderTrades(OrderTrade x, OrderTrade y)
         {
             return x.Time.CompareTo(y.Time);
         }
 
-        public static int CompareBitcoinTrades(Trade x, Trade y)
+        public static int CompareTrades(Trade x, Trade y)
         {
             return x.UnixTime.CompareTo(y.UnixTime);
         }
 
-        public static Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade SearchTrade(List<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade> trades, int idx, DateTime targetTime, bool searchup)
+        public static OrderTrade SearchTrade(List<OrderTrade> trades, int idx, DateTime targetTime, bool searchup)
         {
             //var utcTargetTime = Aricie.Common.ConvertToUnixTimestamp(targetTime);// ((DateTimeOffset) targetTime.ToUniversalTime()).ToUnixTimeSeconds();
 
             int closestIndex;
             if (searchup)
             {
-                closestIndex = trades.BinarySearch(idx, trades.Count - idx, new Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade { Time = targetTime }, Comparer<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade>.Create(new Comparison<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade>(CompareTrades)));
+                closestIndex = trades.BinarySearch(idx, trades.Count - idx, new MyIA.Trading.Backtester.OrderTrade { Time = targetTime }, Comparer<MyIA.Trading.Backtester.OrderTrade>.Create(new Comparison<MyIA.Trading.Backtester.OrderTrade>(CompareOrderTrades)));
             }
             else
             {
-                closestIndex = trades.BinarySearch(new Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade { Time = targetTime }, Comparer<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade>.Create(new Comparison<Aricie.DNN.Modules.PortalKeeper.BitCoin.Trade>(CompareTrades)));
+                closestIndex = trades.BinarySearch(0, idx, new MyIA.Trading.Backtester.OrderTrade { Time = targetTime }, Comparer<MyIA.Trading.Backtester.OrderTrade>.Create(new Comparison<MyIA.Trading.Backtester.OrderTrade>(CompareOrderTrades)));
             }
 
             if (closestIndex < 0)
@@ -437,4 +472,6 @@ namespace MyIA.Trading.Backtester
         }
 
     }
+
+   
 }

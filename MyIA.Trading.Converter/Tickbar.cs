@@ -11,8 +11,6 @@ namespace MyIA.Trading.Converter
     [MessagePackObject]
     public class Tickbar
     {
-        //[IgnoreMember]
-        //public DateTime PeriodStart;
 
         [Key(0)]
         public DateTime DateTime { get; set; }

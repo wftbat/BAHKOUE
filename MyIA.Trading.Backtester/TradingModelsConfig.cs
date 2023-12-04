@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Runtime.Serialization;
 using Accord.MachineLearning;
 
 namespace MyIA.Trading.Backtester
@@ -15,6 +16,9 @@ namespace MyIA.Trading.Backtester
 
         public TradingModelType ModelType { get; set; }
 
+
+
+        [IgnoreDataMember]
         public TradingModelConfig CurrentModelConfig
         {
             get

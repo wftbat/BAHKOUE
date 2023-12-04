@@ -259,8 +259,18 @@ namespace MyIA.Trading.Converter
                 }
             }
             using var extractor = new SevenZip.SevenZipExtractor(entryStream, true, inFormat);
-            fileName = extractor.ArchiveFileData[0].FileName;
-            MemoryStream exitStream = new MemoryStream();
+            var archiveFile = extractor.ArchiveFileData[0];
+            fileName = archiveFile.FileName;
+            Stream exitStream;
+            if (archiveFile.Size > int.MaxValue)
+            {
+                exitStream = new HugeMemoryStream();
+            }
+            else
+            {
+                exitStream = new MemoryStream((int)archiveFile.Size);
+            }
+
             extractor.ExtractFile(0, exitStream);
             exitStream.Position = 0;
             return exitStream;
