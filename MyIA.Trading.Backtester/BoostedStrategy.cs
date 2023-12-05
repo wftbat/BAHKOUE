@@ -5,7 +5,7 @@ using System.Linq;
 using Accord.MachineLearning;
 using Accord.MachineLearning.Boosting;
 using Accord.Statistics;
-using Aricie.DNN.Modules.PortalKeeper.BitCoin;
+using MyIA.Trading.Backtester;
 
 namespace MyIA.Trading.Backtester
 {

@@ -23,7 +23,7 @@
     <PackageReference Include="Accord.MachineLearning" Version="3.8.2-alpha" />
     <PackageReference Include="Accord.Math" Version="3.8.2-alpha" />
     <PackageReference Include="Accord.Statistics" Version="3.8.2-alpha" />
-    <PackageReference Include="Microsoft.ML.AutoML" Version="0.17.0" />
+    <PackageReference Include="Microsoft.ML.AutoML" Version="0.20.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,9 +36,6 @@
     </Reference>
     <Reference Include="Aricie.DNN">
       <HintPath>external\PKP\Aricie.DNN.dll</HintPath>
-    </Reference>
-    <Reference Include="Aricie.PortalKeeper.Bitcoin">
-      <HintPath>external\PKP\Aricie.PortalKeeper.Bitcoin.dll</HintPath>
     </Reference>
     <Reference Include="Ciloci.Flee">
       <HintPath>external\PKP\Ciloci.Flee.dll</HintPath>

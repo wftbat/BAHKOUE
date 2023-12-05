@@ -98,9 +98,9 @@ namespace QuantConnect
         }
 
         /// <summary>
-        /// Provides user-facing messages for the <see cref="Brokerages.AtreyuBrokerageModel"/> class and its consumers or related classes
+        /// Provides user-facing messages for the <see cref="Brokerages.AxosClearingBrokerageModel"/> class and its consumers or related classes
         /// </summary>
-        public static class AtreyuBrokerageModel
+        public static class AxosBrokerageModel
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static string NonIntegerOrderQuantity(Orders.Order order)
@@ -251,6 +251,16 @@ namespace QuantConnect
                 return Invariant($"Stop Market orders are no longer supported since {stopMarketOrderSupportEndDate}.");
             }
         }
+
+        /// <summary>
+        /// Provides user-facing messages for the <see cref="Brokerages.BitstampBrokerageModel"/> class and its consumers or related classes
+        /// </summary>
+        public static class BitstampBrokerageModel
+        {
+            public static string UnsupportedAccountType = "The Bitstamp brokerage does not currently support Margin trading.";
+
+        }
+
 
         /// <summary>
         /// Provides user-facing messages for the <see cref="Brokerages.InteractiveBrokersBrokerageModel"/> class and its consumers or related classes

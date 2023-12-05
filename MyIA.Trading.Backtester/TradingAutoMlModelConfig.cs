@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -72,7 +72,8 @@ namespace MyIA.Trading.Backtester
         public override string GetModelName(TradingTrainingDataConfig dataConfig)
         {
             var toREturn = dataConfig.GetSampleTrainName();
-            return $"{toREturn.Substring(0, toREturn.Length - Path.GetExtension(toREturn).Length)}-AutoML-{this.TrainingTimeout.TotalSeconds}s-{this.OptimizingMetric}-Model.bin";
+            var modelName = $"{toREturn.Substring(0, toREturn.Length - Path.GetExtension(toREturn).Length)}-AutoML-{this.TrainingTimeout.TotalSeconds}s-{this.OptimizingMetric}-Model.bin";
+            return modelName;
         }
 
         public override ITradingModel TrainModel(Action<string> logger, TradingTrainingDataConfig dataConfig, ref double testError)
@@ -313,7 +314,8 @@ namespace MyIA.Trading.Backtester
             // (Please note: for an experiment on a large dataset, opting to keep all 
             // models trained by AutoML in memory could cause your system to run out 
             // of memory.)
-            experimentSettings.CacheDirectory = null;
+            experimentSettings.CacheDirectoryName = null;
+
 
             // Don't use LbfgsPoissonRegression and OnlineGradientDescent trainers during this experiment.
             // (These trainers sometimes underperform on this dataset.)
